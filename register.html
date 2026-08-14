@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join Us — NextGen E-Sports</title>
+<meta name="description" content="Apply to join NextGen E-Sports. Open to all skill levels across six competitive titles.">
+<link rel="stylesheet" href="vendor/bootstrap.min.css">
+<link rel="stylesheet" href="vendor/bootstrap-icons.css">
+<link rel="stylesheet" href="css/style.css">
+<script>
+(function () {
+  try {
+    var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) { /* storage unavailable — dark stays */ }
+})();
+</script>
+</head>
+<body>
+<a class="nx-skip" href="#main">Skip to content</a>
+
+<header class="nx-nav">
+  <nav class="nx-nav__inner" aria-label="Primary">
+    <a class="nx-wordmark" href="index.html">
+      <span class="nx-wordmark__mark">N</span>
+      Next<span class="nx-wordmark__gen">Gen</span>
+    </a>
+    <div class="nx-nav__links" id="navLinks">
+      <a class="nx-nav__link" href="index.html">Home</a>
+      <a class="nx-nav__link" href="rankings.html">Rankings</a>
+      <a class="nx-nav__link" href="players.html">Players</a>
+      <a class="nx-nav__link" href="tournaments.html">Tournaments</a>
+      <a class="nx-nav__link" href="events.html">Events</a>
+      <a class="nx-nav__link" href="dashboard.html">Dashboard</a>
+      <a class="nx-nav__link" href="about.html">About</a>
+      <a class="nx-nav__link" href="register.html">Join</a>
+    </div>
+    <div class="nx-nav__actions">
+      <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
+        <i class="bi bi-sun" aria-hidden="true"></i>
+      </button>
+      <button class="nx-icon-btn nx-nav__toggle" id="navToggle" type="button"
+              aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+        <i class="bi bi-list" aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="page-body">
+  <section class="nx-section">
+    <div class="nx-shell">
+
+      <div class="nx-section-head">
+        <p class="nx-eyebrow">Membership</p>
+        <h1 class="nx-mb-0">Join NextGen</h1>
+        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
+          Open to all skill levels. Fill this in and the committee will follow up before the next
+          tryout block. Your progress is kept in this tab while you type, so a refresh will not
+          lose it.
+        </p>
+      </div>
+
+      <div class="nx-grid nx-grid--2" style="align-items:start">
+
+        <form class="nx-card nx-card--flat" id="registerForm" novalidate>
+          <p class="nx-eyebrow">Applicant details</p>
+
+          <div class="nx-field">
+            <label class="nx-label" for="fullName">Full name</label>
+            <input class="nx-input" id="fullName" name="fullName" type="text"
+                   autocomplete="name" required>
+            <span class="nx-error">Please enter your name.</span>
+          </div>
+
+          <div class="nx-field">
+            <label class="nx-label" for="email">Email</label>
+            <input class="nx-input" id="email" name="email" type="email"
+                   autocomplete="email" required>
+            <span class="nx-error">Please enter a valid email address.</span>
+          </div>
+
+          <div class="nx-field">
+            <label class="nx-label" for="ign">In-game name</label>
+            <input class="nx-input" id="ign" name="ign" type="text" required>
+            <span class="nx-error">Please enter the handle you play under.</span>
+          </div>
+
+          <div class="nx-field">
+            <label class="nx-label" for="game">Primary title</label>
+            <select class="nx-select" id="game" name="game" required>
+              <option value="">Choose a title…</option>
+              <option value="valorant">Valorant</option>
+              <option value="cs2">Counter-Strike 2</option>
+              <option value="lol">League of Legends</option>
+              <option value="dota2">Dota 2</option>
+              <option value="pubg">PUBG</option>
+              <option value="fc26">EA SPORTS FC 26</option>
+            </select>
+            <span class="nx-error">Please pick your main title.</span>
+          </div>
+
+          <div class="nx-field">
+            <label class="nx-label" for="level">Experience</label>
+            <select class="nx-select" id="level" name="level">
+              <option value="casual">Casual — I just want to play</option>
+              <option value="improving">Improving — I want structured practice</option>
+              <option value="competitive">Competitive — I want a roster spot</option>
+            </select>
+          </div>
+
+          <div class="nx-field">
+            <label class="nx-label" for="notes">Anything else?</label>
+            <textarea class="nx-textarea" id="notes" name="notes"
+                      placeholder="Availability, past teams, what you want out of the club…"></textarea>
+          </div>
+
+          <div class="nx-row" style="gap:10px">
+            <button class="nx-btn nx-btn--primary" type="submit">
+              <i class="bi bi-send" aria-hidden="true"></i> Submit application
+            </button>
+            <button class="nx-btn nx-btn--ghost" type="button" id="clearDraft">Clear draft</button>
+          </div>
+
+          <p class="nx-muted" style="font-size:.76rem;margin-top:16px;margin-bottom:0">
+            No server receives this. Submissions are stored in this browser only, and appear on
+            your <a href="dashboard.html">dashboard</a>.
+          </p>
+        </form>
+
+        <aside>
+          <div class="nx-card nx-card--flat" style="margin-bottom:20px">
+            <p class="nx-eyebrow">Your applications</p>
+            <div id="submissions"></div>
+          </div>
+          <div class="nx-card nx-card--flat">
+            <p class="nx-eyebrow">What happens next</p>
+            <ol class="nx-muted" style="font-size:.88rem;padding-left:20px;margin-bottom:0">
+              <li style="margin-bottom:8px">A committee member reviews your application.</li>
+              <li style="margin-bottom:8px">You are invited to the next open tryout block.</li>
+              <li style="margin-bottom:8px">Roster placement is decided after two scrim weeks.</li>
+              <li>Everyone else stays in the community rotation — nobody is turned away.</li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+</main>
+
+<footer class="nx-footer">
+  <div class="nx-shell">
+    <div class="nx-footer__top">
+      <div class="nx-footer__brand">
+        <a class="nx-wordmark" href="index.html">
+          <span class="nx-wordmark__mark">N</span>
+          Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
+        </a>
+        <p class="nx-footer__tag">
+          A competitive university esports club across six titles — training, competing and
+          growing the local scene.
+        </p>
+      </div>
+
+      <div class="nx-social">
+        <div class="nx-social__widget">
+          <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
+             data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
+        </div>
+        <div class="nx-social__widget">
+          <iframe title="NextGen E-Sports on Facebook"
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fapuesportsclub%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+            width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
+            frameborder="0" allowfullscreen="true"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+        </div>
+        <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/theesportsclub"
+           target="_blank" rel="noopener">
+          <i class="bi bi-discord" aria-hidden="true"></i>
+          <span>Discord</span>
+          <span class="nx-discord__count">…</span>
+        </a>
+        <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
+          <i class="bi bi-instagram" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="nx-footer__bottom">
+      <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
+      <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
+      <a href="about.html">About</a>
+      <a href="register.html">Join us</a>
+    </div>
+    <p class="nx-disclaimer">
+      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
+      competitive statistics shown are not verified results.
+    </p>
+  </div>
+</footer>
+
+<div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
+  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
+    We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
+    here before, plus local and session storage for your theme, filters and saved entries.
+    Nothing is sent anywhere — this site has no server.
+  </p>
+  <div class="nx-cookie__actions">
+    <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
+    <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
+  </div>
+</div>
+
+<script src="vendor/jquery-3.7.1.min.js"></script>
+<script src="vendor/bootstrap.bundle.min.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/render.js"></script>
+<script src="js/main.js"></script>
+<script src="js/register.js"></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</body>
+</html>

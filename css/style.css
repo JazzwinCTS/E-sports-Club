@@ -1,0 +1,1139 @@
+/* ==========================================================================
+   NextGen E-Sports — single source of truth for all design tokens.
+   Never hardcode a hex value in a page. See CLAUDE.md section 7 and 11.
+   ========================================================================== */
+
+/* --- Self-hosted fonts (offline requirement, CLAUDE.md section 2) --------- */
+@font-face {
+  font-family: 'Unbounded';
+  src: url('../fonts/unbounded-latin.woff2') format('woff2');
+  font-weight: 200 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sora';
+  src: url('../fonts/sora-latin.woff2') format('woff2');
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+/* --- Tokens -------------------------------------------------------------- */
+:root {
+  --bg:             #0B0B0E;
+  --surface:        #1A1A24;
+  --surface-raised: #22222E;
+  --text:           #FFFFFF;
+  --text-muted:     #A8A8B3;
+  --accent:         #FF1E38;
+  --accent-hover:   #FF4D63;
+  --accent-soft:    rgba(255, 30, 56, 0.15);
+  --border:         rgba(255, 255, 255, 0.08);
+  --border-strong:  rgba(255, 255, 255, 0.16);
+
+  --gold:           #E7B94B;
+  --silver:         #B8BCC6;
+  --bronze:         #C4794A;
+  --live:           #FF1E38;
+  --upcoming:       #4B9CE7;
+  --completed:      #6E6E7E;
+
+  --radius:         12px;
+  --radius-sm:      8px;
+  --space:          8px;
+  --notch:          14px;
+
+  --font-heading:   'Unbounded', system-ui, sans-serif;
+  --font-body:      'Sora', system-ui, sans-serif;
+
+  --shell-max:      1240px;
+  --nav-h:          68px;
+  --ease:           cubic-bezier(0.4, 0, 0.2, 1);
+  --dur:            240ms;
+
+  --bg-top:         var(--bg);
+  --bg-mid:         #241019;
+  --bg-bottom:      var(--bg);
+}
+
+/* Light theme — driven by localStorage key `theme` (CLAUDE.md section 5) */
+[data-theme="light"] {
+  --bg:             #F3F3F7;
+  --surface:        #FFFFFF;
+  --surface-raised: #FFFFFF;
+  --text:           #0B0B0E;
+  --text-muted:     #5A5A6B;
+  --border:         rgba(11, 11, 14, 0.10);
+  --border-strong:  rgba(11, 11, 14, 0.20);
+  --accent-soft:    rgba(255, 30, 56, 0.10);
+  --completed:      #8A8A99;
+  --bg-mid:         #FBE3E7;
+}
+
+/* --- Base ---------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .nx-display {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.08;
+  margin: 0 0 calc(var(--space) * 2);
+  font-weight: 800;
+}
+
+h1, .nx-h1 { font-size: clamp(2.1rem, 6vw, 4rem); }
+h2, .nx-h2 { font-size: clamp(1.6rem, 4vw, 2.6rem); }
+h3, .nx-h3 { font-size: clamp(1.1rem, 2.4vw, 1.5rem); }
+
+p { margin: 0 0 calc(var(--space) * 2); }
+a { color: var(--accent); text-decoration: none; transition: color var(--dur) var(--ease); }
+a:hover { color: var(--accent-hover); }
+img { max-width: 100%; height: auto; }
+
+.nx-muted { color: var(--text-muted); }
+.nx-accent { color: var(--accent); }
+.nx-num { font-variant-numeric: tabular-nums; }
+
+::selection { background: var(--accent); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Skip link — keyboard users land here first */
+.nx-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  font-weight: 600;
+}
+.nx-skip:focus { left: 8px; top: 8px; color: #fff; }
+
+/* --- Layout shell -------------------------------------------------------- */
+.nx-shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 32px);
+}
+
+/* The gradient body — dark at top, accent-lit in the middle, dark again at
+   the bottom. Percentage stops so the bright band always lands mid-page. */
+.page-body {
+  position: relative;
+  min-height: 60vh;
+  background:
+    linear-gradient(to bottom,
+      var(--bg-top) 0%,
+      var(--bg-mid) 50%,
+      var(--bg-bottom) 100%);
+}
+
+/* Faint technical grid — atmosphere without noise */
+.page-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
+  opacity: 0.5;
+}
+
+.nx-section { padding-block: clamp(32px, 7vw, 96px); position: relative; z-index: 1; }
+.nx-section--tight { padding-block: clamp(24px, 4vw, 48px); }
+
+/* Section heading with an accent rule */
+.nx-section-head { margin-bottom: calc(var(--space) * 4); }
+.nx-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.nx-eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* --- Navbar -------------------------------------------------------------- */
+.nx-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-top);
+  border-bottom: 1px solid var(--accent-soft);
+  min-height: var(--nav-h);
+  display: flex;
+  align-items: center;
+}
+[data-theme="light"] .nx-nav { background: #FFFFFF; }
+
+.nx-nav__inner {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 32px);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Wordmark — NextGen has no logo file, so its identity is pure CSS type */
+.nx-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.02rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nx-wordmark:hover { color: var(--text); }
+.nx-wordmark__mark {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  clip-path: polygon(0 0, 100% 0, 100% 72%, 72% 100%, 0 100%);
+}
+.nx-wordmark__gen { color: var(--accent); }
+
+.nx-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.nx-nav__link {
+  position: relative;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease);
+  white-space: nowrap;
+}
+.nx-nav__link:hover { color: var(--text); }
+.nx-nav__link::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur) var(--ease);
+}
+.nx-nav__link:hover::after { transform: scaleX(1); }
+.nx-nav__link.is-active { color: var(--text); }
+.nx-nav__link.is-active::after { transform: scaleX(1); }
+
+.nx-nav__actions { display: flex; align-items: center; gap: 8px; }
+
+.nx-icon-btn {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--dur) var(--ease);
+}
+.nx-icon-btn:hover {
+  color: var(--text);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Mobile nav toggle */
+.nx-nav__toggle { display: none; }
+
+@media (max-width: 940px) {
+  .nx-nav__toggle { display: grid; }
+  .nx-nav__links {
+    position: fixed;
+    inset: var(--nav-h) 0 auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 16px 16px;
+    transform: translateY(-120%);
+    transition: transform var(--dur) var(--ease);
+    max-height: calc(100vh - var(--nav-h));
+    overflow-y: auto;
+  }
+  .nx-nav__links.is-open { transform: translateY(0); }
+  .nx-nav__link { padding: 14px 4px; font-size: 0.95rem; }
+  .nx-nav__link::after { left: 4px; right: 4px; }
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.nx-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 26px;
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.nx-btn--primary { background: var(--accent); color: #fff; }
+.nx-btn--primary:hover {
+  background: var(--accent-hover);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--accent-soft);
+}
+.nx-btn--ghost {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.nx-btn--ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.nx-btn--sm { padding: 9px 18px; font-size: 0.68rem; }
+.nx-btn--block { width: 100%; }
+
+/* --- Cards --------------------------------------------------------------- */
+.nx-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: calc(var(--space) * 3);
+  transition: border-color var(--dur) var(--ease),
+              transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+.nx-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px -12px var(--accent-soft);
+}
+.nx-card--flat:hover { transform: none; box-shadow: none; }
+
+.nx-grid { display: grid; gap: calc(var(--space) * 3); }
+.nx-grid--3 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.nx-grid--4 { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.nx-grid--2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+/* --- FILTER BAR ---------------------------------------------------------
+   Shared control used on rankings, players and tournaments. Single airy row,
+   translucent surface; the chevron flips to point up when its menu opens.
+   ------------------------------------------------------------------------ */
+.nx-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  margin-bottom: calc(var(--space) * 4);
+  background: rgba(26, 26, 36, 0.55);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 20;
+}
+[data-theme="light"] .nx-filter { background: rgba(255, 255, 255, 0.72); }
+
+.nx-filter__control { position: relative; flex: 1 1 190px; min-width: 165px; }
+
+.nx-filter__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--dur) var(--ease);
+}
+[data-theme="light"] .nx-filter__trigger { background: rgba(11, 11, 14, 0.03); }
+.nx-filter__trigger:hover { border-color: var(--border-strong); }
+.nx-filter__control.is-open .nx-filter__trigger {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.nx-filter__label {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.nx-filter__value {
+  font-weight: 600;
+  margin-left: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nx-filter__chevron {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+/* The arrow turns to point up when the dropdown is open */
+.nx-filter__control.is-open .nx-filter__chevron {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
+
+.nx-filter__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 6px;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity var(--dur) var(--ease),
+              transform var(--dur) var(--ease),
+              visibility var(--dur);
+  max-height: 320px;
+  overflow-y: auto;
+}
+.nx-filter__control.is-open .nx-filter__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nx-filter__option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.nx-filter__option:hover { background: var(--accent-soft); }
+.nx-filter__option.is-active { color: var(--accent); font-weight: 600; }
+.nx-filter__option.is-active::after {
+  content: '\F26E';
+  font-family: 'bootstrap-icons';
+  margin-left: auto;
+  font-size: 0.8rem;
+}
+.nx-filter__option img { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+
+.nx-filter__reset {
+  padding: 12px 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  flex-shrink: 0;
+}
+.nx-filter__reset:hover { color: var(--accent); border-color: var(--accent); }
+
+.nx-filter__count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-left: auto;
+  padding-inline: 6px;
+  white-space: nowrap;
+}
+
+/* Segmented status toolbar (tournaments) */
+.nx-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: calc(var(--space) * 4);
+}
+.nx-tab {
+  position: relative;
+  padding: 12px 18px;
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+.nx-tab::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--dur) var(--ease);
+}
+.nx-tab:hover { color: var(--text); }
+.nx-tab.is-active { color: var(--text); }
+.nx-tab.is-active::after { transform: scaleX(1); }
+
+/* --- Badges -------------------------------------------------------------- */
+.nx-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nx-badge--live { background: var(--live); color: #fff; }
+/* Status badges sit over photography, so they carry their own opaque ground */
+.nx-badge--upcoming { background: rgba(10, 24, 38, 0.92); color: #7FBEF5; }
+.nx-badge--completed { background: rgba(14, 14, 18, 0.92); color: #C3C3CE; }
+.nx-badge--game {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+[data-theme="light"] .nx-badge--game { background: rgba(11, 11, 14, 0.06); }
+
+/* Pulsing dot on LIVE badges */
+.nx-badge--live .nx-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: nx-pulse 1.4s ease-in-out infinite;
+}
+
+/* --- Leaderboard --------------------------------------------------------- */
+.nx-board { display: flex; flex-direction: column; gap: 8px; }
+
+.nx-board__head,
+.nx-board__row {
+  display: grid;
+  grid-template-columns: 64px 1fr 92px 150px 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+}
+.nx-board__head {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-block: 8px;
+}
+.nx-board__row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: all var(--dur) var(--ease);
+  cursor: pointer;
+}
+.nx-board__row:hover { border-color: var(--accent); transform: translateX(4px); }
+.nx-board__row.is-favourite {
+  border-color: var(--accent);
+  background: linear-gradient(90deg, var(--accent-soft), var(--surface) 40%);
+}
+
+.nx-board__rank {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+.nx-board__row:nth-child(1) .nx-board__rank,
+.nx-board__row:nth-child(2) .nx-board__rank,
+.nx-board__row:nth-child(3) .nx-board__rank { color: var(--text); }
+
+.nx-board__team { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.nx-board__logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.nx-board__name {
+  font-weight: 600;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nx-board__sub { font-size: 0.74rem; color: var(--text-muted); }
+
+.nx-board__pts {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.15rem;
+  text-align: right;
+}
+
+.nx-medals { display: flex; gap: 6px; justify-content: flex-end; }
+.nx-medal {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid transparent;
+}
+.nx-medal--gold   { background: rgba(231, 185, 75, 0.14); color: var(--gold);   border-color: rgba(231, 185, 75, 0.3); }
+.nx-medal--silver { background: rgba(184, 188, 198, 0.14); color: var(--silver); border-color: rgba(184, 188, 198, 0.3); }
+.nx-medal--bronze { background: rgba(196, 121, 74, 0.14); color: var(--bronze); border-color: rgba(196, 121, 74, 0.3); }
+
+.nx-move { font-size: 0.72rem; font-weight: 700; }
+.nx-move--up { color: #4CC38A; }
+.nx-move--down { color: var(--accent); }
+.nx-move--flat { color: var(--text-muted); }
+
+.nx-fav {
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.05rem;
+  padding: 4px;
+  transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.nx-fav:hover { color: var(--accent); transform: scale(1.2); }
+.nx-fav.is-on { color: var(--accent); }
+
+@media (max-width: 780px) {
+  .nx-board__head { display: none; }
+  .nx-board__row {
+    grid-template-columns: 48px 1fr auto;
+    grid-template-areas:
+      'rank team fav'
+      'rank pts medals';
+    row-gap: 8px;
+  }
+  .nx-board__rank { grid-area: rank; }
+  .nx-board__team { grid-area: team; }
+  .nx-board__pts { grid-area: pts; text-align: left; }
+  .nx-medals { grid-area: medals; }
+  .nx-fav { grid-area: fav; }
+}
+
+/* --- Tournament cards ---------------------------------------------------- */
+.nx-tcard { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+.nx-tcard__media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg); }
+.nx-tcard__media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 500ms var(--ease);
+}
+.nx-tcard:hover .nx-tcard__media img { transform: scale(1.06); }
+.nx-tcard__media::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--surface) 2%, transparent 60%);
+}
+.nx-tcard__status { position: absolute; top: 12px; left: 12px; z-index: 2; }
+.nx-tcard__game {
+  position: absolute; bottom: 12px; right: 12px; z-index: 2;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  background: rgba(11, 11, 14, 0.7);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
+  padding: 6px;
+}
+.nx-tcard__game img { width: 100%; height: 100%; object-fit: contain; }
+.nx-tcard__body { padding: calc(var(--space) * 2.5); display: flex; flex-direction: column; flex: 1; }
+.nx-tcard__title { font-size: 1.05rem; margin-bottom: 14px; }
+.nx-tcard__rows { margin-bottom: 18px; }
+.nx-trow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.86rem;
+}
+.nx-trow:last-child { border-bottom: 0; }
+.nx-trow__k { color: var(--text-muted); }
+.nx-trow__v { font-weight: 600; font-variant-numeric: tabular-nums; }
+.nx-tcard__foot { margin-top: auto; }
+
+/* --- Player cards -------------------------------------------------------- */
+.nx-pcard { text-align: center; position: relative; overflow: hidden; }
+.nx-pcard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 3px;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+.nx-pcard:hover::before { opacity: 1; }
+
+/* Monogram avatar — no player photographs are used (CLAUDE.md section 2) */
+.nx-avatar {
+  width: 72px; height: 72px;
+  margin: 4px auto 14px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.nx-pcard__ign { font-size: 1.15rem; margin-bottom: 4px; }
+.nx-pcard__name { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; }
+.nx-pcard__team {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 16px;
+}
+[data-theme="light"] .nx-pcard__team { background: rgba(11, 11, 14, 0.04); }
+.nx-pcard__team img { width: 18px; height: 18px; object-fit: contain; }
+.nx-pcard__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.nx-stat { background: var(--surface); padding: 10px 6px; }
+.nx-stat__v {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+.nx-stat__k {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.nx-pcard__ach { font-size: 0.78rem; color: var(--text-muted); font-style: italic; }
+
+/* --- Hero / carousel ----------------------------------------------------- */
+.nx-hero { position: relative; }
+/* The height is declared on every level of the carousel: a floated
+   .carousel-item alone leaves .carousel-inner with no height to fill. */
+.nx-hero .carousel,
+.nx-hero .carousel-inner,
+.nx-hero .carousel-item { height: clamp(420px, 68vh, 660px); }
+.nx-hero .carousel-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* The hero photography is bright and busy, so the scrim has to work hard —
+   white display type over it must stay readable on every slide. */
+.nx-hero__scrim {
+  position: absolute; inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(to right,
+      rgba(6, 6, 9, 0.94) 0%,
+      rgba(6, 6, 9, 0.80) 38%,
+      rgba(6, 6, 9, 0.35) 70%,
+      rgba(6, 6, 9, 0.25) 100%),
+    linear-gradient(to top,
+      var(--bg) 0%,
+      rgba(6, 6, 9, 0.55) 34%,
+      rgba(6, 6, 9, 0.45) 100%);
+}
+.nx-hero__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  z-index: 4;
+}
+.nx-hero__title { text-shadow: 0 2px 40px rgba(0, 0, 0, 0.5); }
+.nx-hero__title { max-width: 16ch; margin-bottom: 18px; }
+.nx-hero__lede { max-width: 46ch; color: var(--text-muted); font-size: 1.02rem; margin-bottom: 28px; }
+.nx-hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.nx-hero .carousel-indicators { margin-bottom: 24px; z-index: 4; }
+.nx-hero .carousel-indicators [data-bs-target] {
+  width: 34px; height: 3px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.35);
+  opacity: 1;
+  transition: background var(--dur) var(--ease);
+}
+.nx-hero .carousel-indicators .active { background: var(--accent); }
+
+/* Game strip */
+.nx-gamestrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.nx-gamechip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px;
+  min-width: 116px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--dur) var(--ease);
+}
+.nx-gamechip:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  background: var(--surface-raised);
+}
+.nx-gamechip img { height: 34px; width: auto; object-fit: contain; }
+.nx-gamechip span {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.nx-gamechip:hover span { color: var(--text); }
+
+/* --- About video window -------------------------------------------------- */
+.nx-videoframe {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+.nx-videoframe video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.nx-videoframe__hook {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 22px;
+  background: rgba(11, 11, 14, 0.35);
+  transition: opacity var(--dur) var(--ease);
+  pointer-events: none;
+}
+.nx-videoframe.is-playing .nx-videoframe__hook { opacity: 0; }
+.nx-videoframe__hook h2 {
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+  margin: 0;
+}
+.nx-play {
+  width: 74px; height: 74px;
+  margin-inline: auto;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.nx-play:hover { transform: scale(1.1); background: var(--accent-hover); }
+
+/* --- Forms --------------------------------------------------------------- */
+.nx-field { margin-bottom: calc(var(--space) * 2.5); }
+.nx-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.nx-input, .nx-select, .nx-textarea {
+  width: 100%;
+  padding: 13px 15px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+[data-theme="light"] .nx-input,
+[data-theme="light"] .nx-select,
+[data-theme="light"] .nx-textarea { background: rgba(11, 11, 14, 0.03); }
+.nx-input:focus, .nx-select:focus, .nx-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.nx-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+.nx-textarea { min-height: 110px; resize: vertical; }
+.nx-select option { background: var(--surface); color: var(--text); }
+.nx-error { color: var(--accent); font-size: 0.78rem; margin-top: 6px; display: none; }
+.nx-field.has-error .nx-input,
+.nx-field.has-error .nx-select { border-color: var(--accent); }
+.nx-field.has-error .nx-error { display: block; }
+
+/* --- Feedback states ----------------------------------------------------- */
+.nx-spinner {
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  padding: 56px 20px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.nx-spinner__ring {
+  width: 34px; height: 34px;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: nx-spin 800ms linear infinite;
+}
+.nx-empty {
+  padding: 56px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+.nx-empty i { font-size: 1.8rem; color: var(--accent); display: block; margin-bottom: 12px; }
+
+/* --- Footer -------------------------------------------------------------- */
+.nx-footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding-top: calc(var(--space) * 6);
+}
+[data-theme="light"] .nx-footer { background: #FFFFFF; }
+
+.nx-footer__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: space-between;
+  padding-bottom: calc(var(--space) * 4);
+}
+.nx-footer__brand { max-width: 30ch; }
+.nx-footer__tag { color: var(--text-muted); font-size: 0.88rem; margin-top: 12px; }
+
+.nx-social { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+.nx-social__widget { min-height: 30px; }
+
+/* Discord live card — populated by a real jQuery API call */
+.nx-discord {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 15px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 0.82rem;
+  transition: all var(--dur) var(--ease);
+}
+.nx-discord:hover { border-color: var(--accent); color: var(--text); }
+.nx-discord i { color: #5865F2; font-size: 1.15rem; }
+.nx-discord__count { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.nx-discord__count .nx-online {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #3BA55D;
+  margin-right: 5px;
+}
+
+.nx-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  padding-block: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.nx-footer__bottom a { color: var(--text-muted); }
+.nx-footer__bottom a:hover { color: var(--accent); }
+.nx-linkbtn {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.nx-linkbtn:hover { color: var(--accent); }
+.nx-disclaimer {
+  width: 100%;
+  padding-bottom: 22px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+/* --- Cookie banner ------------------------------------------------------- */
+.nx-cookie {
+  position: fixed;
+  left: 16px; right: 16px; bottom: 16px;
+  z-index: 150;
+  max-width: 620px;
+  margin-inline: auto;
+  padding: 20px 22px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.8);
+  display: none;
+}
+.nx-cookie.is-visible { display: block; animation: nx-rise 340ms var(--ease) both; }
+.nx-cookie__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+/* --- Animation ----------------------------------------------------------- */
+@keyframes nx-spin { to { transform: rotate(360deg); } }
+@keyframes nx-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+}
+@keyframes nx-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* One orchestrated page-load reveal, staggered by index */
+.nx-reveal { opacity: 0; animation: nx-rise 520ms var(--ease) both; }
+.nx-reveal:nth-child(1) { animation-delay: 40ms; }
+.nx-reveal:nth-child(2) { animation-delay: 90ms; }
+.nx-reveal:nth-child(3) { animation-delay: 140ms; }
+.nx-reveal:nth-child(4) { animation-delay: 190ms; }
+.nx-reveal:nth-child(5) { animation-delay: 240ms; }
+.nx-reveal:nth-child(6) { animation-delay: 290ms; }
+.nx-reveal:nth-child(7) { animation-delay: 340ms; }
+.nx-reveal:nth-child(8) { animation-delay: 390ms; }
+.nx-reveal:nth-child(n+9) { animation-delay: 430ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .nx-reveal { opacity: 1; }
+}
+
+/* --- Utilities ----------------------------------------------------------- */
+.nx-stack { display: flex; flex-direction: column; gap: calc(var(--space) * 2); }
+.nx-row { display: flex; flex-wrap: wrap; align-items: center; gap: calc(var(--space) * 1.5); }
+.nx-between { justify-content: space-between; }
+.nx-center { text-align: center; }
+.nx-mt-0 { margin-top: 0; }
+.nx-mb-0 { margin-bottom: 0; }
+.nx-sr {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}

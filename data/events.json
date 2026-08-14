@@ -1,0 +1,101 @@
+{
+  "_source": "NextGen E-Sports is a prototype club and this schedule is fictional. Venue coordinates are a real Kuala Lumpur location so the live forecast returns meaningful data.",
+  "_fetchedAt": "2026-08-15",
+  "venue": {
+    "name": "NextGen Arena, Kuala Lumpur",
+    "latitude": 3.0389,
+    "longitude": 101.7947,
+    "timezone": "Asia/Kuala_Lumpur"
+  },
+  "events": [
+    {
+      "id": "ev-scrim-valorant",
+      "title": "Valorant Scrim Block",
+      "type": "practice",
+      "date": "2026-08-17",
+      "time": "19:00",
+      "durationHours": 3,
+      "location": "Arena Room A",
+      "description": "Structured scrim block for the Valorant roster. Reserved for the competitive squad, VOD review to follow.",
+      "linkedTournament": null
+    },
+    {
+      "id": "ev-workshop-aim",
+      "title": "Aim & Crosshair Placement Workshop",
+      "type": "workshop",
+      "date": "2026-08-19",
+      "time": "17:30",
+      "durationHours": 2,
+      "location": "Arena Room B",
+      "description": "Open to all members. Fundamentals of crosshair placement, counter-strafing and routine building.",
+      "linkedTournament": null
+    },
+    {
+      "id": "ev-watch-blast",
+      "title": "BLAST Premier World Final — Watch Party",
+      "type": "social",
+      "date": "2026-08-22",
+      "time": "20:00",
+      "durationHours": 4,
+      "location": "Main Hall",
+      "description": "Big-screen watch party for the BLAST Premier World Final. Snacks provided, open to guests.",
+      "linkedTournament": "cs2-blast-premier"
+    },
+    {
+      "id": "ev-tryouts",
+      "title": "Open Roster Tryouts",
+      "type": "tryout",
+      "date": "2026-08-26",
+      "time": "18:00",
+      "durationHours": 4,
+      "location": "Arena Room A & B",
+      "description": "Open tryouts across all six titles. Registration required — bring your own peripherals.",
+      "linkedTournament": null
+    },
+    {
+      "id": "ev-scrim-dota",
+      "title": "Dota 2 Draft Theory Session",
+      "type": "practice",
+      "date": "2026-08-28",
+      "time": "19:30",
+      "durationHours": 2,
+      "location": "Arena Room B",
+      "description": "Coach-led draft theory and lane matchup breakdown ahead of the ESL One Autumn qualifiers.",
+      "linkedTournament": "dota2-esl-one"
+    },
+    {
+      "id": "ev-lan-social",
+      "title": "Members LAN Social",
+      "type": "social",
+      "date": "2026-09-05",
+      "time": "16:00",
+      "durationHours": 6,
+      "location": "Main Hall",
+      "description": "Casual LAN night. Mixed lobbies, no rank requirements, new members strongly encouraged.",
+      "linkedTournament": null
+    },
+    {
+      "id": "ev-lck-watch",
+      "title": "LCK Summer Invitational — Watch Party",
+      "type": "social",
+      "date": "2026-09-06",
+      "time": "15:00",
+      "durationHours": 5,
+      "location": "Main Hall",
+      "description": "Watch party for the LCK Summer Invitational opening weekend.",
+      "linkedTournament": "lol-worlds-invitational"
+    },
+    {
+      "id": "ev-workshop-vod",
+      "title": "VOD Review Masterclass",
+      "type": "workshop",
+      "date": "2026-09-11",
+      "time": "18:00",
+      "durationHours": 2,
+      "location": "Arena Room B",
+      "description": "How to review your own demos: timestamping mistakes, tracking utility usage, building an improvement log.",
+      "linkedTournament": null
+    }
+  ],
+  "_note": "Fictional club schedule. Weather is fetched live from Open-Meteo with jQuery. See CLAUDE.md sections 2 and 6."
+}

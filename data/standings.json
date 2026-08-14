@@ -1,0 +1,245 @@
+{
+  "_source": "Club and organisation names are real esports organisations. Points, medal counts, win-loss records and movement shown here are illustrative and are not verified competitive results.",
+  "_fetchedAt": "2026-08-15",
+  "_note": "Snapshot sourced while building the site; read at runtime with $.getJSON. No runtime requests are made to liquipedia.net. See CLAUDE.md sections 2 and 6.",
+  "season": "NextGen Club Championship 2026",
+  "standings": [
+    {
+      "rank": 1,
+      "team": "AG.AL",
+      "logo": "TeamLogo/AG.AL.png",
+      "points": 3650,
+      "movement": 0,
+      "wins": 42,
+      "losses": 11,
+      "medals": {
+        "gold": 1,
+        "silver": 2,
+        "bronze": 1
+      },
+      "games": [
+        "dota2",
+        "cs2",
+        "pubg"
+      ],
+      "roster": [
+        "Sneyking",
+        "Ammar",
+        "Whitemon"
+      ]
+    },
+    {
+      "rank": 2,
+      "team": "Team Falcons",
+      "logo": "TeamLogo/Team_Falcons.png",
+      "points": 3600,
+      "movement": 1,
+      "wins": 40,
+      "losses": 13,
+      "medals": {
+        "gold": 1,
+        "silver": 0,
+        "bronze": 0
+      },
+      "games": [
+        "dota2",
+        "cs2",
+        "pubg",
+        "fc26"
+      ],
+      "roster": [
+        "Malr1ne",
+        "ATF",
+        "Cr1t-"
+      ]
+    },
+    {
+      "rank": 3,
+      "team": "Natus Vincere",
+      "logo": "TeamLogo/Natus_Vincere.png",
+      "points": 2450,
+      "movement": -1,
+      "wins": 36,
+      "losses": 15,
+      "medals": {
+        "gold": 1,
+        "silver": 1,
+        "bronze": 1
+      },
+      "games": [
+        "cs2",
+        "dota2",
+        "valorant"
+      ],
+      "roster": [
+        "w0nderful",
+        "jL",
+        "b1t"
+      ]
+    },
+    {
+      "rank": 4,
+      "team": "Team Vitality",
+      "logo": "TeamLogo/Team_Vitality.png",
+      "points": 2400,
+      "movement": 2,
+      "wins": 35,
+      "losses": 16,
+      "medals": {
+        "gold": 1,
+        "silver": 0,
+        "bronze": 0
+      },
+      "games": [
+        "cs2",
+        "lol",
+        "valorant"
+      ],
+      "roster": [
+        "ZywOo",
+        "apEX",
+        "flameZ"
+      ]
+    },
+    {
+      "rank": 5,
+      "team": "Virtus.Pro",
+      "logo": "TeamLogo/Virtus.Pro.png",
+      "points": 2200,
+      "movement": 0,
+      "wins": 32,
+      "losses": 18,
+      "medals": {
+        "gold": 1,
+        "silver": 1,
+        "bronze": 0
+      },
+      "games": [
+        "dota2",
+        "cs2"
+      ],
+      "roster": [
+        "fear",
+        "Noticed",
+        "Kiritych"
+      ]
+    },
+    {
+      "rank": 6,
+      "team": "Team Vision",
+      "logo": "TeamLogo/Team_Vision.png",
+      "points": 1750,
+      "movement": -2,
+      "wins": 28,
+      "losses": 21,
+      "medals": {
+        "gold": 1,
+        "silver": 1,
+        "bronze": 0
+      },
+      "games": [
+        "dota2"
+      ],
+      "roster": [
+        "Ame",
+        "xNova",
+        "planet"
+      ]
+    },
+    {
+      "rank": 7,
+      "team": "Team Liquid",
+      "logo": "TeamLogo/Team_Liquid.png",
+      "points": 1750,
+      "movement": 1,
+      "wins": 27,
+      "losses": 22,
+      "medals": {
+        "gold": 0,
+        "silver": 1,
+        "bronze": 1
+      },
+      "games": [
+        "dota2",
+        "cs2",
+        "lol",
+        "valorant"
+      ],
+      "roster": [
+        "Nisha",
+        "33",
+        "Insania"
+      ]
+    },
+    {
+      "rank": 8,
+      "team": "Team Spirit",
+      "logo": "TeamLogo/Team_Spirit.png",
+      "points": 1700,
+      "movement": -1,
+      "wins": 26,
+      "losses": 22,
+      "medals": {
+        "gold": 0,
+        "silver": 1,
+        "bronze": 0
+      },
+      "games": [
+        "dota2",
+        "cs2"
+      ],
+      "roster": [
+        "donk",
+        "Yatoro",
+        "Collapse"
+      ]
+    },
+    {
+      "rank": 9,
+      "team": "FaZe Clan",
+      "logo": "TeamLogo/Faze_Clan.png",
+      "points": 1500,
+      "movement": 0,
+      "wins": 24,
+      "losses": 25,
+      "medals": {
+        "gold": 1,
+        "silver": 0,
+        "bronze": 1
+      },
+      "games": [
+        "cs2",
+        "pubg"
+      ],
+      "roster": [
+        "karrigan",
+        "ropz",
+        "broky"
+      ]
+    },
+    {
+      "rank": 10,
+      "team": "Aurora Gaming",
+      "logo": "TeamLogo/Aurora_Gaming.png",
+      "points": 1500,
+      "movement": 3,
+      "wins": 23,
+      "losses": 26,
+      "medals": {
+        "gold": 1,
+        "silver": 0,
+        "bronze": 0
+      },
+      "games": [
+        "dota2",
+        "pubg",
+        "cs2"
+      ],
+      "roster": [
+        "gpk",
+        "Kataomi",
+        "Mira"
+      ]
+    }
+  ]
+}

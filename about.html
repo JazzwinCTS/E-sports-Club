@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About &amp; Join Us — NextGen E-Sports</title>
+<meta name="description" content="Who NextGen E-Sports is, how the club trains, the committee, and where to find us online.">
+<link rel="stylesheet" href="vendor/bootstrap.min.css">
+<link rel="stylesheet" href="vendor/bootstrap-icons.css">
+<link rel="stylesheet" href="css/style.css">
+<script>
+(function () {
+  try {
+    var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) { /* storage unavailable — dark stays */ }
+})();
+</script>
+</head>
+<body>
+<a class="nx-skip" href="#main">Skip to content</a>
+
+<header class="nx-nav">
+  <nav class="nx-nav__inner" aria-label="Primary">
+    <a class="nx-wordmark" href="index.html">
+      <span class="nx-wordmark__mark">N</span>
+      Next<span class="nx-wordmark__gen">Gen</span>
+    </a>
+    <div class="nx-nav__links" id="navLinks">
+      <a class="nx-nav__link" href="index.html">Home</a>
+      <a class="nx-nav__link" href="rankings.html">Rankings</a>
+      <a class="nx-nav__link" href="players.html">Players</a>
+      <a class="nx-nav__link" href="tournaments.html">Tournaments</a>
+      <a class="nx-nav__link" href="events.html">Events</a>
+      <a class="nx-nav__link" href="dashboard.html">Dashboard</a>
+      <a class="nx-nav__link" href="about.html">About</a>
+      <a class="nx-nav__link" href="register.html">Join</a>
+    </div>
+    <div class="nx-nav__actions">
+      <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
+        <i class="bi bi-sun" aria-hidden="true"></i>
+      </button>
+      <button class="nx-icon-btn nx-nav__toggle" id="navToggle" type="button"
+              aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+        <i class="bi bi-list" aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="page-body">
+
+  <section class="nx-section">
+    <div class="nx-shell">
+      <!-- Hero video window, framed like design-refs/About.png -->
+      <div class="nx-videoframe nx-reveal" id="videoFrame">
+        <video id="aboutVideo" preload="metadata" playsinline poster="carousel2.png">
+          <source src="Video1.mp4" type="video/mp4">
+          Your browser does not support embedded video.
+        </video>
+        <div class="nx-videoframe__hook">
+          <h2>Built, not drafted</h2>
+          <button class="nx-play" id="playVideo" type="button" aria-label="Play the club film">
+            <i class="bi bi-play-fill" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nx-section nx-section--tight">
+    <div class="nx-shell">
+      <div class="nx-grid nx-grid--2" style="align-items:start;gap:48px">
+        <div>
+          <p class="nx-eyebrow">Who we are</p>
+          <h2>A club that takes practice seriously</h2>
+          <p class="nx-muted">
+            NextGen E-Sports started with a handful of people booking the same lab every Thursday
+            and arguing about crosshair placement. It is now six rosters, a coaching rotation and
+            a competition calendar that runs the length of the academic year.
+          </p>
+          <p class="nx-muted">
+            We are not only interested in the people who are already good. Most of what the club
+            does is teaching the habits that make improvement repeatable — VOD review, structured
+            scrims, and honest feedback from people who want you to get better.
+          </p>
+          <a class="nx-btn nx-btn--primary" href="register.html">
+            <i class="bi bi-person-plus" aria-hidden="true"></i> Join the club
+          </a>
+        </div>
+
+        <div class="nx-grid" style="gap:12px">
+          <div class="nx-card nx-reveal">
+            <h3 style="font-size:.95rem">Six competitive rosters</h3>
+            <p class="nx-muted nx-mb-0" style="font-size:.88rem">
+              Valorant, Counter-Strike 2, League of Legends, Dota 2, PUBG and EA SPORTS FC 26.
+            </p>
+          </div>
+          <div class="nx-card nx-reveal">
+            <h3 style="font-size:.95rem">Weekly structured practice</h3>
+            <p class="nx-muted nx-mb-0" style="font-size:.88rem">
+              Scrim blocks, draft theory and review sessions — not just open queue nights.
+            </p>
+          </div>
+          <div class="nx-card nx-reveal">
+            <h3 style="font-size:.95rem">Open to every level</h3>
+            <p class="nx-muted nx-mb-0" style="font-size:.88rem">
+              Tryouts decide roster spots, never membership. Nobody gets turned away at the door.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Committee -->
+  <section class="nx-section">
+    <div class="nx-shell">
+      <div class="nx-section-head">
+        <p class="nx-eyebrow">Committee</p>
+        <h2 class="nx-mb-0">Who runs it</h2>
+      </div>
+      <div class="nx-grid nx-grid--4">
+        <div class="nx-card nx-pcard nx-reveal">
+          <div class="nx-avatar" aria-hidden="true">PR</div>
+          <h3 class="nx-pcard__ign">President</h3>
+          <p class="nx-pcard__name">Committee role</p>
+          <p class="nx-pcard__ach nx-mb-0">Runs the club, owns the competition calendar.</p>
+        </div>
+        <div class="nx-card nx-pcard nx-reveal">
+          <div class="nx-avatar" aria-hidden="true">HC</div>
+          <h3 class="nx-pcard__ign">Head Coach</h3>
+          <p class="nx-pcard__name">Committee role</p>
+          <p class="nx-pcard__ach nx-mb-0">Scrim structure, VOD review, roster development.</p>
+        </div>
+        <div class="nx-card nx-pcard nx-reveal">
+          <div class="nx-avatar" aria-hidden="true">EM</div>
+          <h3 class="nx-pcard__ign">Events Manager</h3>
+          <p class="nx-pcard__name">Committee role</p>
+          <p class="nx-pcard__ach nx-mb-0">Bookings, watch parties and the LAN socials.</p>
+        </div>
+        <div class="nx-card nx-pcard nx-reveal">
+          <div class="nx-avatar" aria-hidden="true">MD</div>
+          <h3 class="nx-pcard__ign">Media Director</h3>
+          <p class="nx-pcard__name">Committee role</p>
+          <p class="nx-pcard__ach nx-mb-0">Broadcast, socials and the club's visual identity.</p>
+        </div>
+      </div>
+      <p class="nx-muted" style="font-size:.78rem;margin-top:18px">
+        Committee positions are shown as roles rather than named individuals — NextGen E-Sports is
+        a prototype club and has no real members.
+      </p>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section class="nx-section">
+    <div class="nx-shell">
+      <div class="nx-section-head">
+        <p class="nx-eyebrow">Gallery</p>
+        <h2 class="nx-mb-0">Season key art</h2>
+      </div>
+      <div class="nx-grid nx-grid--3">
+        <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
+          <img src="TournamentThumbnail/valorantTournament.png" alt="Valorant season key art" loading="lazy" style="width:100%;display:block">
+        </div>
+        <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
+          <img src="TournamentThumbnail/CS2Tournament.png" alt="Counter-Strike 2 season key art" loading="lazy" style="width:100%;display:block">
+        </div>
+        <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
+          <img src="TournamentThumbnail/dota2Tournament.png" alt="Dota 2 season key art" loading="lazy" style="width:100%;display:block">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social feed embed -->
+  <section class="nx-section" id="social">
+    <div class="nx-shell">
+      <div class="nx-section-head">
+        <p class="nx-eyebrow">Community</p>
+        <h2 class="nx-mb-0">From our socials</h2>
+        <p class="nx-muted" style="max-width:60ch;margin-top:14px">
+          Follow along on Instagram, X, Facebook and Discord — links are in the footer of every
+          page.
+        </p>
+      </div>
+      <div class="nx-grid nx-grid--2" style="align-items:start">
+        <div class="nx-card nx-card--flat" style="padding:12px">
+          <!-- Official Instagram post embed. Replace the shortcode below with the
+               club post you want featured; no API key is required. -->
+          <blockquote class="instagram-media"
+            data-instgrm-permalink="https://www.instagram.com/apu_esc/"
+            data-instgrm-version="14"
+            style="background:#FFF;border:0;margin:0;padding:0;width:100%">
+            <a href="https://www.instagram.com/apu_esc/" target="_blank" rel="noopener">
+              View this profile on Instagram
+            </a>
+          </blockquote>
+        </div>
+        <div class="nx-card nx-card--flat">
+          <p class="nx-eyebrow">Find us</p>
+          <div class="nx-stack">
+            <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://discord.com/invite/theesportsclub" target="_blank" rel="noopener">
+              <i class="bi bi-discord" aria-hidden="true"></i> Discord community
+            </a>
+            <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://www.instagram.com/apu_esc/" target="_blank" rel="noopener">
+              <i class="bi bi-instagram" aria-hidden="true"></i> Instagram
+            </a>
+            <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://x.com/UCEsportsClub" target="_blank" rel="noopener">
+              <i class="bi bi-twitter-x" aria-hidden="true"></i> X / Twitter
+            </a>
+            <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://www.facebook.com/apuesportsclub/" target="_blank" rel="noopener">
+              <i class="bi bi-facebook" aria-hidden="true"></i> Facebook
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</main>
+
+<footer class="nx-footer">
+  <div class="nx-shell">
+    <div class="nx-footer__top">
+      <div class="nx-footer__brand">
+        <a class="nx-wordmark" href="index.html">
+          <span class="nx-wordmark__mark">N</span>
+          Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
+        </a>
+        <p class="nx-footer__tag">
+          A competitive university esports club across six titles — training, competing and
+          growing the local scene.
+        </p>
+      </div>
+
+      <div class="nx-social">
+        <div class="nx-social__widget">
+          <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
+             data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
+        </div>
+        <div class="nx-social__widget">
+          <iframe title="NextGen E-Sports on Facebook"
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fapuesportsclub%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+            width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
+            frameborder="0" allowfullscreen="true"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+        </div>
+        <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/theesportsclub"
+           target="_blank" rel="noopener">
+          <i class="bi bi-discord" aria-hidden="true"></i>
+          <span>Discord</span>
+          <span class="nx-discord__count">…</span>
+        </a>
+        <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
+          <i class="bi bi-instagram" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="nx-footer__bottom">
+      <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
+      <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
+      <a href="about.html">About</a>
+      <a href="register.html">Join us</a>
+    </div>
+    <p class="nx-disclaimer">
+      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
+      competitive statistics shown are not verified results.
+    </p>
+  </div>
+</footer>
+
+<div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
+  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
+    We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
+    here before, plus local and session storage for your theme, filters and saved entries.
+    Nothing is sent anywhere — this site has no server.
+  </p>
+  <div class="nx-cookie__actions">
+    <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
+    <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
+  </div>
+</div>
+
+<script src="vendor/jquery-3.7.1.min.js"></script>
+<script src="vendor/bootstrap.bundle.min.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/render.js"></script>
+<script src="js/main.js"></script>
+<script src="js/about.js"></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="https://www.instagram.com/embed.js"></script>
+</body>
+</html>

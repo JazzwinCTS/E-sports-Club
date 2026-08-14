@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — NextGen E-Sports</title>
+<meta name="description" content="Everything this site remembers about you: preferences, filters and saved applications.">
+<link rel="stylesheet" href="vendor/bootstrap.min.css">
+<link rel="stylesheet" href="vendor/bootstrap-icons.css">
+<link rel="stylesheet" href="css/style.css">
+<script>
+(function () {
+  try {
+    var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) { /* storage unavailable — dark stays */ }
+})();
+</script>
+</head>
+<body>
+<a class="nx-skip" href="#main">Skip to content</a>
+
+<header class="nx-nav">
+  <nav class="nx-nav__inner" aria-label="Primary">
+    <a class="nx-wordmark" href="index.html">
+      <span class="nx-wordmark__mark">N</span>
+      Next<span class="nx-wordmark__gen">Gen</span>
+    </a>
+    <div class="nx-nav__links" id="navLinks">
+      <a class="nx-nav__link" href="index.html">Home</a>
+      <a class="nx-nav__link" href="rankings.html">Rankings</a>
+      <a class="nx-nav__link" href="players.html">Players</a>
+      <a class="nx-nav__link" href="tournaments.html">Tournaments</a>
+      <a class="nx-nav__link" href="events.html">Events</a>
+      <a class="nx-nav__link" href="dashboard.html">Dashboard</a>
+      <a class="nx-nav__link" href="about.html">About</a>
+      <a class="nx-nav__link" href="register.html">Join</a>
+    </div>
+    <div class="nx-nav__actions">
+      <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
+        <i class="bi bi-sun" aria-hidden="true"></i>
+      </button>
+      <button class="nx-icon-btn nx-nav__toggle" id="navToggle" type="button"
+              aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+        <i class="bi bi-list" aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="page-body">
+  <section class="nx-section">
+    <div class="nx-shell">
+
+      <div class="nx-section-head">
+        <p class="nx-eyebrow">Your account</p>
+        <h1 class="nx-mb-0">Dashboard</h1>
+        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
+          Everything this site remembers about you, in one place. This page only reads state —
+          each preference is changed on the page that owns it.
+        </p>
+      </div>
+
+      <div class="nx-grid nx-grid--3" style="margin-bottom:32px">
+        <div class="nx-card nx-reveal">
+          <p class="nx-eyebrow">Favourite club</p>
+          <div id="favTeam"></div>
+        </div>
+        <div class="nx-card nx-reveal">
+          <p class="nx-eyebrow">Applications</p>
+          <div id="appCount"></div>
+        </div>
+        <div class="nx-card nx-reveal">
+          <p class="nx-eyebrow">Visitor status</p>
+          <div id="visitorState"></div>
+        </div>
+      </div>
+
+      <div class="nx-grid nx-grid--2" style="align-items:start">
+        <div class="nx-card nx-card--flat">
+          <p class="nx-eyebrow">Stored on this device</p>
+          <p class="nx-muted" style="font-size:.86rem">
+            Persistent values kept in <code>localStorage</code> — they survive closing the browser.
+          </p>
+          <div id="localTable"></div>
+        </div>
+
+        <div class="nx-card nx-card--flat">
+          <p class="nx-eyebrow">Stored for this tab</p>
+          <p class="nx-muted" style="font-size:.86rem">
+            Working state kept in <code>sessionStorage</code> — a new tab starts clean.
+          </p>
+          <div id="sessionTable"></div>
+        </div>
+      </div>
+
+      <div class="nx-card nx-card--flat" style="margin-top:24px">
+        <p class="nx-eyebrow">Your submitted applications</p>
+        <div id="dashSubmissions"></div>
+      </div>
+
+      <div class="nx-row" style="margin-top:24px;gap:10px">
+        <button class="nx-btn nx-btn--ghost nx-btn--sm" id="wipeAll" type="button">
+          <i class="bi bi-trash3" aria-hidden="true"></i> Clear everything stored
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+</main>
+
+<footer class="nx-footer">
+  <div class="nx-shell">
+    <div class="nx-footer__top">
+      <div class="nx-footer__brand">
+        <a class="nx-wordmark" href="index.html">
+          <span class="nx-wordmark__mark">N</span>
+          Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
+        </a>
+        <p class="nx-footer__tag">
+          A competitive university esports club across six titles — training, competing and
+          growing the local scene.
+        </p>
+      </div>
+
+      <div class="nx-social">
+        <div class="nx-social__widget">
+          <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
+             data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
+        </div>
+        <div class="nx-social__widget">
+          <iframe title="NextGen E-Sports on Facebook"
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fapuesportsclub%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+            width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
+            frameborder="0" allowfullscreen="true"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+        </div>
+        <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/theesportsclub"
+           target="_blank" rel="noopener">
+          <i class="bi bi-discord" aria-hidden="true"></i>
+          <span>Discord</span>
+          <span class="nx-discord__count">…</span>
+        </a>
+        <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
+          <i class="bi bi-instagram" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="nx-footer__bottom">
+      <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
+      <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
+      <a href="about.html">About</a>
+      <a href="register.html">Join us</a>
+    </div>
+    <p class="nx-disclaimer">
+      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
+      competitive statistics shown are not verified results.
+    </p>
+  </div>
+</footer>
+
+<div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
+  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
+    We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
+    here before, plus local and session storage for your theme, filters and saved entries.
+    Nothing is sent anywhere — this site has no server.
+  </p>
+  <div class="nx-cookie__actions">
+    <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
+    <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
+  </div>
+</div>
+
+<script src="vendor/jquery-3.7.1.min.js"></script>
+<script src="vendor/bootstrap.bundle.min.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/render.js"></script>
+<script src="js/main.js"></script>
+<script src="js/dashboard.js"></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</body>
+</html>
