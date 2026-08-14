@@ -126,6 +126,50 @@
     },
     {
       "rank": 6,
+      "team": "T1",
+      "logo": "TeamLogo/T1.png",
+      "points": 2150,
+      "movement": 0,
+      "wins": 34,
+      "losses": 17,
+      "medals": {
+        "gold": 1,
+        "silver": 1,
+        "bronze": 0
+      },
+      "games": [
+        "lol"
+      ],
+      "roster": [
+        "Faker",
+        "Gumayusi",
+        "Keria"
+      ]
+    },
+    {
+      "rank": 7,
+      "team": "Gen.G",
+      "logo": "TeamLogo/GenG.png",
+      "points": 1900,
+      "movement": 0,
+      "wins": 30,
+      "losses": 19,
+      "medals": {
+        "gold": 0,
+        "silver": 1,
+        "bronze": 1
+      },
+      "games": [
+        "lol"
+      ],
+      "roster": [
+        "Chovy",
+        "Kiin",
+        "Peyz"
+      ]
+    },
+    {
+      "rank": 8,
       "team": "Team Vision",
       "logo": "TeamLogo/Team_Vision.png",
       "points": 1750,
@@ -147,7 +191,7 @@
       ]
     },
     {
-      "rank": 7,
+      "rank": 9,
       "team": "Team Liquid",
       "logo": "TeamLogo/Team_Liquid.png",
       "points": 1750,
@@ -172,7 +216,7 @@
       ]
     },
     {
-      "rank": 8,
+      "rank": 10,
       "team": "Team Spirit",
       "logo": "TeamLogo/Team_Spirit.png",
       "points": 1700,
@@ -195,7 +239,29 @@
       ]
     },
     {
-      "rank": 9,
+      "rank": 11,
+      "team": "Fnatic",
+      "logo": "TeamLogo/Fnatic.png",
+      "points": 1650,
+      "movement": 0,
+      "wins": 25,
+      "losses": 23,
+      "medals": {
+        "gold": 0,
+        "silver": 0,
+        "bronze": 1
+      },
+      "games": [
+        "valorant"
+      ],
+      "roster": [
+        "Derke",
+        "Alfajer",
+        "Boaster"
+      ]
+    },
+    {
+      "rank": 12,
       "team": "FaZe Clan",
       "logo": "TeamLogo/Faze_Clan.png",
       "points": 1500,
@@ -218,7 +284,7 @@
       ]
     },
     {
-      "rank": 10,
+      "rank": 13,
       "team": "Aurora Gaming",
       "logo": "TeamLogo/Aurora_Gaming.png",
       "points": 1500,
@@ -239,6 +305,28 @@
         "gpk",
         "Kataomi",
         "Mira"
+      ]
+    },
+    {
+      "rank": 14,
+      "team": "Sentinels",
+      "logo": "TeamLogo/Sentinels.png",
+      "points": 1400,
+      "movement": 0,
+      "wins": 22,
+      "losses": 27,
+      "medals": {
+        "gold": 0,
+        "silver": 0,
+        "bronze": 0
+      },
+      "games": [
+        "valorant"
+      ],
+      "roster": [
+        "TenZ",
+        "zekken",
+        "Sacy"
       ]
     }
   ]

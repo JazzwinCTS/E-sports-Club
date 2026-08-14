@@ -25,10 +25,14 @@ There are no real members, no real tournament results.
   rubric names jQuery explicitly and a marker will look for the `$`.
 - No fabricated statistics presented as verified fact (rankings/points/prize pools stay illustrative). This is an
   unpublished, non-commercial coursework prototype, so the real game/org logos and event photography already
-  supplied in `GameLogos/`, `TeamLogo/`, `TournamentThumbnail/`, and `carousel*.png` are used directly — don't
-  source further trademarked material beyond what's already in these folders. Do not add any *new* real photos of
-  identifiable people (e.g. no photos of actual club/committee members) — the provided stock/event photography is
-  the only real-photo exception.
+  supplied in `GameLogos/`, `TeamLogo/`, `TournamentThumbnail/`, and `carousel*.png` are used directly. Additional
+  real team logos and real player headshots may be sourced the same way (via Liquipedia's `imageinfo` endpoint,
+  fetched once by hand and stored locally — see §6) for `players.json`/`standings.json` entries, since these are
+  real public competitive figures/organisations, not private individuals.
+- **Still off-limits:** photos of anyone claiming to be a NextGen E-Sports member, committee member, or roster
+  player — the club has no real members (§1), so no real person's photo or name may be presented as part of it.
+  The real-photo exception is strictly for real external pros/orgs shown as real external pros/orgs (rankings,
+  players, tournaments) — never as if they belong to NextGen itself.
 
 ---
 
@@ -236,15 +240,17 @@ genuinely missing an entry.
 | Folder / file | Contents | Used for |
 |---|---|---|
 | `GameLogos/` | valorantLogo, CS2Logo, LOLLogo, dota2Logo, pubgLogo, FC26Logo | Game-filter tabs/icons on rankings, players, tournaments; small badges on cards |
-| `TeamLogo/` | Team_Liquid, Natus_Vincere, Team_Vitality, Virtus.Pro, Team_Falcons, Faze_Clan, Team_Spirit, Aurora_Gaming, AG.AL, Team_Vision | Club badges in the rankings leaderboard / team profile cards. **NextGen E-Sports has no logo file** — render its identity as a styled CSS wordmark/emblem, not an `<img>` |
+| `TeamLogo/` | Team_Liquid, Natus_Vincere, Team_Vitality, Virtus.Pro, Team_Falcons, Faze_Clan, Team_Spirit, Aurora_Gaming, AG.AL, Team_Vision, T1, Fnatic, Sentinels, GenG | Club badges in the rankings leaderboard / team profile cards. **NextGen E-Sports has no logo file** — render its identity as a styled CSS wordmark/emblem, not an `<img>`. The last 4 were added after launch, sourced via Liquipedia's `imageinfo` endpoint (§6) to fill gaps where `players.json` referenced a team with no local logo |
+| `PlayerPhotos/` | 20 real headshots/event photos, one per `data/players.json` entry | Player cards on `players.html` (`nx-avatar--photo`); falls back to a generated monogram if a player has no `photo` field. Sourced once via Liquipedia's `action=parse` infobox image (§6), not hotlinked |
 | `TournamentThumbnail/` | one 16:9 poster per game | Card header art on `tournaments.html`; linked-event image when a tournament appears on `events.html`'s calendar |
 | `carousel.png`, `carousel1.png`, `carousel2.png` | real event/gameplay photography | Homepage hero carousel (3 slides) |
 | `Video1.mp4` | real event footage | `about.html` hero video, framed like `design-refs/About.png` |
 
 **Before wiring these in:** several files are well above a sane per-image budget (`pubgTournament.png` ≈ 4.5MB,
-`LOLTournament.png` ≈ 2.7MB, multiple `TeamLogo`/`GameLogos` PNGs > 400KB). Resize/recompress everything to
-roughly 300–400KB (compressed PNG or WebP) before final submission — do this once, late, after layout is
-frozen, not on every edit. A slow image-heavy page load costs marks on the UI/UX band.
+`LOLTournament.png` ≈ 2.7MB, multiple `TeamLogo`/`GameLogos` PNGs > 400KB, a few `PlayerPhotos/` infobox images
+> 400KB). Resize/recompress everything to roughly 300–400KB (compressed PNG or WebP) before final submission —
+do this once, late, after layout is frozen, not on every edit. A slow image-heavy page load costs marks on the
+UI/UX band.
 
 Every `<img>` still needs `alt` text (e.g. `alt="Valorant"`, `alt="Team Vitality logo"`).
 

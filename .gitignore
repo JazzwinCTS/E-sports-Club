@@ -6,3 +6,7 @@
 # OS/editor cruft
 .DS_Store
 Thumbs.db
+
+# Python cache (from serve.py / one-off data-fetch scripts)
+__pycache__/
+*.pyc

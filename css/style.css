@@ -762,7 +762,8 @@ img { max-width: 100%; height: auto; }
 }
 .nx-pcard:hover::before { opacity: 1; }
 
-/* Monogram avatar — no player photographs are used (CLAUDE.md section 2) */
+/* Avatar — a real photo where one was sourced (CLAUDE.md section 2), else a
+   generated monogram in the same hexagon frame so the grid stays consistent. */
 .nx-avatar {
   width: 72px; height: 72px;
   margin: 4px auto 14px;
@@ -775,6 +776,11 @@ img { max-width: 100%; height: auto; }
   background: var(--accent-soft);
   border: 1px solid var(--accent);
   clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.nx-avatar--photo {
+  object-fit: cover;
+  border-color: var(--border-strong);
+  background: var(--surface-raised);
 }
 .nx-pcard__ign { font-size: 1.15rem; margin-bottom: 4px; }
 .nx-pcard__name { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; }

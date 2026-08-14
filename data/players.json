@@ -1,7 +1,7 @@
 {
-  "_source": "Player handles, nationalities, roles and organisations are real competitive players. Ratings, maps played and achievement lines shown here are illustrative and are not verified statistics.",
+  "_source": "Player handles, nationalities, roles, organisations and photos are real competitive players, cross-checked against liquipedia.net. Ratings, maps played and achievement lines shown here are illustrative and are not verified statistics.",
   "_fetchedAt": "2026-08-15",
-  "_note": "Snapshot sourced while building the site; read at runtime with $.getJSON. No player photographs are used - cards render a generated monogram. See CLAUDE.md sections 2 and 6.",
+  "_note": "Static snapshot read with $.getJSON. No runtime requests are made to liquipedia.net. Photos were sourced once via Liquipedia's imageinfo/parse endpoints and saved to PlayerPhotos/ - see CLAUDE.md sections 2 and 6.",
   "players": [
     {
       "ign": "s1mple",
@@ -15,7 +15,9 @@
       "teamLogo": "TeamLogo/Natus_Vincere.png",
       "rating": 1.24,
       "maps": 1180,
-      "achievement": "Major champion, multiple S-tier titles"
+      "achievement": "Major champion, multiple S-tier titles",
+      "photo": "PlayerPhotos/s1mple.jpg",
+      "photoSource": "https://liquipedia.net/counterstrike/s1mple"
     },
     {
       "ign": "ZywOo",
@@ -29,7 +31,9 @@
       "teamLogo": "TeamLogo/Team_Vitality.png",
       "rating": 1.27,
       "maps": 990,
-      "achievement": "Major champion, multiple MVP awards"
+      "achievement": "Major champion, multiple MVP awards",
+      "photo": "PlayerPhotos/ZywOo.jpg",
+      "photoSource": "https://liquipedia.net/counterstrike/ZywOo"
     },
     {
       "ign": "donk",
@@ -43,7 +47,9 @@
       "teamLogo": "TeamLogo/Team_Spirit.png",
       "rating": 1.31,
       "maps": 420,
-      "achievement": "Youngest S-tier MVP winner"
+      "achievement": "Youngest S-tier MVP winner",
+      "photo": "PlayerPhotos/donk.jpg",
+      "photoSource": "https://liquipedia.net/counterstrike/donk"
     },
     {
       "ign": "karrigan",
@@ -57,7 +63,9 @@
       "teamLogo": "TeamLogo/Faze_Clan.png",
       "rating": 0.98,
       "maps": 1640,
-      "achievement": "Major-winning captain"
+      "achievement": "Major-winning captain",
+      "photo": "PlayerPhotos/karrigan.jpg",
+      "photoSource": "https://liquipedia.net/counterstrike/karrigan"
     },
     {
       "ign": "ropz",
@@ -71,7 +79,9 @@
       "teamLogo": "TeamLogo/Faze_Clan.png",
       "rating": 1.15,
       "maps": 1210,
-      "achievement": "Major champion, consistent top-10 finisher"
+      "achievement": "Major champion, consistent top-10 finisher",
+      "photo": "PlayerPhotos/ropz.jpg",
+      "photoSource": "https://liquipedia.net/counterstrike/ropz"
     },
     {
       "ign": "w0nderful",
@@ -85,7 +95,9 @@
       "teamLogo": "TeamLogo/Natus_Vincere.png",
       "rating": 1.18,
       "maps": 510,
-      "achievement": "Major MVP"
+      "achievement": "Major MVP",
+      "photo": "PlayerPhotos/w0nderful.jpg",
+      "photoSource": "https://liquipedia.net/counterstrike/w0nderful"
     },
     {
       "ign": "Yatoro",
@@ -99,7 +111,9 @@
       "teamLogo": "TeamLogo/Team_Spirit.png",
       "rating": 1.29,
       "maps": 760,
-      "achievement": "Multiple International titles"
+      "achievement": "Multiple International titles",
+      "photo": "PlayerPhotos/Yatoro.jpg",
+      "photoSource": "https://liquipedia.net/dota2/Yatoro"
     },
     {
       "ign": "Collapse",
@@ -113,7 +127,9 @@
       "teamLogo": "TeamLogo/Team_Spirit.png",
       "rating": 1.22,
       "maps": 780,
-      "achievement": "Multiple International titles"
+      "achievement": "Multiple International titles",
+      "photo": "PlayerPhotos/Collapse.jpg",
+      "photoSource": "https://liquipedia.net/dota2/Collapse"
     },
     {
       "ign": "Nisha",
@@ -127,7 +143,9 @@
       "teamLogo": "TeamLogo/Team_Liquid.png",
       "rating": 1.19,
       "maps": 1030,
-      "achievement": "Multiple Major titles"
+      "achievement": "Multiple Major titles",
+      "photo": "PlayerPhotos/Nisha.jpg",
+      "photoSource": "https://liquipedia.net/dota2/Nisha"
     },
     {
       "ign": "Ame",
@@ -141,7 +159,9 @@
       "teamLogo": "TeamLogo/Team_Vision.png",
       "rating": 1.21,
       "maps": 890,
-      "achievement": "International finalist"
+      "achievement": "International finalist",
+      "photo": "PlayerPhotos/Ame.png",
+      "photoSource": "https://liquipedia.net/dota2/Ame"
     },
     {
       "ign": "Malr1ne",
@@ -155,7 +175,9 @@
       "teamLogo": "TeamLogo/Team_Falcons.png",
       "rating": 1.17,
       "maps": 430,
-      "achievement": "Breakout performer of the season"
+      "achievement": "Breakout performer of the season",
+      "photo": "PlayerPhotos/Malr1ne.png",
+      "photoSource": "https://liquipedia.net/dota2/Malr1ne"
     },
     {
       "ign": "gpk",
@@ -169,7 +191,9 @@
       "teamLogo": "TeamLogo/Aurora_Gaming.png",
       "rating": 1.14,
       "maps": 700,
-      "achievement": "Multiple Major podium finishes"
+      "achievement": "Multiple Major podium finishes",
+      "photo": "PlayerPhotos/gpk.png",
+      "photoSource": "https://liquipedia.net/dota2/gpk"
     },
     {
       "ign": "Derke",
@@ -180,10 +204,12 @@
       "gameLabel": "Valorant",
       "role": "Duelist",
       "team": "Fnatic",
-      "teamLogo": null,
+      "teamLogo": "TeamLogo/Fnatic.png",
       "rating": 1.16,
       "maps": 540,
-      "achievement": "International champion"
+      "achievement": "International champion",
+      "photo": "PlayerPhotos/Derke.jpg",
+      "photoSource": "https://liquipedia.net/valorant/Derke"
     },
     {
       "ign": "TenZ",
@@ -194,10 +220,12 @@
       "gameLabel": "Valorant",
       "role": "Duelist",
       "team": "Sentinels",
-      "teamLogo": null,
+      "teamLogo": "TeamLogo/Sentinels.png",
       "rating": 1.12,
       "maps": 610,
-      "achievement": "Masters champion"
+      "achievement": "Masters champion",
+      "photo": "PlayerPhotos/TenZ.jpg",
+      "photoSource": "https://liquipedia.net/valorant/TenZ"
     },
     {
       "ign": "Faker",
@@ -208,10 +236,12 @@
       "gameLabel": "League of Legends",
       "role": "Midlane",
       "team": "T1",
-      "teamLogo": null,
+      "teamLogo": "TeamLogo/T1.png",
       "rating": 1.3,
       "maps": 1520,
-      "achievement": "Multiple World Championship titles"
+      "achievement": "Multiple World Championship titles",
+      "photo": "PlayerPhotos/Faker.jpg",
+      "photoSource": "https://liquipedia.net/leagueoflegends/Faker"
     },
     {
       "ign": "Chovy",
@@ -222,10 +252,76 @@
       "gameLabel": "League of Legends",
       "role": "Midlane",
       "team": "Gen.G",
-      "teamLogo": null,
+      "teamLogo": "TeamLogo/GenG.png",
       "rating": 1.25,
       "maps": 1120,
-      "achievement": "Multiple LCK titles"
+      "achievement": "Multiple LCK titles",
+      "photo": "PlayerPhotos/Chovy.jpg",
+      "photoSource": "https://liquipedia.net/leagueoflegends/Chovy"
+    },
+    {
+      "ign": "Kickstart",
+      "name": null,
+      "country": null,
+      "flag": null,
+      "game": "pubg",
+      "gameLabel": "PUBG",
+      "role": "Squad Player",
+      "team": "Team Falcons",
+      "teamLogo": "TeamLogo/Team_Falcons.png",
+      "rating": 1.08,
+      "maps": 340,
+      "achievement": "PUBG Global Series roster member",
+      "photo": "PlayerPhotos/Kickstart.png",
+      "photoSource": "https://liquipedia.net/pubg/Kickstart"
+    },
+    {
+      "ign": "Shrimzy",
+      "name": null,
+      "country": null,
+      "flag": null,
+      "game": "pubg",
+      "gameLabel": "PUBG",
+      "role": "Squad Player",
+      "team": "Team Falcons",
+      "teamLogo": "TeamLogo/Team_Falcons.png",
+      "rating": 1.05,
+      "maps": 310,
+      "achievement": "PUBG Global Series roster member",
+      "photo": "PlayerPhotos/Shrimzy.png",
+      "photoSource": "https://liquipedia.net/pubg/Shrimzy"
+    },
+    {
+      "ign": "Tekkz",
+      "name": "Donovan Hunt",
+      "country": "England",
+      "flag": "GB",
+      "game": "fc26",
+      "gameLabel": "EA SPORTS FC 26",
+      "role": "FC Pro",
+      "team": null,
+      "teamLogo": null,
+      "rating": 1.34,
+      "maps": 480,
+      "achievement": "Multiple FC/FIFAe World Championship titles",
+      "photo": "PlayerPhotos/Tekkz.png",
+      "photoSource": "https://liquipedia.net/easportsfc/Tekkz"
+    },
+    {
+      "ign": "MoAuba",
+      "name": "Umut Gultekin",
+      "country": "Germany",
+      "flag": "DE",
+      "game": "fc26",
+      "gameLabel": "EA SPORTS FC 26",
+      "role": "FC Pro",
+      "team": null,
+      "teamLogo": null,
+      "rating": 1.30,
+      "maps": 455,
+      "achievement": "Back-to-back FC/FIFAe World Championship titles",
+      "photo": "PlayerPhotos/MoAuba.jpg",
+      "photoSource": "https://liquipedia.net/easportsfc/MoAuba"
     }
   ]
 }

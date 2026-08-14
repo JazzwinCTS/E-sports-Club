@@ -12,11 +12,19 @@ against `file://` URLs for security, so the pages that load their content from
 Serve the folder over http instead. From this directory:
 
 ```bash
-python -m http.server 8000
+python serve.py 8000
 ```
 
-Then open <http://localhost:8000>. Any static server works — VS Code's *Live Server*
-extension, `npx serve`, or XAMPP pointed at this folder.
+Then open <http://localhost:8000>. `serve.py` is a tiny stdlib-only wrapper around
+`python -m http.server` that adds HTTP Range support — **use it instead of
+`python -m http.server` directly.** Range support is what lets `about.html`'s video
+play in Safari: Python's built-in server always returns the whole file with `200 OK`
+and ignores the `Range` header, and Safari's `<video>` engine requires a real `206
+Partial Content` response to play media at all (Chrome tolerates the missing support
+and plays it anyway, which is why it can look fine in one browser and not the other).
+
+VS Code's *Live Server* extension and Apache/XAMPP both already handle Range requests
+correctly and work too — `serve.py` exists for anyone without either installed.
 
 ## What needs an internet connection
 
@@ -37,6 +45,7 @@ Each one degrades to a readable fallback rather than a broken frame.
 ## Structure
 
 ```
+├── serve.py              dev-only local server with Range support (see "Running it")
 ├── *.html               8 pages; navbar and footer markup identical across all
 ├── css/style.css        every design token — no hardcoded colours in pages
 ├── js/

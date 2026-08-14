@@ -166,15 +166,20 @@ var NXRender = (function ($) {
 
     playerCard: function (p) {
       var monogram = String(p.ign).slice(0, 2).toUpperCase();
-      var teamChip = p.teamLogo
-        ? '<img src="' + esc(p.teamLogo) + '" alt=""> ' + esc(p.team)
-        : '<i class="bi bi-shield"></i> ' + esc(p.team);
+      var teamChip = !p.team
+        ? '<i class="bi bi-person"></i> Independent'
+        : p.teamLogo
+          ? '<img src="' + esc(p.teamLogo) + '" alt=""> ' + esc(p.team)
+          : '<i class="bi bi-shield"></i> ' + esc(p.team);
+      var avatar = p.photo
+        ? '<img class="nx-avatar nx-avatar--photo" src="' + esc(p.photo) + '" alt="' + esc(p.ign) + '" loading="lazy">'
+        : '<div class="nx-avatar" aria-hidden="true">' + esc(monogram) + '</div>';
 
       return '' +
         '<article class="nx-card nx-pcard nx-reveal" data-game="' + esc(p.game) + '" id="' + esc(p.ign) + '">' +
-          '<div class="nx-avatar" aria-hidden="true">' + esc(monogram) + '</div>' +
+          avatar +
           '<h3 class="nx-pcard__ign">' + esc(p.ign) + '</h3>' +
-          '<p class="nx-pcard__name">' + esc(p.name) + ' · ' + esc(p.country) + '</p>' +
+          '<p class="nx-pcard__name">' + esc(p.name && p.country ? p.name + ' · ' + p.country : (p.name || p.country || '')) + '</p>' +
           '<span class="nx-pcard__team">' + teamChip + '</span>' +
           '<div class="nx-pcard__stats">' +
             '<div class="nx-stat"><div class="nx-stat__v">' + Number(p.rating).toFixed(2) + '</div>' +
