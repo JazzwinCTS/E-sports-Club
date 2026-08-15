@@ -1,0 +1,30 @@
+/* ==========================================================================
+   dashboard.css — exclusive to dashboard.html. Owner: the same developer as
+   events.css (CLAUDE.md section 7 "Events + Dashboard" pairing).
+
+   Nothing in here is referenced by any other page. js/dashboard.js renders
+   these classes instead of inline `style="..."` attributes, same reasoning
+   as events.css.
+   ========================================================================== */
+
+/* --- Headline stat cards ---------------------------------------------------
+   The three "favourite club / applications / visitor status" tiles. */
+.dash-stat__value {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+.dash-stat__caption { font-size: 0.84rem; margin-top: 6px; }
+
+/* --- Storage table rows ----------------------------------------------------
+   Reuses the shared .nx-trow layout (css/style.css) — only the bits unique
+   to how dashboard.html annotates each key get their own class here. */
+.dash-row__meaning { font-size: 0.74rem; opacity: 0.75; }
+.dash-row__value { max-width: 50%; text-align: right; word-break: break-word; }
+
+/* --- Submitted applications list -------------------------------------------
+   Also built on .nx-trow; just the name/meta styling is page-specific. */
+.dash-app__name { color: var(--text); }
+.dash-app__meta { font-size: 0.74rem; opacity: 0.75; }
+.dash-app__id { font-size: 0.76rem; }

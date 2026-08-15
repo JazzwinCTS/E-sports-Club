@@ -8,22 +8,71 @@ $(function () {
   'use strict';
 
   function card(value, caption, link) {
-    return '<div style="font-family:var(--font-heading);font-size:1.6rem;font-weight:800;line-height:1.1">' +
+    return '<div class="dash-stat__value">' +
              NXRender.esc(value) +
            '</div>' +
-           '<p class="nx-muted nx-mb-0" style="font-size:.84rem;margin-top:6px">' +
+           '<p class="nx-muted nx-mb-0 dash-stat__caption">' +
              NXRender.esc(caption) +
              (link ? ' <a href="' + link.href + '">' + link.text + '</a>' : '') +
            '</p>';
   }
 
+  /* ---- Human-readable formatting -----------------------------------------
+     Raw storage values are JSON — a plain object like {"game":"cs2","role":
+     "Duelist"} means nothing to a visitor at a glance. Each key gets its own
+     small formatter instead of a blind JSON.stringify() dump. */
+  var SORT_LABELS = { date: 'Start date', prize: 'Prize pool', teams: 'Team count' };
+
+  function gameLabel(key) {
+    if (!key || key === 'all') { return 'All games'; }
+    return NXRender.gameLabels[key] || key;
+  }
+
+  function titleCase(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  function formatValue(key, value) {
+    if (value === null || value === undefined || value === '') {
+      return '— not set —';
+    }
+
+    if (key === 'theme') {
+      return value === 'light' ? 'Light' : 'Dark';
+    }
+    if (key === 'playerFilter') {
+      return 'Game: ' + gameLabel(value.game) +
+             ' · Role: ' + (value.role && value.role !== 'all' ? value.role : 'All roles');
+    }
+    if (key === 'tournamentFilter') {
+      var status = value.status && value.status !== 'all' ? titleCase(value.status) : 'All statuses';
+      return status + ' · ' + gameLabel(value.game) + ' · Sort: ' + (SORT_LABELS[value.sort] || 'Start date');
+    }
+    if (key === 'registerDraft') {
+      var fields = ['fullName', 'email', 'ign', 'game', 'level', 'notes'];
+      var filled = fields.filter(function (f) { return value[f]; });
+      return filled.length
+        ? filled.length + ' of ' + fields.length + ' fields filled'
+        : 'Started, nothing typed yet';
+    }
+    if (key === 'eventView') {
+      return value === 'calendar' ? 'Calendar view' : 'List view';
+    }
+    if (key === 'returningVisitor') {
+      return value ? 'Yes' : 'No';
+    }
+
+    /* theme, favouriteTeam, registrations count — already plain, human text */
+    return String(value);
+  }
+
   function row(key, value, meaning) {
     return '<div class="nx-trow">' +
              '<span class="nx-trow__k"><code>' + NXRender.esc(key) + '</code><br>' +
-               '<span style="font-size:.74rem;opacity:.75">' + NXRender.esc(meaning) + '</span>' +
+               '<span class="dash-row__meaning">' + NXRender.esc(meaning) + '</span>' +
              '</span>' +
-             '<span class="nx-trow__v" style="max-width:50%;text-align:right;word-break:break-word">' +
-               NXRender.esc(value === null || value === undefined ? '— not set —' : JSON.stringify(value)) +
+             '<span class="nx-trow__v dash-row__value">' +
+               NXRender.esc(formatValue(key, value)) +
              '</span>' +
            '</div>';
   }
@@ -31,7 +80,7 @@ $(function () {
   /* ---- Headline cards --------------------------------------------------- */
   var fav = NXStore.local.get('favouriteTeam');
   $('#favTeam').html(fav
-    ? card(fav, 'Pinned to the top of', { href: 'rankings.html', text: 'the standings' })
+    ? card(fav, 'Highlighted on', { href: 'rankings.html', text: 'the standings' })
     : card('None', 'Star a club on', { href: 'rankings.html', text: 'rankings' }));
 
   var regs = NXStore.local.get('registrations', []) || [];
@@ -47,7 +96,7 @@ $(function () {
   /* ---- Storage tables --------------------------------------------------- */
   $('#localTable').html(
     row('theme', NXStore.local.get('theme'), 'Colour scheme, site-wide') +
-    row('favouriteTeam', NXStore.local.get('favouriteTeam'), 'Pinned club on rankings') +
+    row('favouriteTeam', NXStore.local.get('favouriteTeam'), 'Highlighted club on rankings') +
     row('playerFilter', NXStore.local.get('playerFilter'), 'Last-used filter on players') +
     row('registrations', regs.length ? regs.length + ' entries' : null, 'Submitted applications')
   );
@@ -60,6 +109,12 @@ $(function () {
   );
 
   /* ---- Submitted applications ------------------------------------------- */
+  var LEVEL_LABELS = {
+    casual: 'Casual',
+    improving: 'Improving',
+    competitive: 'Competitive'
+  };
+
   var $subs = $('#dashSubmissions');
   if (!regs.length) {
     $subs.html('<p class="nx-muted nx-mb-0" style="font-size:.86rem">' +
@@ -70,14 +125,15 @@ $(function () {
       var when = new Date(r.submittedAt);
       return '<div class="nx-trow">' +
         '<span class="nx-trow__k">' +
-          '<strong style="color:var(--text)">' + NXRender.esc(r.ign) + '</strong> · ' +
+          '<strong class="dash-app__name">' + NXRender.esc(r.ign) + '</strong> · ' +
           NXRender.esc(r.fullName) + '<br>' +
-          '<span style="font-size:.74rem;opacity:.75">' +
-            NXRender.esc(r.game) + ' · ' + NXRender.esc(r.level) + ' · ' +
+          '<span class="dash-app__meta">' +
+            NXRender.esc(gameLabel(r.game)) + ' · ' +
+            NXRender.esc(LEVEL_LABELS[r.level] || r.level) + ' · ' +
             when.toLocaleDateString() +
           '</span>' +
         '</span>' +
-        '<span class="nx-trow__v" style="font-size:.76rem">' + NXRender.esc(r.id) + '</span>' +
+        '<span class="nx-trow__v dash-app__id">' + NXRender.esc(r.id) + '</span>' +
       '</div>';
     }).join(''));
   }

@@ -7,22 +7,18 @@
 var NXRender = (function ($) {
   'use strict';
 
+  /* NextGen focuses on three titles — see CLAUDE.md section 1. Trimming this
+     shared map is enough to trim every game filter/strip on the site. */
   var GAME_LOGOS = {
     valorant: 'GameLogos/valorantLogo.png',
     cs2:      'GameLogos/CS2Logo.png',
-    lol:      'GameLogos/LOLLogo.png',
-    dota2:    'GameLogos/dota2Logo.png',
-    pubg:     'GameLogos/pubgLogo.png',
-    fc26:     'GameLogos/FC26Logo.png'
+    pubg:     'GameLogos/pubgLogo.png'
   };
 
   var GAME_LABELS = {
     valorant: 'Valorant',
     cs2:      'Counter-Strike 2',
-    lol:      'League of Legends',
-    dota2:    'Dota 2',
-    pubg:     'PUBG',
-    fc26:     'EA SPORTS FC 26'
+    pubg:     'PUBG'
   };
 
   /* Escape anything that came out of a JSON file before it reaches innerHTML. */
@@ -133,17 +129,19 @@ var NXRender = (function ($) {
         '</article>';
     },
 
-    boardRow: function (team, favourite) {
+    /* `rank` is this team's position in whatever list is being rendered right
+       now — the caller computes it from array order after sorting/filtering,
+       it is never read from team.rank. That field only exists as the
+       canonical championship-points order used for the "Championship rank"
+       sort option. There is no rank-change indicator: once rank depends on
+       whichever sort is active, "moved up 2 places" has no single baseline
+       to be measured against, so no such number is shown. */
+    boardRow: function (team, favourite, rank) {
       var isFav = favourite === team.team;
-      var move = team.movement > 0
-        ? '<span class="nx-move nx-move--up"><i class="bi bi-caret-up-fill"></i>' + team.movement + '</span>'
-        : team.movement < 0
-          ? '<span class="nx-move nx-move--down"><i class="bi bi-caret-down-fill"></i>' + Math.abs(team.movement) + '</span>'
-          : '<span class="nx-move nx-move--flat">–</span>';
 
       return '' +
         '<div class="nx-board__row nx-reveal' + (isFav ? ' is-favourite' : '') + '" data-team="' + esc(team.team) + '">' +
-          '<div class="nx-board__rank">#' + esc(team.rank) + ' ' + move + '</div>' +
+          '<div class="nx-board__rank">#' + esc(rank) + '</div>' +
           '<div class="nx-board__team">' +
             '<img class="nx-board__logo" src="' + esc(team.logo) + '" alt="' + esc(team.team) + ' logo" loading="lazy">' +
             '<div style="min-width:0">' +

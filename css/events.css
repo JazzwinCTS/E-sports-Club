@@ -1,0 +1,59 @@
+/* ==========================================================================
+   events.css — exclusive to events.html. Owner: the same developer as
+   dashboard.css (CLAUDE.md section 7 "Events + Dashboard" pairing).
+
+   Nothing in here is referenced by any other page. js/events.js renders
+   these classes instead of inline `style="..."` attributes — pulling that
+   layout out of the JS and into here is what actually makes this page's
+   design "exclusive and editable in one place" rather than scattered through
+   generated markup.
+   ========================================================================== */
+
+/* --- Event list rows ------------------------------------------------------ */
+.ev-row { margin-bottom: 12px; }
+.ev-row__inner { align-items: flex-start; gap: 18px; flex-wrap: nowrap; }
+
+.ev-row__date { text-align: center; flex-shrink: 0; min-width: 56px; }
+.ev-row__day {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.ev-row__month {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.ev-row__body { min-width: 0; flex: 1; }
+.ev-row__meta { gap: 8px; margin-bottom: 6px; }
+.ev-row__meta-text { font-size: 0.8rem; }
+.ev-row__title { font-size: 1rem; margin-bottom: 6px; }
+.ev-row__desc { font-size: 0.86rem; }
+.ev-row__link { margin-top: 12px; }
+
+/* --- Calendar view ---------------------------------------------------------
+   Grouped by month so switching views reads as a genuinely different layout,
+   not just the same rows in a grid. */
+.ev-cal { margin-bottom: 28px; }
+.ev-cal__grid {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.ev-cal__day { padding: 14px; }
+.ev-cal__daynum { font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; }
+.ev-cal__daymeta { font-size: 0.74rem; color: var(--text-muted); margin-bottom: 8px; }
+.ev-cal__title { font-size: 0.84rem; font-weight: 600; }
+
+/* --- Venue forecast panel (Open-Meteo, live) ------------------------------- */
+.ev-weather__temp {
+  font-family: var(--font-heading);
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1;
+  margin: 10px 0 4px;
+}
+.ev-weather__meta { font-size: 0.84rem; }
+.ev-weather__days { margin-top: 10px; }

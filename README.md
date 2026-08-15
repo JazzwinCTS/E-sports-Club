@@ -1,117 +1,189 @@
 # NextGen E-Sports
 
-A mobile-responsive, eight-page esports club website. Static front-end only —
-HTML5, CSS3, JavaScript, jQuery and Bootstrap 5, with no backend and no build step.
+NextGen E-Sports is a **community esports club** — open to amateur players and students who just
+want somewhere to play, not an elite competitive program. The club focuses on three titles:
+**Valorant, Counter-Strike, and PUBG**.
+
+This repository is a university coursework prototype: a mobile-responsive, eight-page website built
+with plain HTML5, CSS3, JavaScript, jQuery and Bootstrap 5 — no backend, no build step, no
+framework. Every page can be read from the source directly; this document exists to save you that
+trip by walking through what each page does, what it stores in the browser, and which pages talk to
+a real API.
 
 ## Running it
 
-**Do not open `index.html` by double-clicking it.** Browsers block `XMLHttpRequest`
-against `file://` URLs for security, so the pages that load their content from
-`data/*.json` (rankings, players, tournaments, events) will show a load error.
+**Don't open `index.html` by double-clicking it.** Browsers block `XMLHttpRequest` against `file://`
+URLs, so the pages that load their content from `data/*.json` (rankings, players, tournaments,
+events) would show a load error, and `about.html`'s video would fail to play in Safari. The site
+needs to be served over http — locally while developing, or from real hosting once it's live.
 
-Serve the folder over http instead. From this directory:
+### While developing — VS Code Live Server
 
-```bash
-python serve.py 8000
-```
+The fastest loop: install the **Live Server** extension (`ritwickdey.LiveServer`), then right-click
+any `.html` file → *Open with Live Server*, or click *Go Live* in the status bar. It serves the
+folder, opens the browser, and auto-refreshes on every save — no terminal command to re-run. It
+also handles HTTP Range requests correctly, so `about.html`'s video plays properly in Safari too.
 
-Then open <http://localhost:8000>. `serve.py` is a tiny stdlib-only wrapper around
-`python -m http.server` that adds HTTP Range support — **use it instead of
-`python -m http.server` directly.** Range support is what lets `about.html`'s video
-play in Safari: Python's built-in server always returns the whole file with `200 OK`
-and ignores the `Range` header, and Safari's `<video>` engine requires a real `206
-Partial Content` response to play media at all (Chrome tolerates the missing support
-and plays it anyway, which is why it can look fine in one browser and not the other).
+Any other static server works the same way (`npx serve`, XAMPP/Apache) — just not
+`python -m http.server` on its own, which ignores the `Range` header and breaks Safari video
+playback specifically (Chrome tolerates the gap and plays it anyway, which is why it only shows up
+in one browser). If you don't have Node or an IDE extension handy, `python serve.py 8000` is a
+small stdlib-only fallback that adds the missing Range support.
 
-VS Code's *Live Server* extension and Apache/XAMPP both already handle Range requests
-correctly and work too — `serve.py` exists for anyone without either installed.
+### Once it's live — GitHub Pages
 
-## What needs an internet connection
+Hosted through GitHub Pages (or any real static host), this stops being a concern entirely — GitHub
+Pages serves Range requests correctly out of the box, so there's nothing extra to configure and
+`serve.py` isn't needed at all in that environment.
 
-Everything except these works fully offline (jQuery, Bootstrap, icons and both fonts
-are vendored locally):
+## The eight pages
 
-| Feature | Page | Notes |
+The navbar and footer are identical byte-for-byte on every page (`js/main.js` runs the shared
+behaviour: nav highlighting, the theme toggle, the cookie banner, and the footer's live Discord
+widget). Only the content between them changes per page.
+
+### Home — `index.html`
+The landing page. A three-slide Bootstrap hero carousel, a static title strip (Valorant / CS /
+PUBG icons, presented as plain badges — not clickable), a preview of 3 live/upcoming tournaments, a
+preview of the top 5 club standings, and a live stream embed.
+- **Storage:** sets/reads the `returningVisitor` **cookie** (30 days) — suppresses the intro
+  animation and shows a "welcome back" badge on repeat visits.
+- **API:** none of its own; the previews read local `data/tournaments.json` and
+  `data/standings.json` via `$.getJSON`.
+
+### Team Rankings — `rankings.html`
+Club championship standings across every competing organisation the site tracks. A shared filter
+bar (game + sort), a leaderboard with real team logos, medal counts and win/loss records, and a
+star button to highlight a favourite team.
+- **Storage:** reads/writes `favouriteTeam` in **localStorage** — persists which club is starred
+  and highlighted, independent of sort order. Starring a team does not move it in the table.
+- **API:** this page owns the graded "RESTful API via jQuery" feature. `$.getJSON('data/standings.json')`
+  fetches real team names (cross-checked against Liquipedia) with illustrative points/records,
+  rendered into the DOM with a loading spinner and an error fallback.
+
+### Player Profiles — `players.html`
+A reference database of real competitive players across Valorant, Counter-Strike and PUBG — not
+NextGen's own roster (the club has no real members). A filter bar (game + role + sort) and a grid
+of player cards with real photos, ratings, and achievements.
+- **Storage:** reads/writes `playerFilter` (`{game, role}`) in **localStorage** — your last filter
+  is restored automatically on your next visit.
+- **API:** `$.getJSON('data/players.json')`, same pattern as rankings.
+
+### Tournaments — `tournaments.html`
+Brackets, prize pools and results for the competitions the club follows. A status toolbar
+(All/Live/Upcoming/Completed) plus the shared filter bar, and a card grid with tournament art, a
+pulsing LIVE badge on active tournaments, and a link into `register.html` pre-filled with the
+tournament as context.
+- **Storage:** reads/writes `tournamentFilter` (`{status, game, sort}`) in **sessionStorage** — the
+  active filter survives navigating between tabs on this page in the same browser tab, but a new
+  tab starts clean.
+- **API:** `$.getJSON('data/tournaments.json')`, same pattern as rankings.
+
+### Event Schedule — `events.html`
+The club's own activity calendar — practices, workshops, socials and tryouts — with a list/calendar
+view toggle. A dated event can link out to `tournaments.html` if it's tied to one (a watch party,
+for example) without duplicating that tournament's detail.
+- **Storage:** reads/writes `eventView` (`"list"` or `"calendar"`) in **sessionStorage**.
+- **API:** two, and this is the only page with a genuinely *live* external call:
+  1. `$.getJSON('data/events.json')` — the schedule itself, a local snapshot.
+  2. `$.ajax` to **Open-Meteo** (`api.open-meteo.com/v1/forecast`) — a real, keyless, no-auth
+     weather API called live on every page load, showing the actual current forecast for the
+     club's venue. This is the site's clearest "real HTTP request → JSON → rendered via jQuery"
+     demonstration.
+
+### Registration — `register.html`
+The sign-up form. Full name, email, in-game name, primary title (Valorant/CS/PUBG), experience
+level, and free-text notes. A query param (`?event=<id>`) can prefill context when linked from
+another page.
+- **Storage:** two, deliberately different lifetimes:
+  - `registerDraft` in **sessionStorage** — every keystroke is saved so a refresh never loses your
+    half-finished form, but it's gone once the tab closes (it's meant to be transient).
+  - `registrations` in **localStorage** — the array of submitted applications, meant to persist
+    like a client-side stand-in for a real backend.
+- **API:** none — submission is entirely client-side; there is no server to send it to.
+
+### Dashboard — `dashboard.html`
+A read-only summary of everything this site remembers about you: your favourite team, your saved
+applications, your visitor status, and a raw table of every key in local/session storage with a
+plain-language explanation of what each one is for. A "clear everything stored" button wipes all
+of it.
+- **Storage:** reads all three storage types, **writes none** of its own — every value shown here
+  is owned and set by the page named next to it. This is intentional (see `CLAUDE.md` §7): no
+  page's script reads a variable defined by another page's script, so `dashboard.html` re-reads
+  each key independently from storage rather than depending on another page having run first.
+- **API:** none.
+
+### About / Join Us — `about.html`
+Club identity: a looping muted autoplay hero video, the club's story, a committee section (roles,
+not real people — the club has no real members), a photo gallery, and the club's real social
+presence (Instagram post embed, plus links to Discord/X/Facebook).
+- **Storage:** the designated owner of `theme` (`"dark"`/`"light"`) in **localStorage**, though in
+  practice the toggle lives in the navbar and works identically from every page — it's read before
+  first paint everywhere to avoid a flash of the wrong theme.
+- **API:** no `$.ajax` call of its own, but it hosts the site's other graded requirement — the
+  **social media plugin** — via a real Instagram post embed (`instagram.com/embed.js`, no key).
+
+## Storage, all in one place
+
+| Type | Key | Owning page | Lifetime | Purpose |
+|---|---|---|---|---|
+| Cookie | `returningVisitor` | index | 30 days | Suppresses the intro animation, shows welcome-back |
+| Local | `theme` | about (site-wide) | until cleared | Dark/light choice, read before first paint |
+| Local | `favouriteTeam` | rankings | until cleared | Highlights a club's row in the standings |
+| Local | `playerFilter` | players | until cleared | Restores your last-used filter |
+| Local | `registrations` | register (dashboard reads) | until cleared | Submitted applications |
+| Session | `registerDraft` | register | tab close | In-progress form, saved on every keystroke |
+| Session | `tournamentFilter` | tournaments | tab close | Active filter + sort |
+| Session | `eventView` | events | tab close | List or calendar view |
+
+## API calls, all in one place
+
+Every network call in the project uses jQuery (`$.ajax`/`$.getJSON`) — never `fetch()`.
+
+| Call | Where | Live or local? |
 |---|---|---|
-| Venue weather forecast | `events.html` | Open-Meteo REST API, keyless |
-| Discord member count | footer, all pages | Discord invite API, keyless |
-| X follow button | footer, all pages | Official X widget |
-| Facebook page plugin | footer, all pages | Official Meta iframe plugin |
-| Instagram embed | `about.html` | Official Instagram embed |
-| Twitch stream | `index.html` | Needs a real host; falls back on `file://` |
+| Open-Meteo weather forecast | `js/events.js`, on `events.html` | **Live** — a real external request every page load |
+| Discord invite lookup | `js/main.js`, in the shared footer on **all 8 pages** | **Live** — real member count, keyless |
+| `data/standings.json` | `js/rankings.js` + homepage preview | Local snapshot (real names, illustrative stats) |
+| `data/players.json` | `js/players.js` | Local snapshot (real names, illustrative stats) |
+| `data/tournaments.json` | `js/tournaments.js` + homepage preview | Local snapshot |
+| `data/events.json` | `js/events.js` | Local snapshot |
 
-Each one degrades to a readable fallback rather than a broken frame.
+The local-snapshot files are still fetched with a real `$.ajax` call each time the page loads (that's
+why the site can't be opened via `file://`) — they're just reading a file already sitting in the
+repo rather than a live external source. Team/player/tournament **names** in those files are real
+and were checked against Liquipedia by hand while building the site (never at runtime — see
+`CLAUDE.md` §6); **statistics** (points, ratings, prize pools) are illustrative and each file says
+so in its own `_source` field.
 
 ## Structure
 
 ```
 ├── serve.py              dev-only local server with Range support (see "Running it")
-├── *.html               8 pages; navbar and footer markup identical across all
-├── css/style.css        every design token — no hardcoded colours in pages
+├── *.html                 8 pages; navbar and footer markup identical across all
+├── css/
+│   ├── style.css          general file: tokens, shared shell, and anything used by
+│   │                        3+ pages — no hardcoded colours in pages
+│   └── index.css, rankings.css, events.css, dashboard.css
+│                            page-exclusive styles — one file per developer's page,
+│                            see CLAUDE.md section 7
 ├── js/
-│   ├── storage.js       helpers for cookies + local + session storage
-│   ├── render.js        shared card/row renderers and the single AJAX wrapper
-│   ├── filter.js        the shared filter bar (rankings, players, tournaments)
-│   ├── main.js          site-wide: nav, theme, cookie banner, footer widget
-│   └── <page>.js        one per page, page-specific only
-├── data/*.json          content loaded at runtime with $.getJSON
-├── vendor/              jQuery, Bootstrap 5, Bootstrap Icons (local copies)
-├── fonts/               Unbounded + Sora (self-hosted for offline use)
-└── GameLogos/ TeamLogo/ TournamentThumbnail/ carousel*.png Video1.mp4
+│   ├── storage.js         helpers for cookies + local + session storage
+│   ├── render.js          shared card/row renderers and the single AJAX wrapper
+│   ├── filter.js          the shared filter bar (rankings, players, tournaments)
+│   ├── main.js             site-wide: nav, theme, cookie banner, footer widget
+│   └── <page>.js           one per page, page-specific only
+├── data/*.json             content loaded at runtime with $.getJSON
+├── vendor/                jQuery, Bootstrap 5, Bootstrap Icons (local copies)
+├── fonts/                  Unbounded + Sora (self-hosted for offline use)
+└── GameLogos/ TeamLogo/ TournamentThumbnail/ PlayerPhotos/ carousel*.png Video1.mp4
 ```
 
-## Data
-
-`data/*.json` files carry a `_source` field stating exactly which parts are real and
-which are illustrative. Organisation, player and tournament **names** are real and
-were checked against liquipedia.net; **statistics** (points, ratings, prize pools)
-are illustrative coursework data and are labelled as such on the pages that show them.
-
-No request is made to liquipedia.net at runtime — see `CLAUDE.md` section 6 for why.
-
-## Storage
-
-| Type | Key | Set on | Purpose |
-|---|---|---|---|
-| Cookie | `returningVisitor` | index | 30-day expiry; suppresses the intro, shows a welcome-back |
-| Local | `theme` | site-wide | Dark/light choice, read before first paint |
-| Local | `favouriteTeam` | rankings | Pins a club to the top of the standings |
-| Local | `playerFilter` | players | Restores the last-used filter |
-| Local | `registrations` | register | Submitted applications |
-| Session | `registerDraft` | register | Half-finished form, dies with the tab |
-| Session | `tournamentFilter` | tournaments | Active filter and sort |
-| Session | `eventView` | events | List or calendar view |
-
-`dashboard.html` reads all three and writes none of them.
+Some files in the asset folders (League of Legends / Dota 2 / EA SPORTS FC logos, thumbnails and
+photos) are left over from before the club's scope was narrowed to three titles — they're not
+referenced by any page. See `CLAUDE.md` §9 if you're deciding whether to remove or reuse them.
 
 ## Note
 
-NextGen E-Sports is a fictional club built for coursework. Imagery is illustrative and
-the competitive statistics shown are not verified results.
-
----
-
-<!-- Design brief kept from the original README. The same block also appears at the
-     end of CLAUDE.md, which is the file Claude Code reads. -->
-
-DISTILLED_AESTHETICS_PROMPT = """
-<frontend_aesthetics>
-You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates what users call the "AI slop" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight. Focus on:
-
-Typography: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics.
-
-Color & Theme: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes. Draw from IDE themes and cultural aesthetics for inspiration.
-
-Motion: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions.
-
-Backgrounds: Create atmosphere and depth rather than defaulting to solid colors. Layer CSS gradients, use geometric patterns, or add contextual effects that match the overall aesthetic.
-
-Avoid generic AI-generated aesthetics:
-- Overused font families (Inter, Roboto, Arial, system fonts)
-- Clichéd color schemes (particularly purple gradients on white backgrounds)
-- Predictable layouts and component patterns
-- Cookie-cutter design that lacks context-specific character
-
-Interpret creatively and make unexpected choices that feel genuinely designed for the context. Vary between light and dark themes, different fonts, different aesthetics. You still tend to converge on common choices (Space Grotesk, for example) across generations. Avoid this: it is critical that you think outside the box!
-</frontend_aesthetics>
-"""
+NextGen E-Sports is a fictional club built for coursework. Imagery is illustrative and the
+competitive statistics shown are not verified results.
