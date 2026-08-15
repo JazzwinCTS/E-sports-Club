@@ -3,19 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Player Profiles — NextGen E-Sports</title>
-<meta name="description" content="A reference database of competitive players across Valorant, CS2, League of Legends, Dota 2, PUBG and EA SPORTS FC.">
+<title>Player Directory — Youth Esports League</title>
+<meta name="description" content="Explore 16–18-year-old VALORANT, Counter-Strike 2 and PUBG players representing eight independent youth esports teams.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css">
-<script>
-(function () {
-  try {
-    var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
-    document.documentElement.setAttribute('data-theme', t);
-  } catch (e) { /* storage unavailable — dark stays */ }
-})();
-</script>
+<link rel="stylesheet" href="css/players.css">
+<script src="js/theme-init.js"></script>
 </head>
 <body>
 <a class="nx-skip" href="#main">Skip to content</a>
@@ -48,29 +42,102 @@
   </nav>
 </header>
 
-<main id="main" class="page-body">
-  <section class="nx-section">
-    <div class="nx-shell">
-
-      <div class="nx-section-head">
-        <p class="nx-eyebrow">Scene database</p>
-        <h1 class="nx-mb-0">Player profiles</h1>
-        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
-          A reference database of competitive players across the six titles the club fields
-          rosters in. Your last filter is remembered for your next visit. For team standings see
-          <a href="rankings.html">rankings</a>.
+<main id="main" class="page-body players-page">
+  <section class="players-hero">
+    <div class="nx-shell players-hero__inner">
+      <div class="players-hero__copy">
+        <p class="nx-eyebrow">2026 youth league roster</p>
+        <h1>Meet the next generation of competitors.</h1>
+        <p>
+          Explore the starting line-ups representing eight independent youth teams across VALORANT,
+          Counter-Strike 2 and PUBG. Every profile in this coursework prototype is fictional.
         </p>
+        <a class="nx-btn nx-btn--primary" href="#game-picker">Browse teams</a>
+      </div>
+      <dl class="players-hero__stats" aria-label="League roster summary">
+        <div><dt>8</dt><dd>teams</dd></div>
+        <div><dt>3</dt><dd>game divisions</dd></div>
+        <div><dt>112</dt><dd>starting players</dd></div>
+        <div><dt>16–18</dt><dd>eligible ages</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="nx-section players-browser" id="game-picker">
+    <div class="nx-shell">
+      <div class="players-section-heading">
+        <div>
+          <p class="nx-eyebrow">Player directory</p>
+          <h2>Choose a game division</h2>
+          <p class="nx-muted">Select a title, then choose a team to view its story, honours and full roster.</p>
+        </div>
+        <p class="players-count" id="playersCount" aria-live="polite">Choose a division</p>
       </div>
 
-      <div id="playersFilter"></div>
+      <div class="game-picker" id="gamePicker" role="list" aria-label="Game divisions"></div>
 
-      <div class="nx-grid nx-grid--4" id="playerGrid" aria-live="polite"></div>
+      <div class="teams-panel" id="teamsPanel" hidden>
+        <div class="teams-panel__heading">
+          <div>
+            <p class="nx-eyebrow" id="divisionEyebrow">Division</p>
+            <h2 id="divisionTitle">Teams</h2>
+          </div>
+          <button class="players-text-button" id="changeGame" type="button">
+            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+            Change game
+          </button>
+        </div>
+        <div class="team-grid" id="teamGrid" aria-live="polite"></div>
+      </div>
 
-      <p class="nx-muted" style="font-size:.78rem;margin-top:24px" id="dataNote"></p>
+      <div class="players-loading" id="playersLoading" role="status">
+        <span class="nx-spinner" aria-hidden="true"></span>
+        Loading league rosters…
+      </div>
+
+      <p class="players-data-note" id="dataNote"></p>
     </div>
   </section>
 </main>
-</main>
+
+<div class="modal fade team-modal" id="teamModal" tabindex="-1" aria-labelledby="teamModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header team-modal__header">
+        <div class="team-modal__identity">
+          <div class="team-mark team-mark--large" id="teamModalMark" aria-hidden="true"></div>
+          <div>
+            <p class="team-modal__division" id="teamModalDivision"></p>
+            <h2 class="modal-title" id="teamModalTitle"></h2>
+            <p class="team-modal__meta" id="teamModalMeta"></p>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="team-modal__overview">
+          <section>
+            <p class="nx-eyebrow">Team introduction</p>
+            <p class="team-modal__intro" id="teamModalIntro"></p>
+          </section>
+          <section>
+            <p class="nx-eyebrow">Recent honours</p>
+            <ul class="team-honours" id="teamModalHonours"></ul>
+          </section>
+        </div>
+
+        <div class="team-modal__roster-heading">
+          <div>
+            <p class="nx-eyebrow">Starting line-up</p>
+            <h3 id="teamModalRosterTitle">Players</h3>
+          </div>
+          <span class="team-modal__roster-count" id="teamModalRosterCount"></span>
+        </div>
+        <div class="roster-grid" id="teamModalRoster"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer class="nx-footer">
   <div class="nx-shell">
@@ -81,8 +148,7 @@
           Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
         </a>
         <p class="nx-footer__tag">
-          A competitive university esports club across six titles — training, competing and
-          growing the local scene.
+          An independent youth league creating a visible pathway for emerging players aged 16–18.
         </p>
       </div>
 
@@ -117,17 +183,17 @@
       <a href="register.html">Join us</a>
     </div>
     <p class="nx-disclaimer">
-      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
-      competitive statistics shown are not verified results.
+      Coursework prototype. All teams, histories and player identities shown on this page are fictional;
+      generated portraits will be illustrative and will not represent real minors.
     </p>
   </div>
 </footer>
 
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
+  <h3 class="players-cookie-title">Cookies on this site</h3>
+  <p class="nx-muted nx-mb-0 players-cookie-copy">
     We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-    here before, plus local and session storage for your theme, filters and saved entries.
+    here before, plus local and session storage for your theme and selected game.
     Nothing is sent anywhere — this site has no server.
   </p>
   <div class="nx-cookie__actions">
@@ -139,8 +205,6 @@
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
 <script src="js/storage.js"></script>
-<script src="js/render.js"></script>
-<script src="js/filter.js"></script>
 <script src="js/main.js"></script>
 <script src="js/players.js"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
