@@ -289,6 +289,13 @@ file for their own page's design:**
 Images stayed in the asset folders they arrived in rather than moving to `img/` — the paths
 are already referenced throughout, so renaming them now buys nothing.
 
+**Cache-busting — bump `?v=` when you change a shared file.** Every first-party `css/*.css` and
+`js/*.js` link carries a `?v=N` query. Browsers (Safari especially) cache these hard, and a
+phone that has already visited will keep serving the old copy — which cost us a round of
+"the fix isn't showing on my iPhone" when it was really a stale `style.css`. When you edit a
+file, bump its number in every page that links it. `players.*` and `tournaments.*` carry their
+own numbers, managed by the pair that owns them.
+
 **Rules:**
 
 - All colours, fonts, and spacing come from CSS custom properties in `style.css`. **Never hardcode
