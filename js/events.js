@@ -94,7 +94,6 @@ $(function () {
   NXRender.load($list, 'data/events.json', function (data) {
     events = data.events;
     venue = data.venue;
-    $('#dataNote').text(data._source);
     $('#venueName').text(venue.name);
     paint();
     loadWeather();

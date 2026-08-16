@@ -29,6 +29,26 @@ $(function () {
     return opts;
   }
 
+  /* Every club fields all three divisions, so filtering by title would change
+     nothing on its own. Selecting a title instead swaps each row's numbers for
+     that division's record; "All games" shows the season total, which
+     data/standings.json stores as the sum of the three. */
+  function divisionView(t, game) {
+    if (game === 'all' || !t.divisions || !t.divisions[game]) { return t; }
+    var d = t.divisions[game];
+    return {
+      rank: t.rank,
+      team: t.team,
+      logo: t.logo,
+      games: t.games,
+      roster: t.roster,
+      points: d.points,
+      wins: d.wins,
+      losses: d.losses,
+      medals: d.medals
+    };
+  }
+
   function apply(state) {
     var favourite = NXStore.local.get('favouriteTeam');
     var rows = allTeams.slice();
@@ -36,6 +56,8 @@ $(function () {
     if (state.game !== 'all') {
       rows = rows.filter(function (t) {
         return t.games.indexOf(state.game) !== -1;
+      }).map(function (t) {
+        return divisionView(t, state.game);
       });
     }
 
@@ -78,15 +100,9 @@ $(function () {
   NXRender.load($board, 'data/standings.json', function (data) {
     allTeams = data.standings;
 
-    $board.html(
-      '<div class="nx-board__head" aria-hidden="true">' +
-        '<div>Rank</div><div>Club</div>' +
-        '<div style="text-align:right">Points</div>' +
-        '<div style="text-align:right">Medals</div><div></div>' +
-      '</div>'
-    );
-
-    $('#dataNote').text(data._source);
+    /* NXRender.load replaced the board with a spinner, so the header goes back
+       in here — from the shared renderer, so it always matches the rows. */
+    $board.html(NXRender.boardHead());
 
     filters = NXFilter.init({
       mount: '#rankingsFilter',
@@ -122,14 +138,4 @@ $(function () {
     apply(filters ? filters.state() : { game: 'all', sort: 'rank' });
   });
 
-  /* ---- Roster peek ------------------------------------------------------ */
-  $board.on('click', '.nx-board__row', function () {
-    var team = $(this).data('team');
-    var found = null;
-    allTeams.forEach(function (t) { if (t.team === team) { found = t; } });
-    if (!found) { return; }
-
-    var $sub = $(this).find('.nx-board__sub');
-    $sub.text(found.wins + 'W · ' + found.losses + 'L · ' + found.roster.join(', '));
-  });
 });

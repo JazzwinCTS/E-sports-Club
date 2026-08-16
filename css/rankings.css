@@ -15,13 +15,17 @@
 
 .nx-board { display: flex; flex-direction: column; gap: 8px; }
 
+/* Rank | Team | PL | W | L | Points | Medals | star.
+   Fixed narrow columns for the numbers so they align down the table; only the
+   team column flexes, which is what keeps the whole row inside the shell
+   without a horizontal scrollbar. */
 .nx-board__head,
 .nx-board__row {
   display: grid;
-  grid-template-columns: 64px 1fr 92px 150px 44px;
+  grid-template-columns: 46px minmax(0, 1fr) 38px 38px 38px 78px 132px 34px;
   align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
+  gap: 10px;
+  padding: 10px 16px;
 }
 .nx-board__head {
   font-family: var(--font-heading);
@@ -36,52 +40,61 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition: all var(--dur) var(--ease);
-  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
-.nx-board__row:hover { border-color: var(--accent); transform: translateX(4px); }
+/* The row itself is not a control — only the star inside it is — so it gets a
+   readable hover, not a pointer cursor or a shift. */
+.nx-board__row:hover { border-color: var(--border-strong); }
 .nx-board__row.is-favourite {
   border-color: var(--accent);
   background: linear-gradient(90deg, var(--accent-soft), var(--surface) 40%);
 }
 
 .nx-board__rank {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: left;
 }
 .nx-board__row:nth-child(1) .nx-board__rank,
 .nx-board__row:nth-child(2) .nx-board__rank,
 .nx-board__row:nth-child(3) .nx-board__rank { color: var(--text); }
 
-.nx-board__team { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.nx-board__team { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .nx-board__logo {
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
   flex-shrink: 0;
 }
 .nx-board__name {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.nx-board__sub { font-size: 0.74rem; color: var(--text-muted); }
+/* Mobile-only stand-in for the PL/W/L columns. */
+.nx-board__mini { display: none; font-size: 0.72rem; color: var(--text-muted); }
+
+.nx-board__num {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.nx-board__w { color: var(--text); }
 
 .nx-board__pts {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   text-align: right;
 }
 
-.nx-medals { display: flex; gap: 6px; justify-content: flex-end; }
+.nx-medals { display: flex; gap: 5px; justify-content: flex-end; }
 .nx-medal {
   display: inline-flex;
   align-items: center;
@@ -109,18 +122,32 @@
 .nx-fav:hover { color: var(--accent); transform: scale(1.2); }
 .nx-fav.is-on { color: var(--accent); }
 
-@media (max-width: 780px) {
+/* Tablet: the three W/L columns are the first thing to go, since the same
+   numbers are already on the team's mini line. */
+@media (max-width: 900px) {
+  .nx-board__head,
+  .nx-board__row { grid-template-columns: 40px minmax(0, 1fr) 70px 118px 32px; }
+  .nx-board__pl,
+  .nx-board__w,
+  .nx-board__l { display: none; }
+  .nx-board__mini { display: block; }
+}
+
+/* Phone: two rows inside the same grid rather than a sideways scroll. */
+@media (max-width: 560px) {
   .nx-board__head { display: none; }
   .nx-board__row {
-    grid-template-columns: 48px 1fr auto;
+    grid-template-columns: 34px minmax(0, 1fr) auto;
     grid-template-areas:
       'rank team fav'
       'rank pts medals';
     row-gap: 8px;
+    padding: 12px 14px;
   }
-  .nx-board__rank { grid-area: rank; }
+  .nx-board__rank { grid-area: rank; align-self: start; padding-top: 4px; }
   .nx-board__team { grid-area: team; }
   .nx-board__pts { grid-area: pts; text-align: left; }
   .nx-medals { grid-area: medals; }
   .nx-fav { grid-area: fav; }
+  .nx-medal { padding: 3px 6px; font-size: 0.72rem; }
 }

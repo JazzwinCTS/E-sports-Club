@@ -1,8 +1,13 @@
 # NextGen E-Sports
 
-NextGen E-Sports is a **community esports club** — open to amateur players and students who just
-want somewhere to play, not an elite competitive program. The club focuses on three titles:
-**Valorant, Counter-Strike, and PUBG**.
+NextGen E-Sports is a **community esports club** — open to players of every level, not an elite
+competitive program. The club focuses on three titles: **Valorant, Counter-Strike, and PUBG**.
+
+It currently hosts one competition, the **2026 NextGen Youth Championship** for players aged
+16–18, contested by eight member clubs (VYNE, KOVA, RIFT, ZERA, AXEN, MIRA, TALO, BRIX) across
+three divisions. That championship is what `players.html`, `tournaments.html` and `rankings.html`
+cover; the club itself stays open to everyone. All of it — clubs, players, results — is fictional
+content written for this project.
 
 This repository is a university coursework prototype: a mobile-responsive, eight-page website built
 with plain HTML5, CSS3, JavaScript, jQuery and Bootstrap 5 — no backend, no build step, no

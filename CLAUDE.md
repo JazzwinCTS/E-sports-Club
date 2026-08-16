@@ -14,8 +14,25 @@ There are no real members, no real tournament results.
 
 **NextGen E-Sports is a community club, not an elite competitive program.** It's framed as
 welcoming amateur players and students who just want somewhere to play — membership itself has
-no skill bar. An optional, lighter-touch competitive pathway (tryouts, scrims) exists for anyone
-who wants it, but it's never the framing for the club as a whole.
+no skill bar. An optional, lighter-touch competitive pathway (scrims, the championship below)
+exists for anyone who wants it, but it's never the framing for the club as a whole.
+
+**The club currently hosts one competition: the 2026 NextGen Youth Championship**, for players
+aged 16–18, split into three divisions (Valorant / CS2 / PUBG) contested by **eight member clubs**
+(VYNE, KOVA, RIFT, ZERA, AXEN, MIRA, TALO, BRIX). This is *one event the club runs*, not what the
+club is — `players.html`, `tournaments.html` and `rankings.html` are all scoped to it, while
+`index.html`, `about.html` and `register.html` speak for the club and stay open to everyone. Don't
+let the championship's 16–18 eligibility leak into the club's own copy.
+
+**Everything is fictional — including the clubs and players.** The eight orgs, their 112 players
+and all results were written for this project. The earlier Liquipedia-sourced real players/teams
+and their photos/logos were deleted on 2026-08-16 (§9); §6's Liquipedia guidance is retained only
+as history of where the *old* data came from — do not source new data that way.
+
+**The site itself carries no "prototype"/"fictional club" disclaimer.** Those lines were removed
+from all 8 pages by request: it presents as a real club's site. That's a presentation choice for
+the deliverable, and it does not license inventing *real-world* claims — no real people, real
+orgs, or real results anywhere.
 
 **Scope: three titles only — Valorant, Counter-Strike, PUBG.** Every page, filter, and dataset is
 scoped to these three. Don't add League of Legends / Dota 2 / EA SPORTS FC content back in without
