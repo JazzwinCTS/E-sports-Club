@@ -372,6 +372,10 @@ img { max-width: 100%; height: auto; }
 
 @media (max-width: 940px) {
   .nx-nav__toggle { display: grid; }
+  /* The links become a fixed drawer below, so they leave the flex row and
+     take their margin-left:auto with them. Without this the theme and menu
+     buttons sit next to the wordmark instead of at the right edge. */
+  .nx-nav__actions { margin-left: auto; }
   .nx-nav__links {
     position: fixed;
     inset: var(--nav-h) 0 auto 0;

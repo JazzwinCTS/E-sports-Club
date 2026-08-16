@@ -144,12 +144,16 @@ var NXRender = (function ($) {
     boardHead: function () {
       return '' +
         '<div class="nx-board__head" aria-hidden="true">' +
-          '<div>Rank</div>' +
+          /* "Rank" is wider than the rank column once the table scales down,
+             so it would run into "Club". The short form takes over there. */
+          '<div><span class="nx-lbl-full">Rank</span><span class="nx-lbl-short">#</span></div>' +
           '<div>Club</div>' +
           '<div class="nx-board__pl" style="text-align:center" title="Played">PL</div>' +
           '<div class="nx-board__w" style="text-align:center" title="Won">W</div>' +
           '<div class="nx-board__l" style="text-align:center" title="Lost">L</div>' +
-          '<div style="text-align:right">Points</div>' +
+          '<div style="text-align:right">' +
+            '<span class="nx-lbl-full">Points</span><span class="nx-lbl-short">Pts</span>' +
+          '</div>' +
           '<div style="text-align:right">Medals</div>' +
           '<div></div>' +
         '</div>';

@@ -27,6 +27,8 @@
   gap: 10px;
   padding: 10px 16px;
 }
+.nx-lbl-short { display: none; }
+
 .nx-board__head {
   font-family: var(--font-heading);
   font-size: 0.62rem;
@@ -142,6 +144,10 @@
   .nx-medals { gap: 4px; }
   .nx-medal { padding: 3px 5px; font-size: 0.7rem; gap: 3px; }
   .nx-board__head { font-size: 0.55rem; letter-spacing: 0.08em; }
+  /* The rank column is now narrower than the word "Rank", which ran it into
+     "Club". Swap to the short labels from here down. */
+  .nx-lbl-full { display: none; }
+  .nx-lbl-short { display: inline; }
 }
 
 @media (max-width: 620px) {

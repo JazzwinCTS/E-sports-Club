@@ -578,7 +578,9 @@
 
 @media (max-width: 580px) {
   .tournament-hero { padding-block: 64px 76px; }
-  .tournament-hero__copy h1 { font-size: clamp(1.85rem, 13vw, 4.4rem); }
+  /* 13vw put this at ~51px on a 390px screen, and "NEW CHAMPIONS." is the
+     longest of its three forced lines, so it overran the shell. */
+  .tournament-hero__copy h1 { font-size: clamp(1.45rem, 8vw, 2.8rem); }
   .tournament-overview__grid { grid-template-columns: 1fr; }
   .tournament-overview__grid > div { border-right: 0; border-bottom: 1px solid var(--border); }
   .tournament-overview__grid > div:last-child { border-bottom: 0; }
