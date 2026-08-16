@@ -124,14 +124,20 @@
 .nx-fav:hover { color: var(--accent); transform: scale(1.2); }
 .nx-fav.is-on { color: var(--accent); }
 
-/* Narrow screens keep the full desktop table -- same eight columns, same
+/* Every track below is an explicit width apart from the club column. The
+   header and the rows are separate grid containers, so an `auto` track is
+   sized by that element's own content -- the word "MEDALS" in the header, the
+   three chips in a row -- and the two came out different widths, which threw
+   the headings out of line with their columns on phones.
+
+   Narrow screens keep the full desktop table -- same eight columns, same
    order, nothing hidden and nothing reflowed into a second row. Everything
    just scales: the gaps, the padding, the logo, the type and the medal chips.
    The mini line stays hidden because PL/W/L keep their own columns. */
 @media (max-width: 900px) {
   .nx-board__head,
   .nx-board__row {
-    grid-template-columns: 34px minmax(0, 1fr) 30px 30px 30px 62px auto 26px;
+    grid-template-columns: 34px minmax(0, 1fr) 30px 30px 30px 62px 108px 26px;
     gap: 7px;
     padding: 9px 12px;
   }
@@ -153,7 +159,7 @@
 @media (max-width: 620px) {
   .nx-board__head,
   .nx-board__row {
-    grid-template-columns: 26px minmax(0, 1fr) 24px 24px 24px 48px auto 20px;
+    grid-template-columns: 26px minmax(0, 1fr) 24px 24px 24px 48px 64px 20px;
     gap: 5px;
     padding: 8px 9px;
   }
@@ -175,7 +181,7 @@
 @media (max-width: 420px) {
   .nx-board__head,
   .nx-board__row {
-    grid-template-columns: 20px minmax(0, 1fr) 20px 20px 20px 40px auto 16px;
+    grid-template-columns: 20px minmax(0, 1fr) 20px 20px 20px 40px 58px 16px;
     gap: 4px;
     padding: 7px;
   }
