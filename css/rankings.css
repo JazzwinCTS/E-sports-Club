@@ -122,32 +122,61 @@
 .nx-fav:hover { color: var(--accent); transform: scale(1.2); }
 .nx-fav.is-on { color: var(--accent); }
 
-/* Tablet: the three W/L columns are the first thing to go, since the same
-   numbers are already on the team's mini line. */
+/* Narrow screens keep the full desktop table -- same eight columns, same
+   order, nothing hidden and nothing reflowed into a second row. Everything
+   just scales: the gaps, the padding, the logo, the type and the medal chips.
+   The mini line stays hidden because PL/W/L keep their own columns. */
 @media (max-width: 900px) {
   .nx-board__head,
-  .nx-board__row { grid-template-columns: 40px minmax(0, 1fr) 70px 118px 32px; }
-  .nx-board__pl,
-  .nx-board__w,
-  .nx-board__l { display: none; }
-  .nx-board__mini { display: block; }
+  .nx-board__row {
+    grid-template-columns: 34px minmax(0, 1fr) 30px 30px 30px 62px auto 26px;
+    gap: 7px;
+    padding: 9px 12px;
+  }
+  .nx-board__logo { width: 26px; height: 26px; }
+  .nx-board__team { gap: 9px; }
+  .nx-board__name { font-size: 0.88rem; }
+  .nx-board__rank { font-size: 0.9rem; }
+  .nx-board__num { font-size: 0.82rem; }
+  .nx-board__pts { font-size: 0.95rem; }
+  .nx-medals { gap: 4px; }
+  .nx-medal { padding: 3px 5px; font-size: 0.7rem; gap: 3px; }
+  .nx-board__head { font-size: 0.55rem; letter-spacing: 0.08em; }
 }
 
-/* Phone: two rows inside the same grid rather than a sideways scroll. */
-@media (max-width: 560px) {
-  .nx-board__head { display: none; }
+@media (max-width: 620px) {
+  .nx-board__head,
   .nx-board__row {
-    grid-template-columns: 34px minmax(0, 1fr) auto;
-    grid-template-areas:
-      'rank team fav'
-      'rank pts medals';
-    row-gap: 8px;
-    padding: 12px 14px;
+    grid-template-columns: 26px minmax(0, 1fr) 24px 24px 24px 48px auto 20px;
+    gap: 5px;
+    padding: 8px 9px;
   }
-  .nx-board__rank { grid-area: rank; align-self: start; padding-top: 4px; }
-  .nx-board__team { grid-area: team; }
-  .nx-board__pts { grid-area: pts; text-align: left; }
-  .nx-medals { grid-area: medals; }
-  .nx-fav { grid-area: fav; }
-  .nx-medal { padding: 3px 6px; font-size: 0.72rem; }
+  .nx-board__logo { width: 21px; height: 21px; }
+  .nx-board__team { gap: 7px; }
+  .nx-board__name { font-size: 0.78rem; }
+  .nx-board__rank { font-size: 0.8rem; }
+  .nx-board__num { font-size: 0.72rem; }
+  .nx-board__pts { font-size: 0.82rem; }
+  .nx-board__head { font-size: 0.48rem; letter-spacing: 0.04em; }
+
+  /* The medal chips are the widest thing left, so below this width they drop
+     their icons and keep the count, colour-coded as before. */
+  .nx-medals { gap: 3px; }
+  .nx-medal { padding: 2px 5px; font-size: 0.68rem; gap: 0; }
+  .nx-medal i { display: none; }
+}
+
+@media (max-width: 420px) {
+  .nx-board__head,
+  .nx-board__row {
+    grid-template-columns: 20px minmax(0, 1fr) 20px 20px 20px 40px auto 16px;
+    gap: 4px;
+    padding: 7px;
+  }
+  .nx-board__logo { width: 18px; height: 18px; }
+  .nx-board__name { font-size: 0.7rem; }
+  .nx-board__num { font-size: 0.65rem; }
+  .nx-board__pts { font-size: 0.74rem; }
+  .nx-medal { padding: 2px 4px; font-size: 0.62rem; }
+  .nx-fav { font-size: 0.85rem; padding: 0; }
 }

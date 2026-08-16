@@ -38,7 +38,7 @@
   max-width: 13ch;
   margin: 0 0 24px;
   color: #fff;
-  font-size: clamp(2.8rem, 5.25vw, 5.25rem);
+  font-size: clamp(1.85rem, 5.25vw, 5.25rem);
   line-height: 0.92;
   letter-spacing: -0.055em;
 }
@@ -117,7 +117,7 @@
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 8px 22px rgba(255, 183, 35, 0.2));
   font-family: var(--font-display);
-  font-size: clamp(2.3rem, 4vw, 4.2rem);
+  font-size: clamp(1.7rem, 4vw, 4.2rem);
   line-height: 1;
   letter-spacing: -0.055em;
 }
@@ -578,7 +578,7 @@
 
 @media (max-width: 580px) {
   .tournament-hero { padding-block: 64px 76px; }
-  .tournament-hero__copy h1 { font-size: clamp(2.55rem, 13vw, 4.4rem); }
+  .tournament-hero__copy h1 { font-size: clamp(1.85rem, 13vw, 4.4rem); }
   .tournament-overview__grid { grid-template-columns: 1fr; }
   .tournament-overview__grid > div { border-right: 0; border-bottom: 1px solid var(--border); }
   .tournament-overview__grid > div:last-child { border-bottom: 0; }
@@ -630,7 +630,7 @@
 .prize-monument > strong {
   max-width: 100%;
   white-space: nowrap;
-  font-size: clamp(2.15rem, 3.05vw, 3.55rem);
+  font-size: clamp(1.6rem, 3.05vw, 3.55rem);
   letter-spacing: -.07em;
 }
 
@@ -664,7 +664,7 @@
 
 @media (max-width: 560px) {
   .tournament-hero__inner { width: min(100% - 30px, 760px); }
-  .prize-monument > strong { font-size: clamp(2.05rem, 13vw, 3.1rem); }
+  .prize-monument > strong { font-size: clamp(1.55rem, 13vw, 3.1rem); }
 }
 
 @media (prefers-reduced-motion: reduce) {
