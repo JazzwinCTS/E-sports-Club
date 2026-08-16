@@ -3,21 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tournaments — NextGen E-Sports</title>
-<meta name="description" content="Brackets, prize pools and results for the competitions NextGen E-Sports follows and competes in.">
+<title>2026 Youth Championship — NextGen E-Sports</title>
+<meta name="description" content="Follow the 2026 NextGen Youth Championship across VALORANT, Counter-Strike 2 and PUBG, with live coverage, brackets, results and RM60,000 in prizes.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css">
-<script>
-(function () {
-  try {
-    var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
-    document.documentElement.setAttribute('data-theme', t);
-  } catch (e) { /* storage unavailable — dark stays */ }
-})();
-</script>
+  <link rel="stylesheet" href="css/tournaments.css?v=17">
+<script src="js/theme-init.js"></script>
 </head>
-<body>
+<body class="tournament-page">
 <a class="nx-skip" href="#main">Skip to content</a>
 
 <header class="nx-nav">
@@ -48,46 +42,209 @@
   </nav>
 </header>
 
-<main id="main" class="page-body">
-  <section class="nx-section">
-    <div class="nx-shell">
-
-      <div class="nx-section-head">
-        <p class="nx-eyebrow">Competition</p>
-        <h1 class="nx-mb-0">Tournaments</h1>
-        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
-          Brackets, prize pools and results for the competitions the club follows and competes in.
-          Scheduled club activities live on the <a href="events.html">events calendar</a>.
+<main id="main">
+  <section class="tournament-hero">
+    <div class="nx-shell tournament-hero__inner">
+      <div class="tournament-hero__copy">
+        <p class="nx-eyebrow">Malaysia · 16–18 Youth Competition</p>
+        <h1>THREE GAMES.<br>ONE STAGE.<br>NEW CHAMPIONS.</h1>
+        <p>
+          Eight independent youth organisations compete across VALORANT,
+          Counter-Strike 2 and PUBG for prize money, recognition and the first
+          NextGen Youth Championship.
         </p>
+        <div class="tournament-hero__actions">
+          <a class="nx-btn nx-btn--primary" href="#competition">View competition</a>
+        </div>
       </div>
 
-      <!-- Status toolbar, mirroring design-refs/tournaments.png -->
-      <div class="nx-tabs" id="statusTabs" role="tablist">
-        <button class="nx-tab is-active" data-status="all" role="tab" aria-selected="true">All</button>
-        <button class="nx-tab" data-status="live" role="tab" aria-selected="false">Live</button>
-        <button class="nx-tab" data-status="upcoming" role="tab" aria-selected="false">Upcoming</button>
-        <button class="nx-tab" data-status="completed" role="tab" aria-selected="false">Completed</button>
-      </div>
-
-      <!-- Same shared filter bar as rankings and players -->
-      <div id="tournamentsFilter"></div>
-
-      <div class="nx-grid nx-grid--3" id="tournamentGrid" aria-live="polite"></div>
-
-      <p class="nx-muted" style="font-size:.78rem;margin-top:24px" id="dataNote"></p>
+      <aside class="prize-monument" aria-label="Tournament prize pool">
+        <span class="prize-monument__label">Total prize pool</span>
+        <strong>RM60,000</strong>
+        <span class="prize-monument__note">RM20K in each game division</span>
+        <dl>
+          <div><dt>8</dt><dd>Clubs</dd></div>
+          <div><dt>3</dt><dd>Divisions</dd></div>
+          <div><dt>11</dt><dd>Match days</dd></div>
+          <div><dt>3</dt><dd>Champions</dd></div>
+        </dl>
+      </aside>
     </div>
   </section>
+
+  <section class="tournament-overview" aria-label="Event information">
+    <div class="nx-shell tournament-overview__grid">
+      <div>
+        <span class="tournament-overview__label">Competition dates</span>
+        <strong>7 — 30 Aug 2026</strong>
+      </div>
+      <div>
+        <span class="tournament-overview__label">Grand finals venue</span>
+        <strong>Kuala Lumpur Youth Arena</strong>
+      </div>
+      <div>
+        <span class="tournament-overview__label">Weekly broadcast plan</span>
+        <strong>Fri PUBG · Sat CS2 · Sun VALORANT</strong>
+      </div>
+      <div class="event-countdown" aria-label="Countdown to next match">
+        <span class="tournament-overview__label" id="eventCountdownLabel">Selected division next match</span>
+        <strong id="eventCountdown">Calculating…</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="nx-section competition-section" id="competition">
+    <div class="nx-shell">
+      <div class="competition-heading">
+        <div>
+          <p class="nx-eyebrow">Tournament centre</p>
+          <h2>CHOOSE A DIVISION</h2>
+          <p class="nx-muted">Switch games to view its broadcast, schedule and competition format.</p>
+        </div>
+        <p class="competition-heading__count">8 clubs in every division</p>
+      </div>
+
+      <div class="tournament-game-picker" id="tournamentGamePicker" role="tablist" aria-label="Game divisions">
+        <button class="tournament-game is-active" type="button" data-game="valorant" role="tab" aria-selected="true"
+                style="--game-art:url('../GameArt/valorant-picker.jpg');--game-accent:#ff4655">
+          <img src="GameLogos/valorantLogo.png" alt="">
+          <span><small>Tactical 5v5</small><strong>VALORANT</strong></span>
+          <i class="bi bi-check-lg" aria-hidden="true"></i>
+        </button>
+        <button class="tournament-game" type="button" data-game="cs2" role="tab" aria-selected="false"
+                style="--game-art:url('../GameArt/cs2-profile.png');--game-accent:#f2a900">
+          <img src="GameLogos/CS2Logo.png" alt="">
+          <span><small>Tactical 5v5</small><strong>COUNTER-STRIKE 2</strong></span>
+          <i class="bi bi-check-lg" aria-hidden="true"></i>
+        </button>
+        <button class="tournament-game" type="button" data-game="pubg" role="tab" aria-selected="false"
+                style="--game-art:url('../GameArt/pubg-profile.jpg');--game-accent:#28c58b">
+          <img src="GameLogos/pubgLogo.png" alt="">
+          <span><small>Battle royale</small><strong>PUBG</strong></span>
+          <i class="bi bi-check-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <div class="division-intro" id="divisionIntro" aria-live="polite"></div>
+
+      <section class="broadcast-panel" id="broadcast" aria-labelledby="broadcastTitle">
+        <div class="broadcast-panel__player" id="broadcastPlayer">
+          <div class="broadcast-placeholder">
+            <i class="bi bi-play-circle" aria-hidden="true"></i>
+            <span>Loading the tournament trailer…</span>
+          </div>
+        </div>
+        <div class="broadcast-panel__details">
+          <p class="live-label" id="broadcastLabel"><span></span> Tournament trailer · Shared broadcast channel</p>
+          <p class="nx-eyebrow" id="broadcastStage">Opening match · BO3</p>
+          <div class="broadcast-versus" id="broadcastVersus"></div>
+          <dl class="broadcast-meta">
+            <div><dt>Current map</dt><dd id="broadcastMap">—</dd></div>
+            <div><dt>Starts</dt><dd id="broadcastTime">—</dd></div>
+          </dl>
+          <div class="next-match-clock">
+            <span>Next match</span>
+            <strong id="nextMatchClock">Calculating…</strong>
+            <small id="nextMatchName">Schedule loading…</small>
+          </div>
+          <a class="watch-youtube" id="watchOnYouTube" href="#" target="_blank" rel="noopener" hidden>
+            Watch on YouTube <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+
+      <div class="tournament-content-grid">
+        <section class="schedule-panel" aria-labelledby="scheduleTitle">
+          <div class="panel-heading">
+            <div>
+              <p class="nx-eyebrow">Match centre</p>
+              <h3 id="scheduleTitle">Upcoming matches</h3>
+            </div>
+            <div class="schedule-filter" id="scheduleFilter" role="group" aria-label="Match status">
+              <button class="is-active" type="button" data-status="all">All</button>
+              <button type="button" data-status="live">Live</button>
+              <button type="button" data-status="upcoming">Upcoming</button>
+              <button type="button" data-status="completed">Results</button>
+            </div>
+          </div>
+          <div class="match-list" id="matchList"></div>
+        </section>
+
+        <aside class="division-prize" aria-labelledby="divisionPrizeTitle">
+          <p class="nx-eyebrow">Division rewards</p>
+          <h3 id="divisionPrizeTitle">RM20,000 prize pool</h3>
+          <ol>
+            <li><span><b>01</b> Champion</span><strong>RM10,000</strong></li>
+            <li><span><b>02</b> Runner-up</span><strong>RM6,000</strong></li>
+            <li><span><b>03</b> Third place</span><strong>RM3,000</strong></li>
+            <li><span><b>MVP</b> Most Valuable Player</span><strong>RM1,000</strong></li>
+          </ol>
+        </aside>
+      </div>
+
+      <section class="format-panel" aria-labelledby="formatTitle">
+        <div class="panel-heading">
+          <div>
+            <p class="nx-eyebrow">Competition format</p>
+            <h3 id="formatTitle">Playoff bracket</h3>
+          </div>
+          <p class="nx-muted" id="formatSummary"></p>
+        </div>
+        <div id="formatContent"></div>
+      </section>
+    </div>
+  </section>
+
+  <section class="nx-section rules-section">
+    <div class="nx-shell rules-layout">
+      <div>
+        <p class="nx-eyebrow">Player welfare first</p>
+        <h2>BUILT FOR THE NEXT GENERATION</h2>
+        <p class="nx-muted">
+          Competition rules protect young players while keeping every result fair,
+          transparent and easy to follow.
+        </p>
+      </div>
+      <div class="rules-grid">
+        <article><span>01</span><h3>Age verified</h3><p>Every starter must be aged 16–18 on opening day.</p></article>
+        <article><span>02</span><h3>Game specialists</h3><p>Each division has its own registered roster and dedicated coach.</p></article>
+        <article><span>03</span><h3>Fair play</h3><p>Anti-cheat checks and a published disciplinary process apply.</p></article>
+        <article><span>04</span><h3>Player support</h3><p>Scheduled breaks, guardian consent and safeguarding contacts are required.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <p class="tournament-disclaimer nx-shell" id="tournamentDataNote"></p>
 </main>
+
+<div class="modal fade match-modal" id="matchModal" tabindex="-1" aria-labelledby="matchModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <p class="nx-eyebrow" id="matchModalStage">Match details</p>
+          <h2 class="modal-title" id="matchModalTitle">Match</h2>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="matchModalBody"></div>
+    </div>
+  </div>
+</div>
 
 <footer class="nx-footer">
   <div class="nx-shell">
     <div class="nx-footer__top">
       <div class="nx-footer__brand">
-        <div class="nx-footer__namerow">
-          <a class="nx-wordmark" href="index.html">
-            <span class="nx-wordmark__mark">N</span>
-            <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
-          </a>
+        <a class="nx-wordmark" href="index.html">
+          <span class="nx-wordmark__mark">N</span>
+          Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
+        </a>
+        <p class="nx-footer__tag">
+          A youth esports platform helping Malaysia's next generation compete,
+          improve and get noticed.
+        </p>
+      </div>
 
           <div class="nx-social">
             <div class="nx-social__widget">
@@ -123,24 +280,23 @@
     </div>
 
     <div class="nx-footer__bottom">
-      <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
+      <span>&copy; 2026–<span id="copyYear">2026</span> NextGen E-Sports</span>
       <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
       <a href="about.html">About</a>
       <a href="register.html">Join us</a>
     </div>
     <p class="nx-disclaimer">
-      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
-      competitive statistics shown are not verified results.
+      Coursework prototype. NextGen E-Sports, its organisations, tournament results,
+      rewards, live labels and score updates are fictional simulations. All portrait imagery is AI-generated.
     </p>
   </div>
 </footer>
 
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
+  <h3 class="tournament-cookie-title">Cookies on this site</h3>
+  <p class="nx-muted nx-mb-0 tournament-cookie-copy">
     We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-    here before, plus local and session storage for your theme, filters and saved entries.
-    Nothing is sent anywhere — this site has no server.
+    here before, plus local and session storage for your theme and page preferences.
   </p>
   <div class="nx-cookie__actions">
     <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
@@ -151,10 +307,8 @@
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
 <script src="js/storage.js"></script>
-<script src="js/render.js"></script>
-<script src="js/filter.js"></script>
 <script src="js/main.js"></script>
-<script src="js/tournaments.js"></script>
+<script src="js/tournaments.js?v=21"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

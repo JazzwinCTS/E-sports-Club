@@ -1,0 +1,149 @@
+{
+  "_source": "Coursework prototype data for the fictional 2026 NextGen Youth Championship. Organisations, fixtures, scores, prizes, MVP awards and live score updates are illustrative simulations.",
+  "_fetchedAt": "2026-08-16",
+  "_note": "The page reads this local JSON at runtime. The MYT fixture clock automatically controls upcoming, live and completed states; YouTube is embedded as the shared coursework broadcast channel.",
+  "tournaments": [
+    {
+      "id": "nextgen-valorant-2026",
+      "name": "NextGen Youth Championship — VALORANT",
+      "game": "valorant",
+      "gameLabel": "VALORANT",
+      "gameLogo": "GameLogos/valorantLogo.png",
+      "thumbnail": "TournamentThumbnail/valorantTournament.png",
+      "status": "ongoing",
+      "startDate": "2026-08-09",
+      "endDate": "2026-08-30",
+      "prizePool": 20000,
+      "teams": 8,
+      "format": "Eight-team single elimination",
+      "champion": null
+    },
+    {
+      "id": "nextgen-cs2-2026",
+      "name": "NextGen Youth Championship — CS2",
+      "game": "cs2",
+      "gameLabel": "Counter-Strike 2",
+      "gameLogo": "GameLogos/CS2Logo.png",
+      "thumbnail": "TournamentThumbnail/CS2Tournament.png",
+      "status": "ongoing",
+      "startDate": "2026-08-08",
+      "endDate": "2026-08-29",
+      "prizePool": 20000,
+      "teams": 8,
+      "format": "Eight-team single elimination",
+      "champion": null
+    },
+    {
+      "id": "nextgen-pubg-2026",
+      "name": "NextGen Youth Championship — PUBG",
+      "game": "pubg",
+      "gameLabel": "PUBG",
+      "gameLogo": "GameLogos/pubgLogo.png",
+      "thumbnail": "TournamentThumbnail/pubgTournament.png",
+      "status": "ongoing",
+      "startDate": "2026-08-07",
+      "endDate": "2026-08-21",
+      "prizePool": 20000,
+      "teams": 8,
+      "format": "Fifteen-round cumulative points series",
+      "champion": null
+    }
+  ],
+  "championship": {
+    "name": "2026 NextGen Youth Championship",
+    "startDateTime": "2026-08-07T18:00:00+08:00",
+    "totalPrize": 60000,
+    "divisionPrize": 20000,
+    "broadcastMode": "trailer",
+    "trailerFile": "TournamentVideo/nextgen-youth-championship-promo.mp4",
+    "liveVideoId": "d8N2FT2jTyU",
+    "simulation": {
+      "game": "valorant",
+      "matchId": "val-qf4",
+      "scoreTimeline": [
+        { "at": 0, "homeScore": 0, "awayScore": 0, "map": "Ascent", "label": "Map 1" },
+        { "at": 6, "homeScore": 1, "awayScore": 0, "map": "Ascent", "label": "Map 1 complete" },
+        { "at": 13, "homeScore": 1, "awayScore": 1, "map": "Haven", "label": "Map 2 complete" },
+        { "at": 20, "homeScore": 2, "awayScore": 1, "map": "Lotus", "label": "Final map" }
+      ]
+    },
+    "teams": [
+      { "id": "vyne", "code": "VYNE", "logo": "TeamLogo/vyne.png", "color": "#e23b4d" },
+      { "id": "kova", "code": "KOVA", "logo": "TeamLogo/kova.png", "color": "#e6a126" },
+      { "id": "rift", "code": "RIFT", "logo": "TeamLogo/rift.png", "color": "#3478e5" },
+      { "id": "zera", "code": "ZERA", "logo": "TeamLogo/zera.png", "color": "#c84edc" },
+      { "id": "axen", "code": "AXEN", "logo": "TeamLogo/axen.png", "color": "#16a678" },
+      { "id": "mira", "code": "MIRA", "logo": "TeamLogo/mira.png", "color": "#ef762f" },
+      { "id": "talo", "code": "TALO", "logo": "TeamLogo/talo.png", "color": "#159bb5" },
+      { "id": "brix", "code": "BRIX", "logo": "TeamLogo/brix.png", "color": "#8255d9" }
+    ],
+    "games": {
+      "valorant": {
+        "label": "VALORANT",
+        "accent": "#ff4655",
+        "formatLabel": "Single elimination · BO3 / BO5 final",
+        "description": "Eight five-player squads enter a direct knockout bracket. Quarter-finals and semi-finals are best-of-three; the Grand Final expands to best-of-five.",
+        "broadcast": { "stage": "Quarter-final 4 · BO3", "home": "zera", "away": "mira", "homeScore": 0, "awayScore": 0, "map": "Ascent", "time": "16 Aug · 4:00 PM" },
+        "matches": [
+          { "id": "val-qf1", "round": "Quarter-finals", "date": "9 Aug", "time": "12:00 PM", "status": "completed", "bestOf": "BO3", "home": "vyne", "away": "brix", "homeScore": 2, "awayScore": 1, "maps": [{ "name": "Ascent", "home": 13, "away": 8 }, { "name": "Haven", "home": 10, "away": 13 }, { "name": "Lotus", "home": 13, "away": 6 }] },
+          { "id": "val-qf2", "round": "Quarter-finals", "date": "9 Aug", "time": "4:00 PM", "status": "completed", "bestOf": "BO3", "home": "rift", "away": "axen", "homeScore": 0, "awayScore": 2, "maps": [{ "name": "Haven", "home": 9, "away": 13 }, { "name": "Bind", "home": 11, "away": 13 }] },
+          { "id": "val-qf3", "round": "Quarter-finals", "date": "16 Aug", "time": "12:00 PM", "status": "completed", "bestOf": "BO3", "home": "kova", "away": "talo", "homeScore": 2, "awayScore": 1, "maps": [{ "name": "Lotus", "home": 13, "away": 9 }, { "name": "Ascent", "home": 8, "away": 13 }, { "name": "Bind", "home": 13, "away": 11 }] },
+          { "id": "val-qf4", "round": "Quarter-finals", "date": "16 Aug", "time": "4:00 PM", "status": "upcoming", "bestOf": "BO3", "home": "zera", "away": "mira", "homeScore": null, "awayScore": null, "maps": [{ "name": "Ascent", "home": null, "away": null }, { "name": "Haven", "home": null, "away": null }, { "name": "Lotus", "home": null, "away": null }] },
+          { "id": "val-sf1", "round": "Semi-finals", "date": "23 Aug", "time": "12:00 PM", "status": "upcoming", "bestOf": "BO3", "home": "vyne", "away": "axen", "homeScore": null, "awayScore": null, "sourceHome": "Winner QF1", "sourceAway": "Winner QF2", "maps": [] },
+          { "id": "val-sf2", "round": "Semi-finals", "date": "23 Aug", "time": "4:00 PM", "status": "upcoming", "bestOf": "BO3", "home": "kova", "away": null, "homeScore": null, "awayScore": null, "sourceHome": "Winner QF3", "sourceAway": "Winner QF4", "maps": [] },
+          { "id": "val-final", "round": "Grand Final", "date": "30 Aug", "time": "1:00 PM", "status": "upcoming", "bestOf": "BO5", "home": null, "away": null, "homeScore": null, "awayScore": null, "sourceHome": "Winner SF1", "sourceAway": "Winner SF2", "maps": [] }
+        ]
+      },
+      "cs2": {
+        "label": "COUNTER-STRIKE 2",
+        "accent": "#f2a900",
+        "formatLabel": "Single elimination · BO3 / BO5 final",
+        "description": "Eight five-player line-ups play a traditional knockout event. Every early-round match is best-of-three, followed by a best-of-five arena Grand Final.",
+        "broadcast": { "stage": "Semi-final 1 · BO3", "home": "kova", "away": "vyne", "homeScore": 0, "awayScore": 0, "map": "Mirage", "time": "22 Aug · 12:00 PM" },
+        "matches": [
+          { "id": "cs-qf1", "round": "Quarter-finals", "date": "8 Aug", "time": "12:00 PM", "status": "completed", "bestOf": "BO3", "home": "kova", "away": "mira", "homeScore": 2, "awayScore": 1, "maps": [{ "name": "Mirage", "home": 13, "away": 7 }, { "name": "Ancient", "home": 9, "away": 13 }, { "name": "Nuke", "home": 13, "away": 10 }] },
+          { "id": "cs-qf2", "round": "Quarter-finals", "date": "8 Aug", "time": "4:00 PM", "status": "completed", "bestOf": "BO3", "home": "vyne", "away": "zera", "homeScore": 2, "awayScore": 0, "maps": [{ "name": "Dust II", "home": 13, "away": 8 }, { "name": "Inferno", "home": 13, "away": 11 }] },
+          { "id": "cs-qf3", "round": "Quarter-finals", "date": "15 Aug", "time": "12:00 PM", "status": "completed", "bestOf": "BO3", "home": "rift", "away": "talo", "homeScore": 1, "awayScore": 2, "maps": [{ "name": "Nuke", "home": 13, "away": 9 }, { "name": "Mirage", "home": 10, "away": 13 }, { "name": "Inferno", "home": 11, "away": 13 }] },
+          { "id": "cs-qf4", "round": "Quarter-finals", "date": "15 Aug", "time": "4:00 PM", "status": "completed", "bestOf": "BO3", "home": "axen", "away": "brix", "homeScore": 2, "awayScore": 1, "maps": [{ "name": "Ancient", "home": 13, "away": 8 }, { "name": "Dust II", "home": 9, "away": 13 }, { "name": "Mirage", "home": 13, "away": 11 }] },
+          { "id": "cs-sf1", "round": "Semi-finals", "date": "22 Aug", "time": "12:00 PM", "status": "upcoming", "bestOf": "BO3", "home": "kova", "away": "vyne", "homeScore": null, "awayScore": null, "sourceHome": "Winner QF1", "sourceAway": "Winner QF2", "maps": [] },
+          { "id": "cs-sf2", "round": "Semi-finals", "date": "22 Aug", "time": "4:00 PM", "status": "upcoming", "bestOf": "BO3", "home": "talo", "away": "axen", "homeScore": null, "awayScore": null, "sourceHome": "Winner QF3", "sourceAway": "Winner QF4", "maps": [] },
+          { "id": "cs-final", "round": "Grand Final", "date": "29 Aug", "time": "1:00 PM", "status": "upcoming", "bestOf": "BO5", "home": null, "away": null, "homeScore": null, "awayScore": null, "sourceHome": "Winner SF1", "sourceAway": "Winner SF2", "maps": [] }
+        ]
+      },
+      "pubg": {
+        "label": "PUBG",
+        "accent": "#28c58b",
+        "formatLabel": "15 rounds · five official-style matches each Friday",
+        "description": "All eight four-player squads share the same lobby. Placement and elimination points accumulate across three Friday match days of five rounds, rewarding consistency instead of head-to-head elimination.",
+        "broadcast": { "stage": "League Day 3 · Rounds 11–15", "home": "rift", "away": "vyne", "homeScore": 88, "awayScore": 85, "map": "Rondo", "time": "21 Aug · 6:00 PM" },
+        "rounds": [
+          { "id": "pubg-r1", "number": 1, "date": "7 Aug", "time": "6:00 PM", "map": "Erangel", "status": "completed", "winner": "vyne" },
+          { "id": "pubg-r2", "number": 2, "date": "7 Aug", "time": "7:00 PM", "map": "Miramar", "status": "completed", "winner": "rift" },
+          { "id": "pubg-r3", "number": 3, "date": "7 Aug", "time": "8:00 PM", "map": "Rondo", "status": "completed", "winner": "kova" },
+          { "id": "pubg-r4", "number": 4, "date": "7 Aug", "time": "9:00 PM", "map": "Taego", "status": "completed", "winner": "axen" },
+          { "id": "pubg-r5", "number": 5, "date": "7 Aug", "time": "10:00 PM", "map": "Erangel", "status": "completed", "winner": "talo" },
+          { "id": "pubg-r6", "number": 6, "date": "14 Aug", "time": "6:00 PM", "map": "Miramar", "status": "completed", "winner": "zera" },
+          { "id": "pubg-r7", "number": 7, "date": "14 Aug", "time": "7:00 PM", "map": "Rondo", "status": "completed", "winner": "vyne" },
+          { "id": "pubg-r8", "number": 8, "date": "14 Aug", "time": "8:00 PM", "map": "Taego", "status": "completed", "winner": "rift" },
+          { "id": "pubg-r9", "number": 9, "date": "14 Aug", "time": "9:00 PM", "map": "Erangel", "status": "completed", "winner": "mira" },
+          { "id": "pubg-r10", "number": 10, "date": "14 Aug", "time": "10:00 PM", "map": "Miramar", "status": "completed", "winner": "kova" },
+          { "id": "pubg-r11", "number": 11, "date": "21 Aug", "time": "6:00 PM", "map": "Rondo", "status": "upcoming", "winner": null },
+          { "id": "pubg-r12", "number": 12, "date": "21 Aug", "time": "7:00 PM", "map": "Taego", "status": "upcoming", "winner": null },
+          { "id": "pubg-r13", "number": 13, "date": "21 Aug", "time": "8:00 PM", "map": "Erangel", "status": "upcoming", "winner": null },
+          { "id": "pubg-r14", "number": 14, "date": "21 Aug", "time": "9:00 PM", "map": "Miramar", "status": "upcoming", "winner": null },
+          { "id": "pubg-r15", "number": 15, "date": "21 Aug", "time": "10:00 PM", "map": "Rondo", "status": "upcoming", "winner": null }
+        ],
+        "standings": [
+          { "team": "rift", "played": 10, "placement": 36, "eliminations": 52, "total": 88 },
+          { "team": "vyne", "played": 10, "placement": 41, "eliminations": 44, "total": 85 },
+          { "team": "kova", "played": 10, "placement": 32, "eliminations": 48, "total": 80 },
+          { "team": "axen", "played": 10, "placement": 35, "eliminations": 40, "total": 75 },
+          { "team": "talo", "played": 10, "placement": 29, "eliminations": 43, "total": 72 },
+          { "team": "zera", "played": 10, "placement": 31, "eliminations": 37, "total": 68 },
+          { "team": "mira", "played": 10, "placement": 27, "eliminations": 39, "total": 66 },
+          { "team": "brix", "played": 10, "placement": 24, "eliminations": 34, "total": 58 }
+        ]
+      }
+    }
+  }
+}

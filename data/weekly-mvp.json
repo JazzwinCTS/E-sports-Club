@@ -1,0 +1,248 @@
+{
+  "_source": "Fictional Weekly MVP archive for the NextGen Youth Championship coursework prototype.",
+  "_note": "Each division has its own reveal time. Add the selected player and publishedAt after that division's final weekly match; the page hides future selections automatically.",
+  "updateSchedule": "PUBG reveals after Friday, Counter-Strike 2 after Saturday and VALORANT after Sunday, using Malaysia time.",
+  "weeks": [
+    {
+      "id": "week-5",
+      "label": "Finals Week",
+      "period": "29–30 Aug 2026",
+      "published": true,
+      "publishedAt": "2026-08-29T19:30:00+08:00",
+      "mvps": [
+        {
+          "game": "valorant",
+          "publishedAt": "2026-08-30T18:00:00+08:00",
+          "teamId": "vyne",
+          "playerId": "player-005",
+          "metrics": [
+            { "label": "ACS", "value": "246", "score": 86 },
+            { "label": "K/D", "value": "1.25", "score": 87 },
+            { "label": "ADR", "value": "158", "score": 84 },
+            { "label": "KAST", "value": "82%", "score": 94 },
+            { "label": "First Kills", "value": "9", "score": 79 },
+            { "label": "Clutches", "value": "5", "score": 96 }
+          ]
+        },
+        {
+          "game": "cs2",
+          "publishedAt": "2026-08-29T19:30:00+08:00",
+          "teamId": "kova",
+          "playerId": "player-021",
+          "metrics": [
+            { "label": "Rating", "value": "1.36", "score": 95 },
+            { "label": "K/D", "value": "1.33", "score": 92 },
+            { "label": "ADR", "value": "89.7", "score": 94 },
+            { "label": "KAST", "value": "79%", "score": 90 },
+            { "label": "Opening Duels", "value": "65%", "score": 89 },
+            { "label": "Clutches", "value": "4", "score": 88 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "week-4",
+      "label": "Week 4",
+      "period": "21–23 Aug 2026",
+      "published": true,
+      "publishedAt": "2026-08-21T23:00:00+08:00",
+      "mvps": [
+        {
+          "game": "valorant",
+          "publishedAt": "2026-08-23T19:00:00+08:00",
+          "teamId": "zera",
+          "playerId": "player-043",
+          "metrics": [
+            { "label": "ACS", "value": "286", "score": 96 },
+            { "label": "K/D", "value": "1.38", "score": 93 },
+            { "label": "ADR", "value": "176", "score": 95 },
+            { "label": "KAST", "value": "80%", "score": 90 },
+            { "label": "First Kills", "value": "16", "score": 97 },
+            { "label": "Clutches", "value": "3", "score": 84 }
+          ]
+        },
+        {
+          "game": "cs2",
+          "publishedAt": "2026-08-22T19:30:00+08:00",
+          "teamId": "axen",
+          "playerId": "player-062",
+          "metrics": [
+            { "label": "Rating", "value": "1.29", "score": 91 },
+            { "label": "K/D", "value": "1.27", "score": 88 },
+            { "label": "ADR", "value": "85.8", "score": 89 },
+            { "label": "KAST", "value": "77%", "score": 86 },
+            { "label": "Opening Duels", "value": "70%", "score": 96 },
+            { "label": "Clutches", "value": "2", "score": 80 }
+          ]
+        },
+        {
+          "game": "pubg",
+          "publishedAt": "2026-08-21T23:00:00+08:00",
+          "teamId": "brix",
+          "playerId": "player-109",
+          "metrics": [
+            { "label": "Eliminations", "value": "20", "score": 96 },
+            { "label": "Damage", "value": "2,284", "score": 97 },
+            { "label": "Knocks", "value": "24", "score": 94 },
+            { "label": "Assists", "value": "9", "score": 81 },
+            { "label": "Survival", "value": "81 min", "score": 95 },
+            { "label": "Team Placement", "value": "1st", "score": 98 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "week-3",
+      "label": "Week 3",
+      "period": "14–16 Aug 2026",
+      "published": true,
+      "publishedAt": "2026-08-14T23:00:00+08:00",
+      "mvps": [
+        {
+          "game": "valorant",
+          "publishedAt": "2026-08-16T19:00:00+08:00",
+          "teamId": "vyne",
+          "playerId": "player-001",
+          "metrics": [
+            { "label": "ACS", "value": "278", "score": 93 },
+            { "label": "K/D", "value": "1.34", "score": 89 },
+            { "label": "ADR", "value": "171", "score": 91 },
+            { "label": "KAST", "value": "78%", "score": 86 },
+            { "label": "First Kills", "value": "14", "score": 95 },
+            { "label": "Clutches", "value": "3", "score": 82 }
+          ]
+        },
+        {
+          "game": "cs2",
+          "publishedAt": "2026-08-15T19:30:00+08:00",
+          "teamId": "kova",
+          "playerId": "player-020",
+          "metrics": [
+            { "label": "Rating", "value": "1.31", "score": 92 },
+            { "label": "K/D", "value": "1.29", "score": 88 },
+            { "label": "ADR", "value": "86.4", "score": 90 },
+            { "label": "KAST", "value": "76%", "score": 85 },
+            { "label": "Opening Duels", "value": "68%", "score": 94 },
+            { "label": "Clutches", "value": "4", "score": 87 }
+          ]
+        },
+        {
+          "game": "pubg",
+          "publishedAt": "2026-08-14T23:00:00+08:00",
+          "teamId": "rift",
+          "playerId": "player-039",
+          "metrics": [
+            { "label": "Eliminations", "value": "18", "score": 91 },
+            { "label": "Damage", "value": "2,146", "score": 94 },
+            { "label": "Knocks", "value": "22", "score": 89 },
+            { "label": "Assists", "value": "11", "score": 84 },
+            { "label": "Survival", "value": "78 min", "score": 92 },
+            { "label": "Team Placement", "value": "2nd", "score": 90 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "week-2",
+      "label": "Week 2",
+      "period": "7–9 Aug 2026",
+      "published": true,
+      "publishedAt": "2026-08-10T09:00:00+08:00",
+      "mvps": [
+        {
+          "game": "valorant",
+          "publishedAt": "2026-08-09T19:30:00+08:00",
+          "teamId": "axen",
+          "playerId": "player-057",
+          "metrics": [
+            { "label": "ACS", "value": "264", "score": 89 },
+            { "label": "K/D", "value": "1.28", "score": 86 },
+            { "label": "ADR", "value": "164", "score": 87 },
+            { "label": "KAST", "value": "76%", "score": 83 },
+            { "label": "First Kills", "value": "12", "score": 90 },
+            { "label": "Clutches", "value": "2", "score": 77 }
+          ]
+        },
+        {
+          "game": "cs2",
+          "publishedAt": "2026-08-08T19:30:00+08:00",
+          "teamId": "talo",
+          "playerId": "player-090",
+          "metrics": [
+            { "label": "Rating", "value": "1.25", "score": 88 },
+            { "label": "K/D", "value": "1.22", "score": 85 },
+            { "label": "ADR", "value": "82.1", "score": 86 },
+            { "label": "KAST", "value": "74%", "score": 81 },
+            { "label": "Opening Duels", "value": "63%", "score": 88 },
+            { "label": "Clutches", "value": "3", "score": 83 }
+          ]
+        },
+        {
+          "game": "pubg",
+          "publishedAt": "2026-08-07T23:00:00+08:00",
+          "teamId": "zera",
+          "playerId": "player-053",
+          "metrics": [
+            { "label": "Eliminations", "value": "15", "score": 86 },
+            { "label": "Damage", "value": "1,924", "score": 88 },
+            { "label": "Knocks", "value": "18", "score": 84 },
+            { "label": "Assists", "value": "13", "score": 89 },
+            { "label": "Survival", "value": "74 min", "score": 87 },
+            { "label": "Team Placement", "value": "3rd", "score": 85 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "week-1",
+      "label": "Week 1",
+      "period": "31 Jul–2 Aug 2026",
+      "published": true,
+      "publishedAt": "2026-08-03T09:00:00+08:00",
+      "mvps": [
+        {
+          "game": "valorant",
+          "publishedAt": "2026-08-02T19:30:00+08:00",
+          "teamId": "brix",
+          "playerId": "player-099",
+          "metrics": [
+            { "label": "ACS", "value": "251", "score": 85 },
+            { "label": "K/D", "value": "1.21", "score": 82 },
+            { "label": "ADR", "value": "158", "score": 84 },
+            { "label": "KAST", "value": "75%", "score": 81 },
+            { "label": "First Kills", "value": "11", "score": 86 },
+            { "label": "Clutches", "value": "3", "score": 82 }
+          ]
+        },
+        {
+          "game": "cs2",
+          "publishedAt": "2026-08-01T19:30:00+08:00",
+          "teamId": "mira",
+          "playerId": "player-076",
+          "metrics": [
+            { "label": "Rating", "value": "1.19", "score": 84 },
+            { "label": "K/D", "value": "1.17", "score": 81 },
+            { "label": "ADR", "value": "79.8", "score": 83 },
+            { "label": "KAST", "value": "73%", "score": 80 },
+            { "label": "Opening Duels", "value": "59%", "score": 84 },
+            { "label": "Clutches", "value": "2", "score": 78 }
+          ]
+        },
+        {
+          "game": "pubg",
+          "publishedAt": "2026-07-31T23:00:00+08:00",
+          "teamId": "vyne",
+          "playerId": "player-011",
+          "metrics": [
+            { "label": "Eliminations", "value": "14", "score": 84 },
+            { "label": "Damage", "value": "1,806", "score": 85 },
+            { "label": "Knocks", "value": "17", "score": 82 },
+            { "label": "Assists", "value": "10", "score": 81 },
+            { "label": "Survival", "value": "71 min", "score": 84 },
+            { "label": "Team Placement", "value": "1st", "score": 92 }
+          ]
+        }
+      ]
+    }
+  ]
+}

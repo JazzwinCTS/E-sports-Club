@@ -3,19 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Player Profiles — NextGen E-Sports</title>
-<meta name="description" content="A reference database of competitive players across Valorant, Counter-Strike and PUBG.">
+<title>Player Directory — Youth Esports League</title>
+<meta name="description" content="Explore 16–18-year-old VALORANT, Counter-Strike 2 and PUBG players representing eight independent youth esports teams.">
+<title>Player Directory — Youth Esports League</title>
+<meta name="description" content="Explore 16–18-year-old VALORANT, Counter-Strike 2 and PUBG players representing eight independent youth esports teams.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css">
-<script>
-(function () {
-  try {
-    var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
-    document.documentElement.setAttribute('data-theme', t);
-  } catch (e) { /* storage unavailable — dark stays */ }
-})();
-</script>
+  <link rel="stylesheet" href="css/players.css?v=18">
+<script src="js/theme-init.js"></script>
 </head>
 <body>
 <a class="nx-skip" href="#main">Skip to content</a>
@@ -48,38 +44,175 @@
   </nav>
 </header>
 
-<main id="main" class="page-body">
-  <section class="nx-section">
-    <div class="nx-shell">
-
-      <div class="nx-section-head">
-        <p class="nx-eyebrow">Scene database</p>
-        <h1 class="nx-mb-0">Player profiles</h1>
-        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
-          A reference database of competitive players across Valorant, Counter-Strike and PUBG —
-          the three titles the club plays. Your last filter is remembered for your next visit.
-          For team standings see <a href="rankings.html">rankings</a>.
-        </p>
+<main id="main" class="page-body players-page">
+  <section class="players-hero">
+    <div class="nx-shell players-hero__inner">
+      <div class="mvp-heading">
+        <div>
+          <p class="nx-eyebrow" id="mvpDeskLabel">Latest published performance desk</p>
+          <h1>Weekly MVP</h1>
+          <p class="mvp-heading__manifesto">BUILT UNDER PRESSURE. PROVEN BY THE NUMBERS.<br>CROWNED WHEN THE FINAL MATCH ENDS.</p>
+        </div>
+        <div class="mvp-control-stack">
+          <label class="mvp-week-picker" for="mvpWeekSelect">
+            <span>Previous weeks</span>
+            <select id="mvpWeekSelect" aria-label="Choose a published MVP week"></select>
+          </label>
+          <div class="mvp-controls" aria-label="Weekly MVP controls">
+            <button class="mvp-arrow" id="mvpPrev" type="button" aria-label="Previous MVP"><i class="bi bi-arrow-left"></i></button>
+            <div class="mvp-tabs" id="mvpTabs" role="tablist" aria-label="MVP game division"></div>
+            <button class="mvp-arrow" id="mvpNext" type="button" aria-label="Next MVP"><i class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
       </div>
 
-      <div id="playersFilter"></div>
+      <div class="mvp-stage" id="mvpStage" aria-live="polite">
+        <div class="mvp-metric-ring mvp-metric-ring--left" id="mvpMetricsLeft"></div>
+        <div class="mvp-player">
+          <div class="mvp-player__halo"></div>
+          <div class="mvp-player__pending" id="mvpPendingSilhouette" aria-hidden="true">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <img id="mvpPlayerPhoto" src="" alt="">
+          <div class="mvp-player__identity">
+            <img id="mvpTeamLogo" src="" alt="">
+            <h2 id="mvpIgn"></h2>
+          </div>
+        </div>
+        <div class="mvp-radar-card">
+          <div class="mvp-radar-card__heading"><span id="mvpWeek">Week 3</span><strong id="mvpGame">VALORANT</strong></div>
+          <canvas id="mvpRadar" width="430" height="430" aria-label="Weekly MVP performance radar chart"></canvas>
+        </div>
+        <div class="mvp-metric-ring mvp-metric-ring--right" id="mvpMetricsRight"></div>
+        <div class="mvp-story">
+          <button class="nx-btn nx-btn--primary nx-btn--sm" id="mvpProfileButton" type="button">View player profile</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      <div class="nx-grid nx-grid--4" id="playerGrid" aria-live="polite"></div>
+  <section class="nx-section players-browser" id="game-picker">
+    <div class="nx-shell">
+      <div class="players-section-heading">
+        <div>
+          <p class="nx-eyebrow">Player directory</p>
+          <h2>Choose a game division</h2>
+          <p class="nx-muted">Switch divisions at any time, then choose a team to view its story, honours and full roster.</p>
+        </div>
+        <p class="players-count" id="playersCount" aria-live="polite">Choose a division</p>
+      </div>
 
-      <p class="nx-muted" style="font-size:.78rem;margin-top:24px" id="dataNote"></p>
+      <div class="game-picker" id="gamePicker" role="list" aria-label="Game divisions"></div>
+
+      <div class="teams-panel" id="teamsPanel" hidden>
+        <div class="teams-panel__heading">
+          <div>
+            <p class="nx-eyebrow" id="divisionEyebrow">Division</p>
+            <h2 id="divisionTitle">Teams</h2>
+          </div>
+        </div>
+        <div class="team-grid" id="teamGrid" aria-live="polite"></div>
+      </div>
+
+      <div class="players-loading" id="playersLoading" role="status">
+        <span class="nx-spinner" aria-hidden="true"></span>
+        Loading league rosters…
+      </div>
+      <div class="players-loading" id="playersLoading" role="status">
+        <span class="nx-spinner" aria-hidden="true"></span>
+        Loading league rosters…
+      </div>
+
+      <p class="players-data-note" id="dataNote"></p>
+      <p class="players-data-note" id="dataNote"></p>
     </div>
   </section>
 </main>
+
+<div class="modal fade team-modal" id="teamModal" tabindex="-1" aria-labelledby="teamModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header team-modal__header">
+        <div class="team-modal__identity">
+          <div class="team-mark team-mark--large" id="teamModalMark" aria-hidden="true"></div>
+          <div>
+            <p class="team-modal__division" id="teamModalDivision"></p>
+            <h2 class="modal-title" id="teamModalTitle"></h2>
+            <p class="team-modal__meta" id="teamModalMeta"></p>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="team-modal__overview">
+          <section>
+            <p class="nx-eyebrow">Team introduction</p>
+            <p class="team-modal__intro" id="teamModalIntro"></p>
+          </section>
+          <section>
+            <p class="nx-eyebrow">Recent honours</p>
+            <ul class="team-honours" id="teamModalHonours"></ul>
+          </section>
+        </div>
+
+        <section class="team-coaches" aria-labelledby="teamCoachTitle">
+          <div class="team-coaches__heading">
+            <p class="nx-eyebrow">Coaching staff</p>
+            <h3 id="teamCoachTitle">Division specialist coach</h3>
+          </div>
+          <div class="team-coaches__grid" id="teamCoachGrid"></div>
+        </section>
+
+        <div class="team-modal__roster-heading">
+          <div>
+            <p class="nx-eyebrow">Starting line-up</p>
+            <h3 id="teamModalRosterTitle">Players</h3>
+          </div>
+          <span class="team-modal__roster-count" id="teamModalRosterCount"></span>
+        </div>
+        <div class="roster-grid" id="teamModalRoster"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade player-profile-modal" id="playerProfileModal" tabindex="-1" aria-labelledby="playerProfileTitle" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <button type="button" class="btn-close player-profile-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="player-profile-modal__backdrop" aria-hidden="true"></div>
+      <div class="modal-body player-profile" id="playerProfileBody">
+        <div class="player-profile__portrait"><img id="playerProfilePhoto" src="" alt=""></div>
+        <div class="player-profile__content">
+          <p class="player-profile__game" id="playerProfileGame"></p>
+          <div class="player-profile__team"><img id="playerProfileTeamLogo" src="" alt=""><span id="playerProfileTeam"></span></div>
+          <h2 id="playerProfileTitle"></h2>
+          <p class="player-profile__real-name" id="playerProfileName"></p>
+          <dl class="player-profile__facts">
+            <div><dt>Age</dt><dd id="playerProfileAge"></dd></div>
+            <div><dt>Role</dt><dd id="playerProfileRole"></dd></div>
+            <div><dt>Base</dt><dd id="playerProfileBase"></dd></div>
+          </dl>
+          <p class="player-profile__note">Fictional youth league profile. The role shown follows the common competitive terminology used by this game.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer class="nx-footer">
   <div class="nx-shell">
     <div class="nx-footer__top">
       <div class="nx-footer__brand">
-        <div class="nx-footer__namerow">
-          <a class="nx-wordmark" href="index.html">
-            <span class="nx-wordmark__mark">N</span>
-            <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
-          </a>
+        <a class="nx-wordmark" href="index.html">
+          <span class="nx-wordmark__mark">N</span>
+          Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
+        </a>
+        <p class="nx-footer__tag">
+          An independent youth league creating a visible pathway for emerging players aged 16–18.
+          An independent youth league creating a visible pathway for emerging players aged 16–18.
+        </p>
+      </div>
 
           <div class="nx-social">
             <div class="nx-social__widget">
@@ -121,17 +254,22 @@
       <a href="register.html">Join us</a>
     </div>
     <p class="nx-disclaimer">
-      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
-      competitive statistics shown are not verified results.
+      Coursework prototype. All teams, histories and player identities shown on this page are fictional;
+      generated portraits will be illustrative and will not represent real minors.
+      Coursework prototype. All teams, histories and player identities shown on this page are fictional;
+      generated portraits will be illustrative and will not represent real minors.
     </p>
   </div>
 </footer>
 
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
+  <h3 class="players-cookie-title">Cookies on this site</h3>
+  <p class="nx-muted nx-mb-0 players-cookie-copy">
+  <h3 class="players-cookie-title">Cookies on this site</h3>
+  <p class="nx-muted nx-mb-0 players-cookie-copy">
     We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-    here before, plus local and session storage for your theme, filters and saved entries.
+    here before, plus local and session storage for your theme and selected game.
+    here before, plus local and session storage for your theme and selected game.
     Nothing is sent anywhere — this site has no server.
   </p>
   <div class="nx-cookie__actions">
@@ -143,10 +281,8 @@
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
 <script src="js/storage.js"></script>
-<script src="js/render.js"></script>
-<script src="js/filter.js"></script>
 <script src="js/main.js"></script>
-<script src="js/players.js"></script>
+<script src="js/players.js?v=11"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
