@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/register.css">
 <script>
 (function () {
   try {
@@ -52,95 +53,154 @@
   <section class="nx-section">
     <div class="nx-shell">
 
-      <div class="nx-section-head">
-        <p class="nx-eyebrow">Membership</p>
-        <h1 class="nx-mb-0">Join NextGen</h1>
-        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
-          Open to amateur players and students across Valorant, Counter-Strike and PUBG — no
-          experience required. Fill this in and someone from the club will reach out. Your
-          progress is kept in this tab while you type, so a refresh will not lose it.
-        </p>
+      <!-- Sign-up state. js/register.js swaps this for #joinedPanel below once
+           an account exists in localStorage `registrations`. -->
+      <div id="joinPanel">
+        <div class="nx-section-head">
+          <p class="nx-eyebrow">Membership</p>
+          <h1 class="nx-mb-0">Join NextGen</h1>
+          <p class="nx-muted" style="max-width:62ch;margin-top:14px">
+            Open to amateur players and students across Valorant, Counter-Strike and PUBG — no
+            experience required. Fill this in and your member account is created straight away.
+            Every field is checked as you type: a green edge means it is good to go.
+          </p>
+        </div>
+
+        <div class="nx-grid nx-grid--2" style="align-items:start">
+
+          <form class="nx-card nx-card--flat" id="registerForm" novalidate>
+            <p class="nx-eyebrow">Create your account</p>
+
+            <div class="nx-field">
+              <label class="nx-label" for="fullName">Full name</label>
+              <div class="reg-control">
+                <input class="nx-input" id="fullName" name="fullName" type="text"
+                       autocomplete="name" aria-describedby="fullNameError" required>
+                <span class="reg-mark" aria-hidden="true"></span>
+              </div>
+              <span class="nx-error" id="fullNameError"></span>
+            </div>
+
+            <div class="nx-field">
+              <label class="nx-label" for="email">Email</label>
+              <div class="reg-control">
+                <input class="nx-input" id="email" name="email" type="email"
+                       autocomplete="email" aria-describedby="emailError" required>
+                <span class="reg-mark" aria-hidden="true"></span>
+              </div>
+              <span class="nx-error" id="emailError"></span>
+            </div>
+
+            <div class="nx-field">
+              <label class="nx-label" for="ign">In-game name</label>
+              <div class="reg-control">
+                <input class="nx-input" id="ign" name="ign" type="text"
+                       autocomplete="nickname" maxlength="16"
+                       aria-describedby="ignError" required>
+                <span class="reg-mark" aria-hidden="true"></span>
+              </div>
+              <span class="nx-error" id="ignError"></span>
+            </div>
+
+            <div class="nx-field">
+              <label class="nx-label" for="password">Password</label>
+              <div class="reg-control">
+                <input class="nx-input" id="password" name="password" type="password"
+                       autocomplete="new-password" aria-describedby="passwordRules passwordError"
+                       required>
+                <span class="reg-mark" aria-hidden="true"></span>
+              </div>
+              <ul class="reg-rules" id="passwordRules">
+                <li class="reg-rule" data-rule="length">8 characters or more</li>
+                <li class="reg-rule" data-rule="letter">A letter</li>
+                <li class="reg-rule" data-rule="number">A number</li>
+              </ul>
+              <span class="nx-error" id="passwordError"></span>
+            </div>
+
+            <div class="nx-field">
+              <label class="nx-label" for="confirm">Confirm password</label>
+              <div class="reg-control">
+                <input class="nx-input" id="confirm" name="confirm" type="password"
+                       autocomplete="new-password" aria-describedby="confirmError" required>
+                <span class="reg-mark" aria-hidden="true"></span>
+              </div>
+              <span class="nx-error" id="confirmError"></span>
+            </div>
+
+            <div class="nx-field">
+              <label class="nx-label" for="game">Primary title</label>
+              <select class="nx-select" id="game" name="game" aria-describedby="gameError" required>
+                <option value="">Choose a title…</option>
+                <option value="valorant">Valorant</option>
+                <option value="cs2">Counter-Strike 2</option>
+                <option value="pubg">PUBG</option>
+              </select>
+              <span class="nx-error" id="gameError"></span>
+            </div>
+
+            <div class="nx-field">
+              <label class="nx-label" for="level">Experience</label>
+              <select class="nx-select" id="level" name="level">
+                <option value="casual">Casual — I just want to play</option>
+                <option value="improving">Improving — I want structured practice</option>
+                <option value="competitive">Competitive — I want a roster spot</option>
+              </select>
+            </div>
+
+            <div class="nx-field">
+              <label class="nx-label" for="notes">Anything else?</label>
+              <textarea class="nx-textarea" id="notes" name="notes"
+                        placeholder="Availability, past teams, what you want out of the club…"></textarea>
+            </div>
+
+            <div class="nx-row" style="gap:10px">
+              <button class="nx-btn nx-btn--primary" type="submit">
+                <i class="bi bi-person-plus" aria-hidden="true"></i> Create my account
+              </button>
+              <button class="nx-btn nx-btn--ghost" type="button" id="clearDraft">Clear form</button>
+            </div>
+
+            <p class="nx-muted reg-note">
+              No server receives this. Your account lives in this browser only and shows up on
+              your <a href="dashboard.html">dashboard</a>. The password is never stored in
+              readable form — a real deployment would hash it server-side.
+            </p>
+          </form>
+
+          <aside>
+            <div class="nx-card nx-card--flat">
+              <p class="nx-eyebrow">What happens next</p>
+              <ol class="nx-muted reg-steps">
+                <li>Your account is created the moment the form validates.</li>
+                <li>A committee member reviews it and says hello.</li>
+                <li>You are invited to the next social or scrim night to meet everyone.</li>
+                <li>Want a more competitive scene? Optional tryouts run periodically.</li>
+                <li>Otherwise, you are straight into the community — nobody is turned away.</li>
+              </ol>
+            </div>
+          </aside>
+        </div>
       </div>
 
-      <div class="nx-grid nx-grid--2" style="align-items:start">
+      <!-- Joined state. Filled and revealed by js/register.js. -->
+      <div class="reg-joined" id="joinedPanel" hidden>
+        <div class="reg-joined__inner">
+          <p class="nx-eyebrow">Membership active</p>
+          <h1 class="reg-joined__title">Thank you for joining us</h1>
+          <p class="reg-joined__lead" id="joinedLead"></p>
 
-        <form class="nx-card nx-card--flat" id="registerForm" novalidate>
-          <p class="nx-eyebrow">Applicant details</p>
+          <div class="reg-memcard" id="memberCard"></div>
 
-          <div class="nx-field">
-            <label class="nx-label" for="fullName">Full name</label>
-            <input class="nx-input" id="fullName" name="fullName" type="text"
-                   autocomplete="name" required>
-            <span class="nx-error">Please enter your name.</span>
-          </div>
+          <button class="nx-btn nx-btn--primary" id="signOut" type="button">
+            <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sign out
+          </button>
 
-          <div class="nx-field">
-            <label class="nx-label" for="email">Email</label>
-            <input class="nx-input" id="email" name="email" type="email"
-                   autocomplete="email" required>
-            <span class="nx-error">Please enter a valid email address.</span>
-          </div>
-
-          <div class="nx-field">
-            <label class="nx-label" for="ign">In-game name</label>
-            <input class="nx-input" id="ign" name="ign" type="text" required>
-            <span class="nx-error">Please enter the handle you play under.</span>
-          </div>
-
-          <div class="nx-field">
-            <label class="nx-label" for="game">Primary title</label>
-            <select class="nx-select" id="game" name="game" required>
-              <option value="">Choose a title…</option>
-              <option value="valorant">Valorant</option>
-              <option value="cs2">Counter-Strike 2</option>
-              <option value="pubg">PUBG</option>
-            </select>
-            <span class="nx-error">Please pick your main title.</span>
-          </div>
-
-          <div class="nx-field">
-            <label class="nx-label" for="level">Experience</label>
-            <select class="nx-select" id="level" name="level">
-              <option value="casual">Casual — I just want to play</option>
-              <option value="improving">Improving — I want structured practice</option>
-              <option value="competitive">Competitive — I want a roster spot</option>
-            </select>
-          </div>
-
-          <div class="nx-field">
-            <label class="nx-label" for="notes">Anything else?</label>
-            <textarea class="nx-textarea" id="notes" name="notes"
-                      placeholder="Availability, past teams, what you want out of the club…"></textarea>
-          </div>
-
-          <div class="nx-row" style="gap:10px">
-            <button class="nx-btn nx-btn--primary" type="submit">
-              <i class="bi bi-send" aria-hidden="true"></i> Submit application
-            </button>
-            <button class="nx-btn nx-btn--ghost" type="button" id="clearDraft">Clear draft</button>
-          </div>
-
-          <p class="nx-muted" style="font-size:.76rem;margin-top:16px;margin-bottom:0">
-            No server receives this. Submissions are stored in this browser only, and appear on
-            your <a href="dashboard.html">dashboard</a>.
+          <p class="reg-joined__note">
+            Your details are stored in this browser only. Signing out deletes them and returns
+            you to the sign-up form.
           </p>
-        </form>
-
-        <aside>
-          <div class="nx-card nx-card--flat" style="margin-bottom:20px">
-            <p class="nx-eyebrow">Your applications</p>
-            <div id="submissions"></div>
-          </div>
-          <div class="nx-card nx-card--flat">
-            <p class="nx-eyebrow">What happens next</p>
-            <ol class="nx-muted" style="font-size:.88rem;padding-left:20px;margin-bottom:0">
-              <li style="margin-bottom:8px">A committee member reviews your application.</li>
-              <li style="margin-bottom:8px">You are invited to the next social or scrim night to meet everyone.</li>
-              <li style="margin-bottom:8px">Want a more competitive scene? Optional tryouts run periodically.</li>
-              <li>Otherwise, you are straight into the community — nobody is turned away.</li>
-            </ol>
-          </div>
-        </aside>
+        </div>
       </div>
     </div>
   </section>

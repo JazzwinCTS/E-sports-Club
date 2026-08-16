@@ -37,6 +37,12 @@
   --flare:          rgba(255, 255, 255, 0.14);
   --flare-soft:     rgba(255, 255, 255, 0.07);
 
+  /* Validity green — the one non-accent signal colour. Only the join form
+     uses it (css/register.css), but it is a token like every other colour so
+     no page ever hardcodes a hex. */
+  --ok:             #2FD98A;
+  --ok-soft:        rgba(47, 217, 138, 0.16);
+
   --gold:           #E7B94B;
   --silver:         #B8BCC6;
   --bronze:         #C4794A;
@@ -74,6 +80,11 @@
   --accent-soft:    rgba(255, 30, 56, 0.10);
   --completed:      #8A8A99;
   --bg-mid:         #FBE3E7;
+
+  /* The dark-theme mint is unreadable as text on white — darken it here so
+     the "requirement met" labels keep their contrast. */
+  --ok:             #12A45E;
+  --ok-soft:        rgba(18, 164, 94, 0.12);
 
   /* White rays would vanish on this light background, so the atmosphere
      switches to a soft accent tint instead of turning transparent. */
@@ -316,6 +327,25 @@ img { max-width: 100%; height: auto; }
 .nx-nav__link.is-active { color: var(--text); }
 .nx-nav__link.is-active::after { transform: scaleX(1); }
 
+/* Signed in: js/main.js swaps the "Join" link for the member's email. Lower
+   case and truncated, because an address is a value, not a menu label — and
+   some of them are far too long for a nav row. */
+.nx-nav__link--account {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.nx-nav__link--account i { color: var(--accent); font-size: 1rem; }
+.nx-nav__email {
+  max-width: 15ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .nx-nav__actions { display: flex; align-items: center; gap: 8px; }
 
 .nx-icon-btn {
@@ -359,6 +389,8 @@ img { max-width: 100%; height: auto; }
   .nx-nav__links.is-open { transform: translateY(0); }
   .nx-nav__link { padding: 14px 4px; font-size: 0.95rem; }
   .nx-nav__link::after { left: 4px; right: 4px; }
+  /* The drawer is full width, so the address has room to show in full. */
+  .nx-nav__email { max-width: none; }
 }
 
 /* --- Buttons ------------------------------------------------------------- */
@@ -792,43 +824,8 @@ img { max-width: 100%; height: auto; }
 }
 .nx-play:hover { transform: scale(1.1); background: var(--accent-hover); }
 
-/* --- Forms --------------------------------------------------------------- */
-.nx-field { margin-bottom: calc(var(--space) * 2.5); }
-.nx-label {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-.nx-input, .nx-select, .nx-textarea {
-  width: 100%;
-  padding: 13px 15px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-[data-theme="light"] .nx-input,
-[data-theme="light"] .nx-select,
-[data-theme="light"] .nx-textarea { background: rgba(11, 11, 14, 0.03); }
-.nx-input:focus, .nx-select:focus, .nx-textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.nx-input::placeholder { color: var(--text-muted); opacity: 0.7; }
-.nx-textarea { min-height: 110px; resize: vertical; }
-.nx-select option { background: var(--surface); color: var(--text); }
-.nx-error { color: var(--accent); font-size: 0.78rem; margin-top: 6px; display: none; }
-.nx-field.has-error .nx-input,
-.nx-field.has-error .nx-select { border-color: var(--accent); }
-.nx-field.has-error .nx-error { display: block; }
+/* Form-control styles moved to css/register.css — register.html is the only
+   page with a form, so they belong to that page. See CLAUDE.md section 7. */
 
 /* --- Feedback states ----------------------------------------------------- */
 .nx-spinner {

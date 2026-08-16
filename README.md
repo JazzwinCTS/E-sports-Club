@@ -42,6 +42,10 @@ The navbar and footer are identical byte-for-byte on every page (`js/main.js` ru
 behaviour: nav highlighting, the theme toggle, the cookie banner, and the footer's live Discord
 widget). Only the content between them changes per page.
 
+One piece of that shared behaviour is signed-in state: once you have joined, the navbar's **Join**
+link becomes your **email address** on all eight pages. It still points at `register.html`, which
+by then shows your membership panel and the sign-out button instead of the sign-up form.
+
 ### Home — `index.html`
 The landing page. A three-slide Bootstrap hero carousel, a static title strip (Valorant / CS /
 PUBG icons, presented as plain badges — not clickable), a preview of 3 live/upcoming tournaments, a
@@ -92,25 +96,48 @@ for example) without duplicating that tournament's detail.
      demonstration.
 
 ### Registration — `register.html`
-The sign-up form. Full name, email, in-game name, primary title (Valorant/CS/PUBG), experience
-level, and free-text notes. A query param (`?event=<id>`) can prefill context when linked from
-another page.
+Creates a member account, entirely in the browser. Full name, email, in-game name, password +
+confirmation, primary title (Valorant/CS/PUBG), experience level, and free-text notes. A query
+param (`?event=<id>`) can prefill context when linked from another page.
+- **Validation:** client-side and live. Every field is re-checked on each keystroke; the border
+  turns **green** the moment the value is valid. The red error state is deliberately held back
+  until you've left the field once (or pressed submit), so a half-typed email isn't flagged as
+  wrong while you're still typing it. The password shows its three requirements as a checklist
+  that ticks off as you meet them, and editing the password re-checks the confirmation box.
+- **Two states, one page:** with no account it shows the form; once the account exists it shows a
+  "Thank you for joining us" panel (artwork: `registerImgs/Joined.png`) with the membership
+  summary and a **Sign out** button. Sign out goes through `confirm()` first, then deletes the
+  stored account and returns you to a clean form.
 - **Storage:** two, deliberately different lifetimes:
   - `registerDraft` in **sessionStorage** — every keystroke is saved so a refresh never loses your
-    half-finished form, but it's gone once the tab closes (it's meant to be transient).
-  - `registrations` in **localStorage** — the array of submitted applications, meant to persist
-    like a client-side stand-in for a real backend.
-- **API:** none — submission is entirely client-side; there is no server to send it to.
+    half-finished form, but it's gone once the tab closes (it's meant to be transient). The
+    password fields are excluded from the draft on purpose.
+  - `registrations` in **localStorage** — the account itself, meant to persist like a client-side
+    stand-in for a real backend. The password is kept only as a short non-reversible digest;
+    nothing readable is stored, and a real deployment would hash it server-side instead.
+- **API:** none — account creation is entirely client-side; there is no server to send it to.
 
-### Dashboard — `dashboard.html`
-A read-only summary of everything this site remembers about you: your favourite team, your saved
-applications, your visitor status, and a raw table of every key in local/session storage with a
-plain-language explanation of what each one is for. A "clear everything stored" button wipes all
-of it.
-- **Storage:** reads all three storage types, **writes none** of its own — every value shown here
-  is owned and set by the page named next to it. This is intentional (see `CLAUDE.md` §7): no
-  page's script reads a variable defined by another page's script, so `dashboard.html` re-reads
-  each key independently from storage rather than depending on another page having run first.
+### Dashboard / Profile — `dashboard.html`
+Your profile. A monogram avatar, your name and email, a sign-out button, and a segmented mini-nav
+across three panels — deep-linkable as `dashboard.html#favourites` / `#storage`:
+- **Personal info** — name, email, in-game name, member ID, primary title, experience and notes,
+  shown as read-only boxes. They are not editable inputs on purpose: there is no server to save an
+  edit to, so presenting them as editable would be a lie.
+- **Favourites** — your primary title, your favourite club (`favouriteTeam`, starred on the
+  rankings page), and tiles for favourite players and events. Those last two are **placeholders**:
+  `players.html` and `events.html` have no star yet, so nothing can set them. The code already
+  reads `favouritePlayers` / `favouriteEvents` defensively, so the tiles start working the day
+  those pages ship — see `CLAUDE.md` §5 "reserved, not yet implemented".
+- **Storage** — the original dashboard: favourite club / membership / visitor-status tiles, a raw
+  table of every key in local and session storage with a plain-language explanation of each, your
+  account record, and a "clear everything stored" button.
+- **Storage:** reads all three storage types and **writes no preference** of its own — every value
+  shown here is owned and set by the page named next to it. This is intentional (see `CLAUDE.md`
+  §7): no page's script reads a variable defined by another page's script, so `dashboard.html`
+  re-reads each key independently from storage rather than depending on another page having run
+  first. The one write it performs is a deletion — signing out, the same clear `register.html`
+  does. The selected panel lives in the URL hash rather than storage, since a section is worth
+  deep-linking to but is not a preference.
 - **API:** none.
 
 ### About / Join Us — `about.html`
@@ -131,7 +158,7 @@ presence (Instagram post embed, plus links to Discord/X/Facebook).
 | Local | `theme` | about (site-wide) | until cleared | Dark/light choice, read before first paint |
 | Local | `favouriteTeam` | rankings | until cleared | Highlights a club's row in the standings |
 | Local | `playerFilter` | players | until cleared | Restores your last-used filter |
-| Local | `registrations` | register (dashboard reads) | until cleared | Submitted applications |
+| Local | `registrations` | register (dashboard reads) | until cleared | The member account created on the join page |
 | Session | `registerDraft` | register | tab close | In-progress form, saved on every keystroke |
 | Session | `tournamentFilter` | tournaments | tab close | Active filter + sort |
 | Session | `eventView` | events | tab close | List or calendar view |
@@ -164,7 +191,7 @@ so in its own `_source` field.
 ├── css/
 │   ├── style.css          general file: tokens, shared shell, and anything used by
 │   │                        3+ pages — no hardcoded colours in pages
-│   └── index.css, rankings.css, events.css, dashboard.css
+│   └── index.css, rankings.css, events.css, dashboard.css, register.css
 │                            page-exclusive styles — one file per developer's page,
 │                            see CLAUDE.md section 7
 ├── js/
@@ -176,7 +203,8 @@ so in its own `_source` field.
 ├── data/*.json             content loaded at runtime with $.getJSON
 ├── vendor/                jQuery, Bootstrap 5, Bootstrap Icons (local copies)
 ├── fonts/                  Unbounded + Sora (self-hosted for offline use)
-└── GameLogos/ TeamLogo/ TournamentThumbnail/ PlayerPhotos/ carousel*.png Video1.mp4
+└── GameLogos/ TeamLogo/ TournamentThumbnail/ PlayerPhotos/ registerImgs/
+    carousel*.png Video1.mp4
 ```
 
 Some files in the asset folders (League of Legends / Dota 2 / EA SPORTS FC logos, thumbnails and
