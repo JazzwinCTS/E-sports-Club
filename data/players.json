@@ -1,20 +1,91 @@
 {
-  "_source": "Coursework prototype data. All eight organisations, team histories and 112 player identities are fictional. Portrait fields are intentionally empty until original illustrative images are created.",
+  "_source": "Coursework prototype data. All eight organisations, team histories, 24 coaches and 112 player identities are fictional. Portraits are original illustrative images created for this project.",
   "_note": "The same eight independent youth organisations field a starting roster in each game division. VALORANT and Counter-Strike 2 use five starters; PUBG uses four.",
   "season": "2026",
   "eligibility": {
     "minimumAge": 16,
     "maximumAge": 18
   },
+  "weeklyMvp": [
+    {
+      "game": "valorant",
+      "teamId": "vyne",
+      "playerId": "player-001",
+      "week": "Week 3",
+      "headline": "Round-opening pressure without sacrificing consistency",
+      "summary": "Drift led the VALORANT division in opening impact while keeping strong damage and survival contribution across both series.",
+      "metrics": [
+        { "label": "ACS", "value": "278", "score": 93 },
+        { "label": "K/D", "value": "1.34", "score": 89 },
+        { "label": "ADR", "value": "171", "score": 91 },
+        { "label": "KAST", "value": "78%", "score": 86 },
+        { "label": "First Kills", "value": "14", "score": 95 },
+        { "label": "Clutches", "value": "3", "score": 82 }
+      ]
+    },
+    {
+      "game": "cs2",
+      "teamId": "kova",
+      "playerId": "player-020",
+      "week": "Week 3",
+      "headline": "The entry player who repeatedly broke open contested sites",
+      "summary": "Glint combined elite opening-duel success with dependable round-to-round damage in KOVA's two-match CS2 weekend.",
+      "metrics": [
+        { "label": "Rating", "value": "1.31", "score": 92 },
+        { "label": "K/D", "value": "1.29", "score": 88 },
+        { "label": "ADR", "value": "86.4", "score": 90 },
+        { "label": "KAST", "value": "76%", "score": 85 },
+        { "label": "Opening Duels", "value": "68%", "score": 94 },
+        { "label": "Clutches", "value": "4", "score": 87 }
+      ]
+    },
+    {
+      "game": "pubg",
+      "teamId": "rift",
+      "playerId": "player-039",
+      "week": "Week 3",
+      "headline": "Calm rotations and late-game decisions converted into points",
+      "summary": "Zen balanced scouting, survival and team direction, helping RIFT turn three difficult circles into two podium finishes.",
+      "metrics": [
+        { "label": "Eliminations", "value": "18", "score": 91 },
+        { "label": "Damage", "value": "2,146", "score": 94 },
+        { "label": "Knocks", "value": "22", "score": 89 },
+        { "label": "Assists", "value": "11", "score": 84 },
+        { "label": "Survival", "value": "78 min", "score": 92 },
+        { "label": "Team Placement", "value": "2nd", "score": 90 }
+      ]
+    }
+  ],
   "teams": [
     {
-      "id": "redline-wolves",
-      "code": "RLW",
-      "teamName": "Redline Wolves",
+      "id": "vyne",
+      "code": "VYNE",
+      "teamName": "VYNE",
       "base": "Petaling Jaya",
       "founded": 2023,
       "color": "#e23b4d",
-      "introduction": "Redline Wolves is a youth-run competitive organisation built around disciplined communication and structured practice. Its volunteer analysis group reviews every match and helps each division turn mistakes into clear training goals.",
+      "logo": "TeamLogo/vyne.png",
+      "introduction": "VYNE is a youth-run competitive organisation built around disciplined communication and structured practice. Its volunteer analysis group reviews every match and helps each division turn mistakes into clear training goals.",
+      "coaches": [
+        {
+          "name": "Marcus Tan",
+          "role": "VALORANT Coach",
+          "photo": "PlayerPhotos/vyne-coach.webp",
+          "game": "valorant"
+        },
+        {
+          "name": "Devendra Nair",
+          "role": "Counter-Strike 2 Coach",
+          "game": "cs2",
+          "photo": "PlayerPhotos/vyne-coach-cs2.webp"
+        },
+        {
+          "name": "Nurul Huda",
+          "role": "PUBG Coach",
+          "game": "pubg",
+          "photo": "PlayerPhotos/vyne-coach-pubg.webp"
+        }
+      ],
       "honours": {
         "valorant": [
           "2026 Central Qualifier — Seed 1",
@@ -39,50 +110,45 @@
             "ign": "Drift",
             "name": "Aiman Hakim",
             "age": 16,
-            "level": "Form 4",
             "role": "Duelist",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-001.webp"
           },
           {
             "id": "player-002",
             "ign": "Kite",
             "name": "Daniel Lim",
             "age": 17,
-            "level": "Form 5",
             "role": "Initiator",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-002.webp"
           },
           {
             "id": "player-003",
             "ign": "Mako",
             "name": "Harith Zain",
             "age": 18,
-            "level": "Pre-U",
             "role": "Controller",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-003.webp"
           },
           {
             "id": "player-004",
             "ign": "Rook",
             "name": "Kavish Raman",
             "age": 16,
-            "level": "Form 4",
             "role": "Sentinel",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-004.webp"
           },
           {
             "id": "player-005",
             "ign": "Lumen",
             "name": "Mei Lin Tan",
             "age": 17,
-            "level": "Form 5",
             "role": "Flex / IGL",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-005.webp"
           }
         ],
         "cs2": [
@@ -91,50 +157,45 @@
             "ign": "Nori",
             "name": "Nur Alya",
             "age": 18,
-            "level": "Pre-U",
             "role": "Entry Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-006.webp"
           },
           {
             "id": "player-007",
             "ign": "Slate",
             "name": "Faris Imran",
             "age": 16,
-            "level": "Form 4",
             "role": "AWPer",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-007.webp"
           },
           {
             "id": "player-008",
             "ign": "Vanta",
             "name": "Jason Wong",
             "age": 17,
-            "level": "Form 5",
             "role": "IGL / Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-008.webp"
           },
           {
             "id": "player-009",
             "ign": "Flint",
             "name": "Izzat Firdaus",
             "age": 18,
-            "level": "Pre-U",
             "role": "Lurker",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-009.webp"
           },
           {
             "id": "player-010",
             "ign": "Echo",
             "name": "Hannah Lee",
             "age": 16,
-            "level": "Form 4",
             "role": "Support",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-010.webp"
           }
         ],
         "pubg": [
@@ -143,52 +204,69 @@
             "ign": "Jolt",
             "name": "Arjun Nair",
             "age": 17,
-            "level": "Form 5",
             "role": "IGL / Scout",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-011.webp"
           },
           {
             "id": "player-012",
             "ign": "Sora",
             "name": "Sofia Tan",
             "age": 18,
-            "level": "Pre-U",
             "role": "Entry Fragger",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-012.webp"
           },
           {
             "id": "player-013",
             "ign": "Onyx",
             "name": "Rayyan Malik",
             "age": 16,
-            "level": "Form 4",
             "role": "Support",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-013.webp"
           },
           {
             "id": "player-014",
             "ign": "Pixel",
             "name": "Chloe Ng",
             "age": 17,
-            "level": "Form 5",
             "role": "Sniper",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/vyne-player-014.webp"
           }
         ]
       }
     },
     {
-      "id": "hornbill-vanguard",
-      "code": "HBV",
-      "teamName": "Hornbill Vanguard",
+      "id": "kova",
+      "code": "KOVA",
+      "teamName": "KOVA",
       "base": "Shah Alam",
       "founded": 2024,
       "color": "#e6a126",
-      "introduction": "Hornbill Vanguard favours patient play, strong preparation and calm decision-making under pressure. Experienced youth players mentor each new intake so every roster develops a shared competitive identity.",
+      "logo": "TeamLogo/kova.png",
+      "introduction": "KOVA favours patient play, strong preparation and calm decision-making under pressure. Experienced youth players mentor each new intake so every roster develops a shared competitive identity.",
+      "coaches": [
+        {
+          "name": "Priyanka Nair",
+          "role": "VALORANT Coach",
+          "photo": "PlayerPhotos/kova-coach.webp",
+          "game": "valorant"
+        },
+        {
+          "name": "Vincent Yap",
+          "role": "Counter-Strike 2 Coach",
+          "game": "cs2",
+          "photo": "PlayerPhotos/kova-coach-cs2.webp"
+        },
+        {
+          "name": "Melissa Gunting",
+          "role": "PUBG Coach",
+          "game": "pubg",
+          "photo": "PlayerPhotos/kova-coach-pubg.webp"
+        }
+      ],
       "honours": {
         "valorant": [
           "2026 Central Qualifier — Seed 2",
@@ -213,50 +291,45 @@
             "ign": "Aero",
             "name": "Amirul Danish",
             "age": 18,
-            "level": "Pre-U",
             "role": "Duelist",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-001.webp"
           },
           {
             "id": "player-016",
             "ign": "Blink",
             "name": "Bryan Chua",
             "age": 16,
-            "level": "Form 4",
             "role": "Initiator",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-002.webp"
           },
           {
             "id": "player-017",
             "ign": "Cinder",
             "name": "Aqil Syafiq",
             "age": 17,
-            "level": "Form 5",
             "role": "Controller",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-003.webp"
           },
           {
             "id": "player-018",
             "ign": "Dusk",
             "name": "Dev Kumar",
             "age": 18,
-            "level": "Pre-U",
             "role": "Sentinel",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-004.webp"
           },
           {
             "id": "player-019",
             "ign": "Frost",
             "name": "Hui Min Lee",
             "age": 16,
-            "level": "Form 4",
             "role": "Flex / IGL",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-005.webp"
           }
         ],
         "cs2": [
@@ -265,50 +338,45 @@
             "ign": "Glint",
             "name": "Sarah Ong",
             "age": 17,
-            "level": "Form 5",
             "role": "Entry Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-006.webp"
           },
           {
             "id": "player-021",
             "ign": "Haze",
             "name": "Adam Zikri",
             "age": 18,
-            "level": "Pre-U",
             "role": "AWPer",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-007.webp"
           },
           {
             "id": "player-022",
             "ign": "Ion",
             "name": "Ethan Goh",
             "age": 16,
-            "level": "Form 4",
             "role": "IGL / Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-008.webp"
           },
           {
             "id": "player-023",
             "ign": "Jade",
             "name": "Nabil Arif",
             "age": 17,
-            "level": "Form 5",
             "role": "Lurker",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-009.webp"
           },
           {
             "id": "player-024",
             "ign": "Knox",
             "name": "Priya Menon",
             "age": 18,
-            "level": "Pre-U",
             "role": "Support",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-010.webp"
           }
         ],
         "pubg": [
@@ -317,52 +385,69 @@
             "ign": "Lotus",
             "name": "Wei Jian",
             "age": 16,
-            "level": "Form 4",
             "role": "IGL / Scout",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-011.webp"
           },
           {
             "id": "player-026",
             "ign": "Mint",
             "name": "Zara Imani",
             "age": 17,
-            "level": "Form 5",
             "role": "Entry Fragger",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-012.webp"
           },
           {
             "id": "player-027",
             "ign": "Nexus",
             "name": "Lucas Teo",
             "age": 18,
-            "level": "Pre-U",
             "role": "Support",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-013.webp"
           },
           {
             "id": "player-028",
             "ign": "Orbit",
-            "name": "Anis Sofea",
+            "name": "Anis Sofian",
             "age": 16,
-            "level": "Form 4",
             "role": "Sniper",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/kova-player-014.webp"
           }
         ]
       }
     },
     {
-      "id": "meridian-core",
-      "code": "MDC",
-      "teamName": "Meridian Core",
+      "id": "rift",
+      "code": "RIFT",
+      "teamName": "RIFT",
       "base": "Subang Jaya",
       "founded": 2022,
       "color": "#3478e5",
-      "introduction": "Meridian Core combines mechanical practice with detailed opponent research. The organisation is known for adapting quickly between rounds and giving every player a clear role in the team system.",
+      "logo": "TeamLogo/rift.png",
+      "introduction": "RIFT combines mechanical practice with detailed opponent research. The organisation is known for adapting quickly between rounds and giving every player a clear role in the team system.",
+      "coaches": [
+        {
+          "name": "Nadia Rahman",
+          "role": "VALORANT Coach",
+          "photo": "PlayerPhotos/rift-coach.webp",
+          "game": "valorant"
+        },
+        {
+          "name": "Faizal Ismail",
+          "role": "Counter-Strike 2 Coach",
+          "game": "cs2",
+          "photo": "PlayerPhotos/rift-coach-cs2.webp"
+        },
+        {
+          "name": "Kavitha Raj",
+          "role": "PUBG Coach",
+          "game": "pubg",
+          "photo": "PlayerPhotos/rift-coach-pubg.webp"
+        }
+      ],
       "honours": {
         "valorant": [
           "2026 Central Qualifier — Seed 3",
@@ -387,50 +472,45 @@
             "ign": "Pace",
             "name": "Hakim Danish",
             "age": 17,
-            "level": "Form 5",
             "role": "Duelist",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-001.webp"
           },
           {
             "id": "player-030",
             "ign": "Quartz",
             "name": "Jeremy Lau",
             "age": 18,
-            "level": "Pre-U",
             "role": "Initiator",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-002.webp"
           },
           {
             "id": "player-031",
             "ign": "Rune",
             "name": "Syafiq Amin",
             "age": 16,
-            "level": "Form 4",
             "role": "Controller",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-003.webp"
           },
           {
             "id": "player-032",
             "ign": "Sol",
             "name": "Rohan Pillai",
             "age": 17,
-            "level": "Form 5",
             "role": "Sentinel",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-004.webp"
           },
           {
             "id": "player-033",
             "ign": "Trace",
             "name": "Jia En Koh",
             "age": 18,
-            "level": "Pre-U",
             "role": "Flex / IGL",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-005.webp"
           }
         ],
         "cs2": [
@@ -439,50 +519,45 @@
             "ign": "Uma",
             "name": "Nadia Irfan",
             "age": 16,
-            "level": "Form 4",
             "role": "Entry Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-006.webp"
           },
           {
             "id": "player-035",
             "ign": "Volt",
             "name": "Darren Yap",
             "age": 17,
-            "level": "Form 5",
             "role": "AWPer",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-007.webp"
           },
           {
             "id": "player-036",
             "ign": "Wisp",
-            "name": "Iman Qistina",
+            "name": "Iman Qadir",
             "age": 18,
-            "level": "Pre-U",
             "role": "IGL / Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-008.webp"
           },
           {
             "id": "player-037",
             "ign": "Xeno",
             "name": "Faiz Haziq",
             "age": 16,
-            "level": "Form 4",
             "role": "Lurker",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-009.webp"
           },
           {
             "id": "player-038",
             "ign": "Yuki",
             "name": "Michelle Low",
             "age": 17,
-            "level": "Form 5",
             "role": "Support",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-010.webp"
           }
         ],
         "pubg": [
@@ -491,52 +566,69 @@
             "ign": "Zen",
             "name": "Ashwin Raj",
             "age": 18,
-            "level": "Pre-U",
             "role": "IGL / Scout",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-011.webp"
           },
           {
             "id": "player-040",
             "ign": "Aster",
             "name": "Aina Zahra",
             "age": 16,
-            "level": "Form 4",
             "role": "Entry Fragger",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-012.webp"
           },
           {
             "id": "player-041",
             "ign": "Brim",
             "name": "Nicholas Tan",
             "age": 17,
-            "level": "Form 5",
             "role": "Support",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-013.webp"
           },
           {
             "id": "player-042",
             "ign": "Cove",
             "name": "Siti Mariam",
             "age": 18,
-            "level": "Pre-U",
             "role": "Sniper",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/rift-player-014.webp"
           }
         ]
       }
     },
     {
-      "id": "mutiara-nova",
-      "code": "MTN",
-      "teamName": "Mutiara Nova",
+      "id": "zera",
+      "code": "ZERA",
+      "teamName": "ZERA",
       "base": "Kuala Lumpur",
       "founded": 2023,
       "color": "#c84edc",
-      "introduction": "Mutiara Nova encourages expressive play without losing sight of teamwork. Its three divisions share weekly review sessions, allowing players to exchange ideas across different competitive titles.",
+      "logo": "TeamLogo/zera.png",
+      "introduction": "ZERA encourages expressive play without losing sight of teamwork. Its three divisions share weekly review sessions, allowing players to exchange ideas across different competitive titles.",
+      "coaches": [
+        {
+          "name": "Elaine Low",
+          "role": "VALORANT Coach",
+          "photo": "PlayerPhotos/zera-coach.webp",
+          "game": "valorant"
+        },
+        {
+          "name": "Cheryl Teoh",
+          "role": "Counter-Strike 2 Coach",
+          "game": "cs2",
+          "photo": "PlayerPhotos/zera-coach-cs2.webp"
+        },
+        {
+          "name": "Amir Hakimi",
+          "role": "PUBG Coach",
+          "game": "pubg",
+          "photo": "PlayerPhotos/zera-coach-pubg.webp"
+        }
+      ],
       "honours": {
         "valorant": [
           "2026 Central Qualifier — Seed 4",
@@ -561,50 +653,45 @@
             "ign": "Delta",
             "name": "Azlan Rafiq",
             "age": 16,
-            "level": "Form 4",
             "role": "Duelist",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-001.webp"
           },
           {
             "id": "player-044",
             "ign": "Ember",
             "name": "Marcus Chew",
             "age": 17,
-            "level": "Form 5",
             "role": "Initiator",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-002.webp"
           },
           {
             "id": "player-045",
             "ign": "Fable",
             "name": "Danial Akram",
             "age": 18,
-            "level": "Pre-U",
             "role": "Controller",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-003.webp"
           },
           {
             "id": "player-046",
             "ign": "Gale",
             "name": "Viknesh Rao",
             "age": 16,
-            "level": "Form 4",
             "role": "Sentinel",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-004.webp"
           },
           {
             "id": "player-047",
             "ign": "Halo",
             "name": "Xin Yi Ho",
             "age": 17,
-            "level": "Form 5",
             "role": "Flex / IGL",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-005.webp"
           }
         ],
         "cs2": [
@@ -613,50 +700,45 @@
             "ign": "Iris",
             "name": "Amelia Chan",
             "age": 18,
-            "level": "Pre-U",
             "role": "Entry Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-006.webp"
           },
           {
             "id": "player-049",
             "ign": "Jet",
             "name": "Irfan Naim",
             "age": 16,
-            "level": "Form 4",
             "role": "AWPer",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-007.webp"
           },
           {
             "id": "player-050",
             "ign": "Karma",
             "name": "Leona Goh",
             "age": 17,
-            "level": "Form 5",
             "role": "IGL / Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-008.webp"
           },
           {
             "id": "player-051",
             "ign": "Lyric",
             "name": "Khairul Anwar",
             "age": 18,
-            "level": "Pre-U",
             "role": "Lurker",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-009.webp"
           },
           {
             "id": "player-052",
             "ign": "Muse",
             "name": "Rachel Teh",
             "age": 16,
-            "level": "Form 4",
             "role": "Support",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-010.webp"
           }
         ],
         "pubg": [
@@ -665,52 +747,69 @@
             "ign": "Nyx",
             "name": "Naveen Kumar",
             "age": 17,
-            "level": "Form 5",
             "role": "IGL / Scout",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-011.webp"
           },
           {
             "id": "player-054",
             "ign": "Opal",
             "name": "Putri Aisyah",
             "age": 18,
-            "level": "Pre-U",
             "role": "Entry Fragger",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-012.webp"
           },
           {
             "id": "player-055",
             "ign": "Prism",
             "name": "Isaac Lim",
             "age": 16,
-            "level": "Form 4",
             "role": "Support",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-013.webp"
           },
           {
             "id": "player-056",
             "ign": "Quest",
-            "name": "Farah Nabila",
+            "name": "Farhan Nabil",
             "age": 17,
-            "level": "Form 5",
             "role": "Sniper",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/zera-player-014.webp"
           }
         ]
       }
     },
     {
-      "id": "rimba-guardians",
-      "code": "RBG",
-      "teamName": "Rimba Guardians",
+      "id": "axen",
+      "code": "AXEN",
+      "teamName": "AXEN",
       "base": "Putrajaya",
       "founded": 2024,
       "color": "#16a678",
-      "introduction": "Rimba Guardians takes a steady, fundamentals-first approach to competition. The organisation places equal value on match results, healthy practice routines and respectful conduct between teams.",
+      "logo": "TeamLogo/axen.png",
+      "introduction": "AXEN takes a steady, fundamentals-first approach to competition. The organisation places equal value on match results, healthy practice routines and respectful conduct between teams.",
+      "coaches": [
+        {
+          "name": "Arvind Kumar",
+          "role": "VALORANT Coach",
+          "photo": "PlayerPhotos/axen-coach.webp",
+          "game": "valorant"
+        },
+        {
+          "name": "Rajesh Pillai",
+          "role": "Counter-Strike 2 Coach",
+          "game": "cs2",
+          "photo": "PlayerPhotos/axen-coach-cs2.webp"
+        },
+        {
+          "name": "Sophia Lim",
+          "role": "PUBG Coach",
+          "game": "pubg",
+          "photo": "PlayerPhotos/axen-coach-pubg.webp"
+        }
+      ],
       "honours": {
         "valorant": [
           "2026 Central Qualifier — Seed 5",
@@ -735,50 +834,45 @@
             "ign": "Rift",
             "name": "Zahin Faruq",
             "age": 18,
-            "level": "Pre-U",
             "role": "Duelist",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-001.webp"
           },
           {
             "id": "player-058",
             "ign": "Sage",
             "name": "Caleb Wong",
             "age": 16,
-            "level": "Form 4",
             "role": "Initiator",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-002.webp"
           },
           {
             "id": "player-059",
             "ign": "Talon",
             "name": "Hafiz Irsyad",
             "age": 17,
-            "level": "Form 5",
             "role": "Controller",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-003.webp"
           },
           {
             "id": "player-060",
             "ign": "Ultra",
             "name": "Kiran Jay",
             "age": 18,
-            "level": "Pre-U",
             "role": "Sentinel",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-004.webp"
           },
           {
             "id": "player-061",
             "ign": "Vale",
             "name": "Yee Ting Ng",
             "age": 16,
-            "level": "Form 4",
             "role": "Flex / IGL",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-005.webp"
           }
         ],
         "cs2": [
@@ -787,50 +881,45 @@
             "ign": "Wave",
             "name": "Alyssa Tan",
             "age": 17,
-            "level": "Form 5",
             "role": "Entry Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-006.webp"
           },
           {
             "id": "player-063",
             "ign": "Xylo",
             "name": "Ridwan Asyraf",
             "age": 18,
-            "level": "Pre-U",
             "role": "AWPer",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-007.webp"
           },
           {
             "id": "player-064",
             "ign": "Yonder",
             "name": "Emily Khoo",
             "age": 16,
-            "level": "Form 4",
             "role": "IGL / Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-008.webp"
           },
           {
             "id": "player-065",
             "ign": "Zeal",
             "name": "Azim Luqman",
             "age": 17,
-            "level": "Form 5",
             "role": "Lurker",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-009.webp"
           },
           {
             "id": "player-066",
             "ign": "Argo",
             "name": "Shalini Devi",
             "age": 18,
-            "level": "Pre-U",
             "role": "Support",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-010.webp"
           }
         ],
         "pubg": [
@@ -839,52 +928,69 @@
             "ign": "Bolt",
             "name": "Kai Wen Lee",
             "age": 16,
-            "level": "Form 4",
             "role": "IGL / Scout",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-011.webp"
           },
           {
             "id": "player-068",
             "ign": "Crux",
-            "name": "Maya Sofea",
+            "name": "Mahir Sofian",
             "age": 17,
-            "level": "Form 5",
             "role": "Entry Fragger",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-012.webp"
           },
           {
             "id": "player-069",
             "ign": "Dune",
             "name": "Aaron Chia",
             "age": 18,
-            "level": "Pre-U",
             "role": "Support",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-013.webp"
           },
           {
             "id": "player-070",
             "ign": "Elio",
             "name": "Nurin Iman",
             "age": 16,
-            "level": "Form 4",
             "role": "Sniper",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/axen-player-014.webp"
           }
         ]
       }
     },
     {
-      "id": "eastpoint-falcons",
-      "code": "EPF",
-      "teamName": "Eastpoint Falcons",
+      "id": "mira",
+      "code": "MIRA",
+      "teamName": "MIRA",
       "base": "Klang",
       "founded": 2022,
       "color": "#ef762f",
-      "introduction": "Eastpoint Falcons plays at a fast tempo and gives young shot-callers room to lead. Its teams use short, focused practice blocks that fit around schoolwork and family commitments.",
+      "logo": "TeamLogo/mira.png",
+      "introduction": "MIRA plays at a fast tempo and gives young shot-callers room to lead. Its teams use short, focused practice blocks that fit around schoolwork and family commitments.",
+      "coaches": [
+        {
+          "name": "Joanna Ginsing",
+          "role": "VALORANT Coach",
+          "photo": "PlayerPhotos/mira-coach.webp",
+          "game": "valorant"
+        },
+        {
+          "name": "Firdaus Hamzah",
+          "role": "Counter-Strike 2 Coach",
+          "game": "cs2",
+          "photo": "PlayerPhotos/mira-coach-cs2.webp"
+        },
+        {
+          "name": "Meera Devi",
+          "role": "PUBG Coach",
+          "game": "pubg",
+          "photo": "PlayerPhotos/mira-coach-pubg.webp"
+        }
+      ],
       "honours": {
         "valorant": [
           "2026 Central Qualifier — Seed 6",
@@ -909,50 +1015,45 @@
             "ign": "Flux",
             "name": "Danish Haikal",
             "age": 17,
-            "level": "Form 5",
             "role": "Duelist",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-001.webp"
           },
           {
             "id": "player-072",
             "ign": "Ghost",
             "name": "Joshua Liew",
             "age": 18,
-            "level": "Pre-U",
             "role": "Initiator",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-002.webp"
           },
           {
             "id": "player-073",
             "ign": "Helix",
             "name": "Arif Zaman",
             "age": 16,
-            "level": "Form 4",
             "role": "Controller",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-003.webp"
           },
           {
             "id": "player-074",
             "ign": "Indigo",
             "name": "Surya Prakash",
             "age": 17,
-            "level": "Form 5",
             "role": "Sentinel",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-004.webp"
           },
           {
             "id": "player-075",
             "ign": "Jinx",
             "name": "Jia Hui Tan",
             "age": 18,
-            "level": "Pre-U",
             "role": "Flex / IGL",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-005.webp"
           }
         ],
         "cs2": [
@@ -961,104 +1062,116 @@
             "ign": "Koda",
             "name": "Natasha Ong",
             "age": 16,
-            "level": "Form 4",
             "role": "Entry Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-006.webp"
           },
           {
             "id": "player-077",
             "ign": "Lark",
             "name": "Haikal Rizwan",
             "age": 17,
-            "level": "Form 5",
             "role": "AWPer",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-007.webp"
           },
           {
             "id": "player-078",
             "ign": "Mirth",
             "name": "Grace Lee",
             "age": 18,
-            "level": "Pre-U",
             "role": "IGL / Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-008.webp"
           },
           {
             "id": "player-079",
             "ign": "Nova",
             "name": "Fikri Adnan",
             "age": 16,
-            "level": "Form 4",
             "role": "Lurker",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-009.webp"
           },
           {
             "id": "player-080",
             "ign": "Omen",
-            "name": "Anusha Nair",
+            "name": "Ansh Nair",
             "age": 17,
-            "level": "Form 5",
             "role": "Support",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-010.webp"
           }
         ],
         "pubg": [
           {
             "id": "player-081",
             "ign": "Pulse",
-            "name": "Jun Hao Goh",
+            "name": "Jun Hui Goh",
             "age": 18,
-            "level": "Pre-U",
             "role": "IGL / Scout",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-011.webp"
           },
           {
             "id": "player-082",
             "ign": "Quill",
-            "name": "Sara Medina",
+            "name": "Arun Medina",
             "age": 16,
-            "level": "Form 4",
             "role": "Entry Fragger",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-012.webp"
           },
           {
             "id": "player-083",
             "ign": "Reef",
-            "name": "Ryan Teo",
+            "name": "Rania Teo",
             "age": 17,
-            "level": "Form 5",
             "role": "Support",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-013.webp"
           },
           {
             "id": "player-084",
             "ign": "Spark",
-            "name": "Husna Balqis",
+            "name": "Husni Azhar",
             "age": 18,
-            "level": "Pre-U",
             "role": "Sniper",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/mira-player-014.webp"
           }
         ]
       }
     },
     {
-      "id": "lakeside-lynx",
-      "code": "LSL",
-      "teamName": "Lakeside Lynx",
+      "id": "talo",
+      "code": "TALO",
+      "teamName": "TALO",
       "base": "Cyberjaya",
       "founded": 2023,
       "color": "#159bb5",
-      "introduction": "Lakeside Lynx is a close-knit community programme built around flexible players. Its rosters regularly rotate practice roles so every starter understands how teammates see and solve the same situation.",
+      "logo": "TeamLogo/talo.png",
+      "introduction": "TALO is a close-knit community programme built around flexible players. Its rosters regularly rotate practice roles so every starter understands how teammates see and solve the same situation.",
+      "coaches": [
+        {
+          "name": "Hafiz Salleh",
+          "role": "VALORANT Coach",
+          "photo": "PlayerPhotos/talo-coach.webp",
+          "game": "valorant"
+        },
+        {
+          "name": "Kelvin Ong",
+          "role": "Counter-Strike 2 Coach",
+          "game": "cs2",
+          "photo": "PlayerPhotos/talo-coach-cs2.webp"
+        },
+        {
+          "name": "Lydia Jantai",
+          "role": "PUBG Coach",
+          "game": "pubg",
+          "photo": "PlayerPhotos/talo-coach-pubg.webp"
+        }
+      ],
       "honours": {
         "valorant": [
           "2026 Central Qualifier — Seed 7",
@@ -1083,50 +1196,45 @@
             "ign": "Tempo",
             "name": "Rafiq Iskandar",
             "age": 16,
-            "level": "Form 4",
             "role": "Duelist",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-001.webp"
           },
           {
             "id": "player-086",
             "ign": "Unity",
             "name": "Adrian Choo",
             "age": 17,
-            "level": "Form 5",
             "role": "Initiator",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-002.webp"
           },
           {
             "id": "player-087",
             "ign": "Vapor",
             "name": "Ilham Firdaus",
             "age": 18,
-            "level": "Pre-U",
             "role": "Controller",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-003.webp"
           },
           {
             "id": "player-088",
             "ign": "Whirl",
             "name": "Hari Krishnan",
             "age": 16,
-            "level": "Form 4",
             "role": "Sentinel",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-004.webp"
           },
           {
             "id": "player-089",
             "ign": "Xara",
             "name": "Pei Shan Lim",
             "age": 17,
-            "level": "Form 5",
             "role": "Flex / IGL",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-005.webp"
           }
         ],
         "cs2": [
@@ -1135,50 +1243,45 @@
             "ign": "Yale",
             "name": "Elena Wong",
             "age": 18,
-            "level": "Pre-U",
             "role": "Entry Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-006.webp"
           },
           {
             "id": "player-091",
             "ign": "Zero",
             "name": "Akmal Zaid",
             "age": 16,
-            "level": "Form 4",
             "role": "AWPer",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-007.webp"
           },
           {
             "id": "player-092",
             "ign": "Arc",
             "name": "Joanne Ng",
             "age": 17,
-            "level": "Form 5",
             "role": "IGL / Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-008.webp"
           },
           {
             "id": "player-093",
             "ign": "Bloom",
             "name": "Syamil Irfan",
             "age": 18,
-            "level": "Pre-U",
             "role": "Lurker",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-009.webp"
           },
           {
             "id": "player-094",
             "ign": "Cipher",
-            "name": "Deepa Menon",
+            "name": "Devan Menon",
             "age": 16,
-            "level": "Form 4",
             "role": "Support",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-010.webp"
           }
         ],
         "pubg": [
@@ -1187,52 +1290,69 @@
             "ign": "Dash",
             "name": "Zhi Wei Lau",
             "age": 17,
-            "level": "Form 5",
             "role": "IGL / Scout",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-011.webp"
           },
           {
             "id": "player-096",
             "ign": "Eon",
-            "name": "Alia Humaira",
+            "name": "Ali Humair",
             "age": 18,
-            "level": "Pre-U",
             "role": "Entry Fragger",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-012.webp"
           },
           {
             "id": "player-097",
             "ign": "Flick",
             "name": "Justin Koh",
             "age": 16,
-            "level": "Form 4",
             "role": "Support",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-013.webp"
           },
           {
             "id": "player-098",
             "ign": "Grit",
             "name": "Nadia Sarah",
             "age": 17,
-            "level": "Form 5",
             "role": "Sniper",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/talo-player-014.webp"
           }
         ]
       }
     },
     {
-      "id": "summit-rhinos",
-      "code": "SMR",
-      "teamName": "Summit Rhinos",
+      "id": "brix",
+      "code": "BRIX",
+      "teamName": "BRIX",
       "base": "Puchong",
       "founded": 2024,
       "color": "#8255d9",
-      "introduction": "Summit Rhinos brings a resilient, high-energy style to every division. Its players train with simple performance targets and are encouraged to recover quickly instead of dwelling on a lost round.",
+      "logo": "TeamLogo/brix.png",
+      "introduction": "BRIX brings a resilient, high-energy style to every division. Its players train with simple performance targets and are encouraged to recover quickly instead of dwelling on a lost round.",
+      "coaches": [
+        {
+          "name": "Adrian Chia",
+          "role": "VALORANT Coach",
+          "photo": "PlayerPhotos/brix-coach.webp",
+          "game": "valorant"
+        },
+        {
+          "name": "Farah Zulkifli",
+          "role": "Counter-Strike 2 Coach",
+          "game": "cs2",
+          "photo": "PlayerPhotos/brix-coach-cs2.webp"
+        },
+        {
+          "name": "Darren Koh",
+          "role": "PUBG Coach",
+          "game": "pubg",
+          "photo": "PlayerPhotos/brix-coach-pubg.webp"
+        }
+      ],
       "honours": {
         "valorant": [
           "2026 Central Qualifier — Seed 8",
@@ -1257,50 +1377,45 @@
             "ign": "Hush",
             "name": "Amar Fikri",
             "age": 18,
-            "level": "Pre-U",
             "role": "Duelist",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-001.webp"
           },
           {
             "id": "player-100",
             "ign": "Ivory",
             "name": "Benjamin Tan",
             "age": 16,
-            "level": "Form 4",
             "role": "Initiator",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-002.webp"
           },
           {
             "id": "player-101",
             "ign": "Juno",
             "name": "Taufiq Rahman",
             "age": 17,
-            "level": "Form 5",
             "role": "Controller",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-003.webp"
           },
           {
             "id": "player-102",
             "ign": "Kei",
             "name": "Darshan Singh",
             "age": 18,
-            "level": "Pre-U",
             "role": "Sentinel",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-004.webp"
           },
           {
             "id": "player-103",
             "ign": "Lucid",
             "name": "Yu Xuan Lee",
             "age": 16,
-            "level": "Form 4",
             "role": "Flex / IGL",
             "game": "valorant",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-005.webp"
           }
         ],
         "cs2": [
@@ -1309,50 +1424,45 @@
             "ign": "Maven",
             "name": "Mira Hanim",
             "age": 17,
-            "level": "Form 5",
             "role": "Entry Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-006.webp"
           },
           {
             "id": "player-105",
             "ign": "North",
             "name": "Iskandar Amin",
             "age": 18,
-            "level": "Pre-U",
             "role": "AWPer",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-007.webp"
           },
           {
             "id": "player-106",
             "ign": "Oriel",
             "name": "Audrey Goh",
             "age": 16,
-            "level": "Form 4",
             "role": "IGL / Rifler",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-008.webp"
           },
           {
             "id": "player-107",
             "ign": "Prime",
             "name": "Nazmi Faiz",
             "age": 17,
-            "level": "Form 5",
             "role": "Lurker",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-009.webp"
           },
           {
             "id": "player-108",
             "ign": "Quake",
-            "name": "Kavya Rao",
+            "name": "Kavin Rao",
             "age": 18,
-            "level": "Pre-U",
             "role": "Support",
             "game": "cs2",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-010.webp"
           }
         ],
         "pubg": [
@@ -1361,40 +1471,36 @@
             "ign": "Rush",
             "name": "Sean Wong",
             "age": 16,
-            "level": "Form 4",
             "role": "IGL / Scout",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-011.webp"
           },
           {
             "id": "player-110",
             "ign": "Shift",
-            "name": "Dahlia Noor",
+            "name": "Dali Noor",
             "age": 17,
-            "level": "Form 5",
             "role": "Entry Fragger",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-012.webp"
           },
           {
             "id": "player-111",
             "ign": "Tide",
-            "name": "Kenji Lim",
+            "name": "Kylie Lim",
             "age": 18,
-            "level": "Pre-U",
             "role": "Support",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-013.webp"
           },
           {
             "id": "player-112",
             "ign": "Vivid",
-            "name": "Izzah Amira",
+            "name": "Izzam Amir",
             "age": 16,
-            "level": "Form 4",
             "role": "Sniper",
             "game": "pubg",
-            "photo": ""
+            "photo": "PlayerPhotos/brix-player-014.webp"
           }
         ]
       }

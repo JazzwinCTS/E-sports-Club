@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Player Directory — Youth Esports League</title>
 <meta name="description" content="Explore 16–18-year-old VALORANT, Counter-Strike 2 and PUBG players representing eight independent youth esports teams.">
+<title>Player Directory — Youth Esports League</title>
+<meta name="description" content="Explore 16–18-year-old VALORANT, Counter-Strike 2 and PUBG players representing eight independent youth esports teams.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/players.css">
+  <link rel="stylesheet" href="css/players.css?v=18">
 <script src="js/theme-init.js"></script>
 </head>
 <body>
@@ -45,21 +47,47 @@
 <main id="main" class="page-body players-page">
   <section class="players-hero">
     <div class="nx-shell players-hero__inner">
-      <div class="players-hero__copy">
-        <p class="nx-eyebrow">2026 youth league roster</p>
-        <h1>Meet the next generation of competitors.</h1>
-        <p>
-          Explore the starting line-ups representing eight independent youth teams across VALORANT,
-          Counter-Strike 2 and PUBG. Every profile in this coursework prototype is fictional.
-        </p>
-        <a class="nx-btn nx-btn--primary" href="#game-picker">Browse teams</a>
+      <div class="mvp-heading">
+        <div>
+          <p class="nx-eyebrow" id="mvpDeskLabel">Latest published performance desk</p>
+          <h1>Weekly MVP</h1>
+          <p class="mvp-heading__manifesto">BUILT UNDER PRESSURE. PROVEN BY THE NUMBERS.<br>CROWNED WHEN THE FINAL MATCH ENDS.</p>
+        </div>
+        <div class="mvp-control-stack">
+          <label class="mvp-week-picker" for="mvpWeekSelect">
+            <span>Previous weeks</span>
+            <select id="mvpWeekSelect" aria-label="Choose a published MVP week"></select>
+          </label>
+          <div class="mvp-controls" aria-label="Weekly MVP controls">
+            <button class="mvp-arrow" id="mvpPrev" type="button" aria-label="Previous MVP"><i class="bi bi-arrow-left"></i></button>
+            <div class="mvp-tabs" id="mvpTabs" role="tablist" aria-label="MVP game division"></div>
+            <button class="mvp-arrow" id="mvpNext" type="button" aria-label="Next MVP"><i class="bi bi-arrow-right"></i></button>
+          </div>
+        </div>
       </div>
-      <dl class="players-hero__stats" aria-label="League roster summary">
-        <div><dt>8</dt><dd>teams</dd></div>
-        <div><dt>3</dt><dd>game divisions</dd></div>
-        <div><dt>112</dt><dd>starting players</dd></div>
-        <div><dt>16–18</dt><dd>eligible ages</dd></div>
-      </dl>
+
+      <div class="mvp-stage" id="mvpStage" aria-live="polite">
+        <div class="mvp-metric-ring mvp-metric-ring--left" id="mvpMetricsLeft"></div>
+        <div class="mvp-player">
+          <div class="mvp-player__halo"></div>
+          <div class="mvp-player__pending" id="mvpPendingSilhouette" aria-hidden="true">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <img id="mvpPlayerPhoto" src="" alt="">
+          <div class="mvp-player__identity">
+            <img id="mvpTeamLogo" src="" alt="">
+            <h2 id="mvpIgn"></h2>
+          </div>
+        </div>
+        <div class="mvp-radar-card">
+          <div class="mvp-radar-card__heading"><span id="mvpWeek">Week 3</span><strong id="mvpGame">VALORANT</strong></div>
+          <canvas id="mvpRadar" width="430" height="430" aria-label="Weekly MVP performance radar chart"></canvas>
+        </div>
+        <div class="mvp-metric-ring mvp-metric-ring--right" id="mvpMetricsRight"></div>
+        <div class="mvp-story">
+          <button class="nx-btn nx-btn--primary nx-btn--sm" id="mvpProfileButton" type="button">View player profile</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -69,7 +97,7 @@
         <div>
           <p class="nx-eyebrow">Player directory</p>
           <h2>Choose a game division</h2>
-          <p class="nx-muted">Select a title, then choose a team to view its story, honours and full roster.</p>
+          <p class="nx-muted">Switch divisions at any time, then choose a team to view its story, honours and full roster.</p>
         </div>
         <p class="players-count" id="playersCount" aria-live="polite">Choose a division</p>
       </div>
@@ -82,10 +110,6 @@
             <p class="nx-eyebrow" id="divisionEyebrow">Division</p>
             <h2 id="divisionTitle">Teams</h2>
           </div>
-          <button class="players-text-button" id="changeGame" type="button">
-            <i class="bi bi-arrow-left" aria-hidden="true"></i>
-            Change game
-          </button>
         </div>
         <div class="team-grid" id="teamGrid" aria-live="polite"></div>
       </div>
@@ -94,7 +118,12 @@
         <span class="nx-spinner" aria-hidden="true"></span>
         Loading league rosters…
       </div>
+      <div class="players-loading" id="playersLoading" role="status">
+        <span class="nx-spinner" aria-hidden="true"></span>
+        Loading league rosters…
+      </div>
 
+      <p class="players-data-note" id="dataNote"></p>
       <p class="players-data-note" id="dataNote"></p>
     </div>
   </section>
@@ -126,6 +155,14 @@
           </section>
         </div>
 
+        <section class="team-coaches" aria-labelledby="teamCoachTitle">
+          <div class="team-coaches__heading">
+            <p class="nx-eyebrow">Coaching staff</p>
+            <h3 id="teamCoachTitle">Division specialist coach</h3>
+          </div>
+          <div class="team-coaches__grid" id="teamCoachGrid"></div>
+        </section>
+
         <div class="team-modal__roster-heading">
           <div>
             <p class="nx-eyebrow">Starting line-up</p>
@@ -134,6 +171,30 @@
           <span class="team-modal__roster-count" id="teamModalRosterCount"></span>
         </div>
         <div class="roster-grid" id="teamModalRoster"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade player-profile-modal" id="playerProfileModal" tabindex="-1" aria-labelledby="playerProfileTitle" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <button type="button" class="btn-close player-profile-modal__close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="player-profile-modal__backdrop" aria-hidden="true"></div>
+      <div class="modal-body player-profile" id="playerProfileBody">
+        <div class="player-profile__portrait"><img id="playerProfilePhoto" src="" alt=""></div>
+        <div class="player-profile__content">
+          <p class="player-profile__game" id="playerProfileGame"></p>
+          <div class="player-profile__team"><img id="playerProfileTeamLogo" src="" alt=""><span id="playerProfileTeam"></span></div>
+          <h2 id="playerProfileTitle"></h2>
+          <p class="player-profile__real-name" id="playerProfileName"></p>
+          <dl class="player-profile__facts">
+            <div><dt>Age</dt><dd id="playerProfileAge"></dd></div>
+            <div><dt>Role</dt><dd id="playerProfileRole"></dd></div>
+            <div><dt>Base</dt><dd id="playerProfileBase"></dd></div>
+          </dl>
+          <p class="player-profile__note">Fictional youth league profile. The role shown follows the common competitive terminology used by this game.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -148,6 +209,7 @@
           Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
         </a>
         <p class="nx-footer__tag">
+          An independent youth league creating a visible pathway for emerging players aged 16–18.
           An independent youth league creating a visible pathway for emerging players aged 16–18.
         </p>
       </div>
@@ -185,6 +247,8 @@
     <p class="nx-disclaimer">
       Coursework prototype. All teams, histories and player identities shown on this page are fictional;
       generated portraits will be illustrative and will not represent real minors.
+      Coursework prototype. All teams, histories and player identities shown on this page are fictional;
+      generated portraits will be illustrative and will not represent real minors.
     </p>
   </div>
 </footer>
@@ -192,7 +256,10 @@
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
   <h3 class="players-cookie-title">Cookies on this site</h3>
   <p class="nx-muted nx-mb-0 players-cookie-copy">
+  <h3 class="players-cookie-title">Cookies on this site</h3>
+  <p class="nx-muted nx-mb-0 players-cookie-copy">
     We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
+    here before, plus local and session storage for your theme and selected game.
     here before, plus local and session storage for your theme and selected game.
     Nothing is sent anywhere — this site has no server.
   </p>
@@ -206,7 +273,7 @@
 <script src="vendor/bootstrap.bundle.min.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/main.js"></script>
-<script src="js/players.js"></script>
+<script src="js/players.js?v=11"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
