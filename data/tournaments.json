@@ -34,36 +34,6 @@
       "champion": null
     },
     {
-      "id": "lol-worlds-invitational",
-      "name": "LCK Summer Invitational",
-      "game": "lol",
-      "gameLabel": "League of Legends",
-      "gameLogo": "GameLogos/LOLLogo.png",
-      "thumbnail": "TournamentThumbnail/LOLTournament.png",
-      "status": "upcoming",
-      "startDate": "2026-09-02",
-      "endDate": "2026-09-20",
-      "prizePool": 2500000,
-      "teams": 16,
-      "format": "Swiss into Knockout",
-      "champion": null
-    },
-    {
-      "id": "dota2-esl-one",
-      "name": "ESL One Autumn",
-      "game": "dota2",
-      "gameLabel": "Dota 2",
-      "gameLogo": "GameLogos/dota2Logo.png",
-      "thumbnail": "TournamentThumbnail/dota2Tournament.png",
-      "status": "upcoming",
-      "startDate": "2026-09-14",
-      "endDate": "2026-09-27",
-      "prizePool": 1000000,
-      "teams": 12,
-      "format": "Group Stage into Double Elim",
-      "champion": null
-    },
-    {
       "id": "pubg-global-series",
       "name": "PUBG Global Series",
       "game": "pubg",
@@ -76,21 +46,6 @@
       "prizePool": 1500000,
       "teams": 24,
       "format": "Points Race Finals",
-      "champion": "Team Falcons"
-    },
-    {
-      "id": "fc26-pro-open",
-      "name": "FC Pro Open Series",
-      "game": "fc26",
-      "gameLabel": "EA SPORTS FC 26",
-      "gameLogo": "GameLogos/FC26Logo.png",
-      "thumbnail": "TournamentThumbnail/FC26Tournament.png",
-      "status": "completed",
-      "startDate": "2026-05-02",
-      "endDate": "2026-05-18",
-      "prizePool": 500000,
-      "teams": 32,
-      "format": "Single Elimination",
       "champion": "Team Falcons"
     }
   ]

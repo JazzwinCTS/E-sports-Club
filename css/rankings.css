@@ -1,0 +1,126 @@
+/* ==========================================================================
+   rankings.css — exclusive to rankings.html. Owner: the same developer as
+   index.css (CLAUDE.md section 7 "Home + Rankings" pairing).
+
+   index.html links this file too — its "Top of the table" homepage preview
+   renders the exact same board-row component (js/render.js boardRow()) that
+   rankings.html's full leaderboard uses, so the styling has to match. That's
+   fine here specifically because both consuming pages belong to the same
+   developer; it would NOT be fine to reach into another pair's page file.
+
+   The shared filter bar (.nx-filter*) that rankings.html also uses is NOT
+   here — it lives in css/style.css because players.html and tournaments.html
+   (owned by other developers, untouched by this refactor) depend on it too.
+   ========================================================================== */
+
+.nx-board { display: flex; flex-direction: column; gap: 8px; }
+
+.nx-board__head,
+.nx-board__row {
+  display: grid;
+  grid-template-columns: 64px 1fr 92px 150px 44px;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+}
+.nx-board__head {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-block: 8px;
+}
+.nx-board__row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: all var(--dur) var(--ease);
+  cursor: pointer;
+}
+.nx-board__row:hover { border-color: var(--accent); transform: translateX(4px); }
+.nx-board__row.is-favourite {
+  border-color: var(--accent);
+  background: linear-gradient(90deg, var(--accent-soft), var(--surface) 40%);
+}
+
+.nx-board__rank {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+.nx-board__row:nth-child(1) .nx-board__rank,
+.nx-board__row:nth-child(2) .nx-board__rank,
+.nx-board__row:nth-child(3) .nx-board__rank { color: var(--text); }
+
+.nx-board__team { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.nx-board__logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.nx-board__name {
+  font-weight: 600;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nx-board__sub { font-size: 0.74rem; color: var(--text-muted); }
+
+.nx-board__pts {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.15rem;
+  text-align: right;
+}
+
+.nx-medals { display: flex; gap: 6px; justify-content: flex-end; }
+.nx-medal {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid transparent;
+}
+.nx-medal--gold   { background: rgba(231, 185, 75, 0.14); color: var(--gold);   border-color: rgba(231, 185, 75, 0.3); }
+.nx-medal--silver { background: rgba(184, 188, 198, 0.14); color: var(--silver); border-color: rgba(184, 188, 198, 0.3); }
+.nx-medal--bronze { background: rgba(196, 121, 74, 0.14); color: var(--bronze); border-color: rgba(196, 121, 74, 0.3); }
+
+.nx-fav {
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.05rem;
+  padding: 4px;
+  transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.nx-fav:hover { color: var(--accent); transform: scale(1.2); }
+.nx-fav.is-on { color: var(--accent); }
+
+@media (max-width: 780px) {
+  .nx-board__head { display: none; }
+  .nx-board__row {
+    grid-template-columns: 48px 1fr auto;
+    grid-template-areas:
+      'rank team fav'
+      'rank pts medals';
+    row-gap: 8px;
+  }
+  .nx-board__rank { grid-area: rank; }
+  .nx-board__team { grid-area: team; }
+  .nx-board__pts { grid-area: pts; text-align: left; }
+  .nx-medals { grid-area: medals; }
+  .nx-fav { grid-area: fav; }
+}

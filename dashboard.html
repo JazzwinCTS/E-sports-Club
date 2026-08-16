@@ -4,10 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard — NextGen E-Sports</title>
-<meta name="description" content="Everything this site remembers about you: preferences, filters and saved applications.">
+<meta name="description" content="Your NextGen profile: personal information, favourites, and everything this site remembers about you.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css">
+<!-- Page-exclusive: this page's own stat-tile/storage-table design. -->
+<link rel="stylesheet" href="css/dashboard.css">
 <script>
 (function () {
   try {
@@ -24,7 +26,7 @@
   <nav class="nx-nav__inner" aria-label="Primary">
     <a class="nx-wordmark" href="index.html">
       <span class="nx-wordmark__mark">N</span>
-      Next<span class="nx-wordmark__gen">Gen</span>
+      <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>
     </a>
     <div class="nx-nav__links" id="navLinks">
       <a class="nx-nav__link" href="index.html">Home</a>
@@ -52,98 +54,167 @@
   <section class="nx-section">
     <div class="nx-shell">
 
-      <div class="nx-section-head">
-        <p class="nx-eyebrow">Your account</p>
-        <h1 class="nx-mb-0">Dashboard</h1>
-        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
-          Everything this site remembers about you, in one place. This page only reads state —
-          each preference is changed on the page that owns it.
-        </p>
-      </div>
-
-      <div class="nx-grid nx-grid--3" style="margin-bottom:32px">
-        <div class="nx-card nx-reveal">
-          <p class="nx-eyebrow">Favourite club</p>
-          <div id="favTeam"></div>
+      <!-- Profile header. The avatar monogram, name and subtitle are filled by
+           js/dashboard.js from the account in localStorage `registrations`. -->
+      <div class="dash-head">
+        <div class="dash-head__id">
+          <div class="nx-avatar dash-avatar" id="profileAvatar" aria-hidden="true">?</div>
+          <div>
+            <p class="nx-eyebrow">Your account</p>
+            <h1 class="nx-mb-0" id="profileName">Profile</h1>
+            <p class="nx-muted dash-head__sub" id="profileSub">
+              Manage your details, your favourites, and everything this site remembers
+              about you — all in one place.
+            </p>
+          </div>
         </div>
-        <div class="nx-card nx-reveal">
-          <p class="nx-eyebrow">Applications</p>
-          <div id="appCount"></div>
-        </div>
-        <div class="nx-card nx-reveal">
-          <p class="nx-eyebrow">Visitor status</p>
-          <div id="visitorState"></div>
-        </div>
-      </div>
-
-      <div class="nx-grid nx-grid--2" style="align-items:start">
-        <div class="nx-card nx-card--flat">
-          <p class="nx-eyebrow">Stored on this device</p>
-          <p class="nx-muted" style="font-size:.86rem">
-            Persistent values kept in <code>localStorage</code> — they survive closing the browser.
-          </p>
-          <div id="localTable"></div>
-        </div>
-
-        <div class="nx-card nx-card--flat">
-          <p class="nx-eyebrow">Stored for this tab</p>
-          <p class="nx-muted" style="font-size:.86rem">
-            Working state kept in <code>sessionStorage</code> — a new tab starts clean.
-          </p>
-          <div id="sessionTable"></div>
-        </div>
-      </div>
-
-      <div class="nx-card nx-card--flat" style="margin-top:24px">
-        <p class="nx-eyebrow">Your submitted applications</p>
-        <div id="dashSubmissions"></div>
-      </div>
-
-      <div class="nx-row" style="margin-top:24px;gap:10px">
-        <button class="nx-btn nx-btn--ghost nx-btn--sm" id="wipeAll" type="button">
-          <i class="bi bi-trash3" aria-hidden="true"></i> Clear everything stored
+        <button class="nx-btn nx-btn--ghost nx-btn--sm dash-head__out" id="signOut"
+                type="button" hidden>
+          <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sign out
         </button>
+      </div>
+
+      <!-- Mini nav. Hash-linked (#favourites, #storage) so a section can be
+           shared or bookmarked without spending a storage key on it. -->
+      <div class="dash-tabs" role="tablist" aria-label="Profile sections">
+        <button class="dash-tab is-active" type="button" role="tab" id="tab-personal"
+                aria-controls="panel-personal" aria-selected="true" data-panel="personal">
+          <i class="bi bi-person" aria-hidden="true"></i> Personal info
+        </button>
+        <button class="dash-tab" type="button" role="tab" id="tab-favourites"
+                aria-controls="panel-favourites" aria-selected="false" data-panel="favourites"
+                tabindex="-1">
+          <i class="bi bi-star" aria-hidden="true"></i> Favourites
+        </button>
+        <button class="dash-tab" type="button" role="tab" id="tab-storage"
+                aria-controls="panel-storage" aria-selected="false" data-panel="storage"
+                tabindex="-1">
+          <i class="bi bi-hdd" aria-hidden="true"></i> Storage
+        </button>
+      </div>
+
+      <!-- Personal information ------------------------------------------- -->
+      <div class="nx-card dash-panel" id="panel-personal" role="tabpanel"
+           aria-labelledby="tab-personal" tabindex="0">
+        <h2 class="dash-panel__title">Personal information</h2>
+        <p class="nx-muted dash-panel__lead">
+          Your core details, exactly as they were entered when this account was created.
+          Nothing here has ever left the browser.
+        </p>
+        <hr class="dash-rule">
+        <div id="personalFields"></div>
+      </div>
+
+      <!-- Favourites ------------------------------------------------------ -->
+      <div class="nx-card dash-panel" id="panel-favourites" role="tabpanel"
+           aria-labelledby="tab-favourites" tabindex="0" hidden>
+        <h2 class="dash-panel__title">Favourites</h2>
+        <p class="nx-muted dash-panel__lead">
+          What you follow across the site. Each one is set on the page that owns it —
+          this page only reads them back.
+        </p>
+        <hr class="dash-rule">
+        <div class="dash-favs" id="favFields"></div>
+      </div>
+
+      <!-- Storage --------------------------------------------------------- -->
+      <div class="nx-card dash-panel" id="panel-storage" role="tabpanel"
+           aria-labelledby="tab-storage" tabindex="0" hidden>
+        <h2 class="dash-panel__title">Storage</h2>
+        <p class="nx-muted dash-panel__lead">
+          The three storage technologies this site uses, and exactly what is in each of them
+          right now. Every preference is written by the page that owns it.
+        </p>
+        <hr class="dash-rule">
+
+        <div class="nx-grid nx-grid--3" style="margin-bottom:32px">
+          <div class="nx-card nx-reveal">
+            <p class="nx-eyebrow">Favourite club</p>
+            <div id="favTeam"></div>
+          </div>
+          <div class="nx-card nx-reveal">
+            <p class="nx-eyebrow">Membership</p>
+            <div id="appCount"></div>
+          </div>
+          <div class="nx-card nx-reveal">
+            <p class="nx-eyebrow">Visitor status</p>
+            <div id="visitorState"></div>
+          </div>
+        </div>
+
+        <div class="nx-grid nx-grid--2" style="align-items:start">
+          <div class="nx-card nx-card--flat">
+            <p class="nx-eyebrow">Stored on this device</p>
+            <p class="nx-muted" style="font-size:.86rem">
+              Persistent values kept in <code>localStorage</code> — they survive closing the browser.
+            </p>
+            <div id="localTable"></div>
+          </div>
+
+          <div class="nx-card nx-card--flat">
+            <p class="nx-eyebrow">Stored for this tab</p>
+            <p class="nx-muted" style="font-size:.86rem">
+              Working state kept in <code>sessionStorage</code> — a new tab starts clean.
+            </p>
+            <div id="sessionTable"></div>
+          </div>
+        </div>
+
+        <div class="nx-card nx-card--flat" style="margin-top:24px">
+          <p class="nx-eyebrow">Account record</p>
+          <div id="dashSubmissions"></div>
+        </div>
+
+        <div class="nx-row" style="margin-top:24px;gap:10px">
+          <button class="nx-btn nx-btn--ghost nx-btn--sm" id="wipeAll" type="button">
+            <i class="bi bi-trash3" aria-hidden="true"></i> Clear everything stored
+          </button>
+        </div>
       </div>
     </div>
   </section>
-</main>
 </main>
 
 <footer class="nx-footer">
   <div class="nx-shell">
     <div class="nx-footer__top">
       <div class="nx-footer__brand">
-        <a class="nx-wordmark" href="index.html">
-          <span class="nx-wordmark__mark">N</span>
-          Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
-        </a>
-        <p class="nx-footer__tag">
-          A competitive university esports club across six titles — training, competing and
-          growing the local scene.
-        </p>
-      </div>
+        <div class="nx-footer__namerow">
+          <a class="nx-wordmark" href="index.html">
+            <span class="nx-wordmark__mark">N</span>
+            <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
+          </a>
 
-      <div class="nx-social">
-        <div class="nx-social__widget">
-          <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
-             data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
+          <div class="nx-social">
+            <div class="nx-social__widget">
+              <img src="socials/x.png" alt="" class="nx-social__icon">
+              <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
+                 data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
+            </div>
+            <div class="nx-social__widget">
+              <img src="socials/facebook.png" alt="" class="nx-social__icon">
+              <iframe title="NextGen E-Sports on Facebook"
+                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fapuesportsclub%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+                width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
+                frameborder="0" allowfullscreen="true"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            </div>
+            <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/theesportsclub"
+               target="_blank" rel="noopener">
+              <img src="socials/discord.png" alt="" class="nx-social__icon">
+              <span>Discord</span>
+              <span class="nx-discord__count">…</span>
+            </a>
+            <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
+              <img src="socials/instagram.png" alt="" class="nx-social__icon">
+            </a>
+          </div>
         </div>
-        <div class="nx-social__widget">
-          <iframe title="NextGen E-Sports on Facebook"
-            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fapuesportsclub%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
-            width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
-            frameborder="0" allowfullscreen="true"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-        </div>
-        <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/theesportsclub"
-           target="_blank" rel="noopener">
-          <i class="bi bi-discord" aria-hidden="true"></i>
-          <span>Discord</span>
-          <span class="nx-discord__count">…</span>
-        </a>
-        <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
-          <i class="bi bi-instagram" aria-hidden="true"></i>
-        </a>
+
+        <p class="nx-footer__tag">
+          A community esports club for Valorant, Counter-Strike and PUBG — open to amateur
+          players and students who just want to play.
+        </p>
       </div>
     </div>
 

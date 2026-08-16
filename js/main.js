@@ -23,6 +23,27 @@ $(function () {
     }
   });
 
+  /* ---- Signed-in state in the navbar (site-wide) -------------------------
+     Once an account exists in localStorage `registrations`, the "Join" link
+     becomes the member's email address. The href is left alone: register.html
+     is still where the account lives, and it shows the membership panel with
+     the sign-out button rather than the sign-up form.
+
+     Every page reads the key itself here rather than depending on
+     register.js having run — no page script reads another page script's
+     state (CLAUDE.md section 7). */
+  var accounts = NXStore.local.get('registrations', []) || [];
+  var account = accounts.length ? accounts[accounts.length - 1] : null;
+
+  if (account && account.email) {
+    $('.nx-nav__link[href="register.html"]')
+      .addClass('nx-nav__link--account')
+      .attr('title', account.email)
+      .attr('aria-label', 'Signed in as ' + account.email)
+      .html('<i class="bi bi-person-circle" aria-hidden="true"></i>' +
+            '<span class="nx-nav__email">' + NXRender.esc(account.email) + '</span>');
+  }
+
   /* ---- Theme toggle (localStorage `theme`, site-wide) -------------------- */
   function applyTheme(theme) {
     $('html').attr('data-theme', theme);

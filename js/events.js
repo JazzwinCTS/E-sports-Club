@@ -22,30 +22,29 @@ $(function () {
   function eventRow(e) {
     var d = new Date(e.date + 'T00:00:00');
     var link = e.linkedTournament
-      ? '<a class="nx-btn nx-btn--ghost nx-btn--sm" style="margin-top:12px" ' +
+      ? '<a class="nx-btn nx-btn--ghost nx-btn--sm ev-row__link" ' +
         'href="tournaments.html">View tournament <i class="bi bi-arrow-right"></i></a>'
       : '';
 
     return '' +
-      '<article class="nx-card nx-reveal" style="margin-bottom:12px">' +
-        '<div class="nx-row" style="align-items:flex-start;gap:18px;flex-wrap:nowrap">' +
-          '<div style="text-align:center;flex-shrink:0;min-width:56px">' +
-            '<div style="font-family:var(--font-heading);font-size:1.5rem;font-weight:800;line-height:1">' +
-              d.getDate() + '</div>' +
-            '<div style="font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)">' +
+      '<article class="nx-card nx-reveal ev-row">' +
+        '<div class="nx-row ev-row__inner">' +
+          '<div class="ev-row__date">' +
+            '<div class="ev-row__day">' + d.getDate() + '</div>' +
+            '<div class="ev-row__month">' +
               d.toLocaleDateString('en-US', { month: 'short' }) + '</div>' +
           '</div>' +
-          '<div style="min-width:0;flex:1">' +
-            '<div class="nx-row" style="gap:8px;margin-bottom:6px">' +
+          '<div class="ev-row__body">' +
+            '<div class="nx-row ev-row__meta">' +
               '<span class="nx-badge nx-badge--game">' +
                 '<i class="bi ' + (TYPE_ICON[e.type] || 'bi-calendar') + '"></i> ' +
                 NXRender.esc(e.type) + '</span>' +
-              '<span class="nx-muted" style="font-size:.8rem">' +
+              '<span class="nx-muted ev-row__meta-text">' +
                 NXRender.esc(e.time) + ' · ' + e.durationHours + 'h · ' +
                 NXRender.esc(e.location) + '</span>' +
             '</div>' +
-            '<h3 style="font-size:1rem;margin-bottom:6px">' + NXRender.esc(e.title) + '</h3>' +
-            '<p class="nx-muted nx-mb-0" style="font-size:.86rem">' +
+            '<h3 class="ev-row__title">' + NXRender.esc(e.title) + '</h3>' +
+            '<p class="nx-muted nx-mb-0 ev-row__desc">' +
               NXRender.esc(e.description) + '</p>' +
             link +
           '</div>' +
@@ -59,23 +58,25 @@ $(function () {
     list.forEach(function (e) {
       var d = new Date(e.date + 'T00:00:00');
       var key = d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-      (months[key] = months[key] || []).push(e);
+      if (!months[key]) {
+        months[key] = [];
+      }
+      months[key].push(e);
     });
 
     return Object.keys(months).map(function (month) {
       return '' +
-        '<div class="nx-reveal" style="margin-bottom:28px">' +
+        '<div class="nx-reveal ev-cal">' +
           '<p class="nx-eyebrow">' + NXRender.esc(month) + '</p>' +
-          '<div class="nx-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">' +
+          '<div class="nx-grid ev-cal__grid">' +
             months[month].map(function (e) {
               var d = new Date(e.date + 'T00:00:00');
-              return '<div class="nx-card" style="padding:14px">' +
-                '<div style="font-family:var(--font-heading);font-weight:800;font-size:1.1rem">' +
-                  d.getDate() + '</div>' +
-                '<div style="font-size:.74rem;color:var(--text-muted);margin-bottom:8px">' +
+              return '<div class="nx-card ev-cal__day">' +
+                '<div class="ev-cal__daynum">' + d.getDate() + '</div>' +
+                '<div class="ev-cal__daymeta">' +
                   d.toLocaleDateString('en-US', { weekday: 'short' }) + ' · ' +
                   NXRender.esc(e.time) + '</div>' +
-                '<div style="font-size:.84rem;font-weight:600">' + NXRender.esc(e.title) + '</div>' +
+                '<div class="ev-cal__title">' + NXRender.esc(e.title) + '</div>' +
               '</div>';
             }).join('') +
           '</div>' +
@@ -148,14 +149,14 @@ $(function () {
         }).join('');
 
         $weather.html(
-          '<div style="font-family:var(--font-heading);font-size:2.4rem;font-weight:800;line-height:1;margin:10px 0 4px">' +
+          '<div class="ev-weather__temp">' +
             Math.round(res.current.temperature_2m) + '&deg;C' +
           '</div>' +
-          '<p class="nx-muted" style="font-size:.84rem">' +
+          '<p class="nx-muted ev-weather__meta">' +
             'Humidity ' + res.current.relative_humidity_2m + '% · ' +
             'Precipitation ' + res.current.precipitation + 'mm' +
           '</p>' +
-          '<div style="margin-top:10px">' + days + '</div>'
+          '<div class="ev-weather__days">' + days + '</div>'
         );
       },
       error: function () {

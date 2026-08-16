@@ -1,0 +1,99 @@
+/* ==========================================================================
+   index.css — exclusive to index.html. Owner: the same developer as
+   rankings.css (CLAUDE.md section 7 "Home + Rankings" pairing).
+
+   Nothing in here is referenced by any other page — this file only ever
+   needs to change when index.html's own hero/game-strip design changes, so
+   editing it carries zero risk of colliding with anyone else's page.
+
+   Depends on: css/style.css (tokens + shell, loaded first) and
+   css/rankings.css (index.html's "Top of the table" preview reuses the
+   leaderboard row component rankings.html owns — see rankings.css).
+   ========================================================================== */
+
+/* --- Hero / carousel ------------------------------------------------------ */
+.nx-hero { position: relative; }
+/* The height is declared on every level of the carousel: a floated
+   .carousel-item alone leaves .carousel-inner with no height to fill. */
+.nx-hero .carousel,
+.nx-hero .carousel-inner,
+.nx-hero .carousel-item { height: clamp(420px, 68vh, 660px); }
+.nx-hero .carousel-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* The hero photography is bright and busy, so the scrim has to work hard —
+   white display type over it must stay readable on every slide. */
+.nx-hero__scrim {
+  position: absolute; inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(to right,
+      rgba(6, 6, 9, 0.94) 0%,
+      rgba(6, 6, 9, 0.80) 38%,
+      rgba(6, 6, 9, 0.35) 70%,
+      rgba(6, 6, 9, 0.25) 100%),
+    linear-gradient(to top,
+      #0B0B0E 0%,
+      rgba(6, 6, 9, 0.55) 34%,
+      rgba(6, 6, 9, 0.45) 100%);
+}
+.nx-hero__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  z-index: 4;
+  /* The hero sits over a photo with a fixed dark scrim (not the page
+     background), so its text must stay light regardless of site theme —
+     override the theme-dependent tokens locally rather than globally.
+     `color` is set explicitly too: redefining the custom properties alone
+     doesn't retroactively change `color` already inherited from body, since
+     elements without their own `color: var(--text)` (like the <h1>) inherit
+     the computed value, not a live re-evaluation of the variable. */
+  --text: #FFFFFF;
+  --text-muted: rgba(255, 255, 255, 0.75);
+  --border-strong: rgba(255, 255, 255, 0.35);
+  color: var(--text);
+}
+.nx-hero__title { text-shadow: 0 2px 40px rgba(0, 0, 0, 0.5); }
+.nx-hero__title { max-width: 16ch; margin-bottom: 18px; }
+.nx-hero__lede { max-width: 46ch; color: var(--text-muted); font-size: 1.02rem; margin-bottom: 28px; }
+.nx-hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.nx-hero .carousel-indicators { margin-bottom: 24px; z-index: 4; }
+.nx-hero .carousel-indicators [data-bs-target] {
+  width: 34px; height: 3px;
+  border: 0;
+  background: rgba(255, 255, 255, 0.35);
+  opacity: 1;
+  transition: background var(--dur) var(--ease);
+}
+.nx-hero .carousel-indicators .active { background: var(--accent); }
+
+/* --- Game strip -------------------------------------------------------------
+   Static badges — the three titles the club runs, presented as plain icons
+   and labels. Not links or buttons, so no hover/click affordance. */
+.nx-gamestrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.nx-gamechip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 22px;
+  min-width: 116px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.nx-gamechip img { height: 34px; width: auto; object-fit: contain; }
+.nx-gamechip span {
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}

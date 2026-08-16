@@ -47,24 +47,25 @@ $(function () {
       rows.sort(function (a, b) {
         return (b.wins / (b.wins + b.losses)) - (a.wins / (a.wins + a.losses));
       });
+    } else {
+      /* 'rank' — the canonical championship order. Sorted explicitly rather
+         than relying on data/standings.json already being stored that way. */
+      rows.sort(function (a, b) { return a.rank - b.rank; });
     }
 
-    /* The starred team is pinned to the top of whatever the sort produced. */
-    if (favourite) {
-      rows.sort(function (a, b) {
-        if (a.team === favourite) { return -1; }
-        if (b.team === favourite) { return 1; }
-        return 0;
-      });
-    }
+    /* Rank is each team's position in the sort above. The starred team stays
+       exactly where its sort places it — starring only highlights the row
+       (NXRender.boardRow adds the .is-favourite class), it never reorders
+       the table. */
+    var ranked = rows.map(function (t, i) { return { team: t, rank: i + 1 }; });
 
     $board.find('.nx-board__row, .nx-empty').remove();
 
-    if (!rows.length) {
+    if (!ranked.length) {
       $board.append(NXRender.empty('No clubs compete in that title yet.'));
     } else {
-      $board.append(rows.map(function (t) {
-        return NXRender.boardRow(t, favourite);
+      $board.append(ranked.map(function (r) {
+        return NXRender.boardRow(r.team, favourite, r.rank);
       }).join(''));
     }
 

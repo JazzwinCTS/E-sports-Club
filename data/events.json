@@ -10,13 +10,13 @@
   "events": [
     {
       "id": "ev-scrim-valorant",
-      "title": "Valorant Scrim Block",
+      "title": "Valorant Scrim Night",
       "type": "practice",
       "date": "2026-08-17",
       "time": "19:00",
       "durationHours": 3,
       "location": "Arena Room A",
-      "description": "Structured scrim block for the Valorant roster. Reserved for the competitive squad, VOD review to follow.",
+      "description": "Casual scrim night for anyone who wants reps in. Mixed skill levels, drop in and grab a lobby.",
       "linkedTournament": null
     },
     {
@@ -49,19 +49,19 @@
       "time": "18:00",
       "durationHours": 4,
       "location": "Arena Room A & B",
-      "description": "Open tryouts across all six titles. Registration required — bring your own peripherals.",
+      "description": "Open tryouts across Valorant, Counter-Strike and PUBG. Registration required — bring your own peripherals.",
       "linkedTournament": null
     },
     {
-      "id": "ev-scrim-dota",
-      "title": "Dota 2 Draft Theory Session",
+      "id": "ev-scrim-pubg",
+      "title": "PUBG Squad Practice",
       "type": "practice",
       "date": "2026-08-28",
       "time": "19:30",
       "durationHours": 2,
       "location": "Arena Room B",
-      "description": "Coach-led draft theory and lane matchup breakdown ahead of the ESL One Autumn qualifiers.",
-      "linkedTournament": "dota2-esl-one"
+      "description": "Casual squad practice — rotations, zone reading and comms. Drop-in, no squad required in advance.",
+      "linkedTournament": null
     },
     {
       "id": "ev-lan-social",
@@ -75,15 +75,15 @@
       "linkedTournament": null
     },
     {
-      "id": "ev-lck-watch",
-      "title": "LCK Summer Invitational — Watch Party",
+      "id": "ev-vct-watch",
+      "title": "VCT Ignition Series — Watch Party",
       "type": "social",
       "date": "2026-09-06",
       "time": "15:00",
       "durationHours": 5,
       "location": "Main Hall",
-      "description": "Watch party for the LCK Summer Invitational opening weekend.",
-      "linkedTournament": "lol-worlds-invitational"
+      "description": "Big-screen watch party for the VCT Ignition Series playoffs. Open to guests, no membership required.",
+      "linkedTournament": "valorant-ignition"
     },
     {
       "id": "ev-workshop-vod",

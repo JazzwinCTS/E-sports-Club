@@ -30,6 +30,19 @@
   --border:         rgba(255, 255, 255, 0.08);
   --border-strong:  rgba(255, 255, 255, 0.16);
 
+  /* Background atmosphere — the technical grid and the god-ray flare over
+     .page-body get their own tokens rather than reusing --border, so turning
+     up the atmosphere doesn't also thicken every card/nav outline site-wide. */
+  --grid-line:      rgba(255, 255, 255, 0.16);
+  --flare:          rgba(255, 255, 255, 0.14);
+  --flare-soft:     rgba(255, 255, 255, 0.07);
+
+  /* Validity green — the one non-accent signal colour. Only the join form
+     uses it (css/register.css), but it is a token like every other colour so
+     no page ever hardcodes a hex. */
+  --ok:             #2FD98A;
+  --ok-soft:        rgba(47, 217, 138, 0.16);
+
   --gold:           #E7B94B;
   --silver:         #B8BCC6;
   --bronze:         #C4794A;
@@ -67,6 +80,17 @@
   --accent-soft:    rgba(255, 30, 56, 0.10);
   --completed:      #8A8A99;
   --bg-mid:         #FBE3E7;
+
+  /* The dark-theme mint is unreadable as text on white — darken it here so
+     the "requirement met" labels keep their contrast. */
+  --ok:             #12A45E;
+  --ok-soft:        rgba(18, 164, 94, 0.12);
+
+  /* White rays would vanish on this light background, so the atmosphere
+     switches to a soft accent tint instead of turning transparent. */
+  --grid-line:      rgba(11, 11, 14, 0.12);
+  --flare:          rgba(255, 30, 56, 0.10);
+  --flare-soft:     rgba(255, 30, 56, 0.05);
 }
 
 /* --- Base ---------------------------------------------------------------- */
@@ -148,19 +172,45 @@ img { max-width: 100%; height: auto; }
       var(--bg-bottom) 100%);
 }
 
-/* Faint technical grid — atmosphere without noise */
+/* Technical grid — atmosphere without noise */
 .page-body::before {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 75%);
-  opacity: 0.5;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+  opacity: 0.8;
+}
+
+/* God-ray flare — a soft light source fanning out from above the page,
+   layered over the grid. A slow opacity pulse ("shimmer") keeps it from
+   reading as a static texture. Respects prefers-reduced-motion below. */
+.page-body::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 0%, var(--flare), transparent 65%),
+    conic-gradient(from 210deg at 50% -15%,
+      transparent 0deg,
+      var(--flare-soft) 5deg,
+      transparent 11deg,
+      transparent 27deg,
+      var(--flare-soft) 33deg,
+      transparent 39deg,
+      transparent 63deg,
+      var(--flare) 68deg,
+      transparent 74deg,
+      transparent 360deg);
+  mask-image: radial-gradient(ellipse 75% 55% at 50% 15%, #000 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 15%, #000 0%, transparent 72%);
+  animation: nx-flare-shimmer 9s ease-in-out infinite;
 }
 
 .nx-section { padding-block: clamp(32px, 7vw, 96px); position: relative; z-index: 1; }
@@ -210,11 +260,14 @@ img { max-width: 100%; height: auto; }
   gap: 20px;
 }
 
-/* Wordmark — NextGen has no logo file, so its identity is pure CSS type */
+/* Wordmark — NextGen has no logo file, so its identity is pure CSS type.
+   "ext" + "Gen" are wrapped together in .nx-wordmark__text so the flex gap
+   below only opens a small gap once, between the mark shape and the text —
+   not a second time between "ext" and "Gen", which would split the word. */
 .nx-wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 3px;
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: 1.02rem;
@@ -236,7 +289,7 @@ img { max-width: 100%; height: auto; }
   font-weight: 800;
   clip-path: polygon(0 0, 100% 0, 100% 72%, 72% 100%, 0 100%);
 }
-.nx-wordmark__gen { color: var(--accent); }
+.nx-wordmark__gen { color: var(--accent); margin-left: 2px; }
 
 .nx-nav__links {
   display: flex;
@@ -273,6 +326,25 @@ img { max-width: 100%; height: auto; }
 .nx-nav__link:hover::after { transform: scaleX(1); }
 .nx-nav__link.is-active { color: var(--text); }
 .nx-nav__link.is-active::after { transform: scaleX(1); }
+
+/* Signed in: js/main.js swaps the "Join" link for the member's email. Lower
+   case and truncated, because an address is a value, not a menu label — and
+   some of them are far too long for a nav row. */
+.nx-nav__link--account {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
+}
+.nx-nav__link--account i { color: var(--accent); font-size: 1rem; }
+.nx-nav__email {
+  max-width: 15ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .nx-nav__actions { display: flex; align-items: center; gap: 8px; }
 
@@ -317,6 +389,8 @@ img { max-width: 100%; height: auto; }
   .nx-nav__links.is-open { transform: translateY(0); }
   .nx-nav__link { padding: 14px 4px; font-size: 0.95rem; }
   .nx-nav__link::after { left: 4px; right: 4px; }
+  /* The drawer is full width, so the address has room to show in full. */
+  .nx-nav__email { max-width: none; }
 }
 
 /* --- Buttons ------------------------------------------------------------- */
@@ -589,123 +663,10 @@ img { max-width: 100%; height: auto; }
   animation: nx-pulse 1.4s ease-in-out infinite;
 }
 
-/* --- Leaderboard --------------------------------------------------------- */
-.nx-board { display: flex; flex-direction: column; gap: 8px; }
-
-.nx-board__head,
-.nx-board__row {
-  display: grid;
-  grid-template-columns: 64px 1fr 92px 150px 44px;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
-}
-.nx-board__head {
-  font-family: var(--font-heading);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding-block: 8px;
-}
-.nx-board__row {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  transition: all var(--dur) var(--ease);
-  cursor: pointer;
-}
-.nx-board__row:hover { border-color: var(--accent); transform: translateX(4px); }
-.nx-board__row.is-favourite {
-  border-color: var(--accent);
-  background: linear-gradient(90deg, var(--accent-soft), var(--surface) 40%);
-}
-
-.nx-board__rank {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.05rem;
-  color: var(--text-muted);
-}
-.nx-board__row:nth-child(1) .nx-board__rank,
-.nx-board__row:nth-child(2) .nx-board__rank,
-.nx-board__row:nth-child(3) .nx-board__rank { color: var(--text); }
-
-.nx-board__team { display: flex; align-items: center; gap: 14px; min-width: 0; }
-.nx-board__logo {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-.nx-board__name {
-  font-weight: 600;
-  font-size: 1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.nx-board__sub { font-size: 0.74rem; color: var(--text-muted); }
-
-.nx-board__pts {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.15rem;
-  text-align: right;
-}
-
-.nx-medals { display: flex; gap: 6px; justify-content: flex-end; }
-.nx-medal {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: 5px;
-  font-size: 0.76rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  border: 1px solid transparent;
-}
-.nx-medal--gold   { background: rgba(231, 185, 75, 0.14); color: var(--gold);   border-color: rgba(231, 185, 75, 0.3); }
-.nx-medal--silver { background: rgba(184, 188, 198, 0.14); color: var(--silver); border-color: rgba(184, 188, 198, 0.3); }
-.nx-medal--bronze { background: rgba(196, 121, 74, 0.14); color: var(--bronze); border-color: rgba(196, 121, 74, 0.3); }
-
-.nx-move { font-size: 0.72rem; font-weight: 700; }
-.nx-move--up { color: #4CC38A; }
-.nx-move--down { color: var(--accent); }
-.nx-move--flat { color: var(--text-muted); }
-
-.nx-fav {
-  background: transparent;
-  border: 0;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 1.05rem;
-  padding: 4px;
-  transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.nx-fav:hover { color: var(--accent); transform: scale(1.2); }
-.nx-fav.is-on { color: var(--accent); }
-
-@media (max-width: 780px) {
-  .nx-board__head { display: none; }
-  .nx-board__row {
-    grid-template-columns: 48px 1fr auto;
-    grid-template-areas:
-      'rank team fav'
-      'rank pts medals';
-    row-gap: 8px;
-  }
-  .nx-board__rank { grid-area: rank; }
-  .nx-board__team { grid-area: team; }
-  .nx-board__pts { grid-area: pts; text-align: left; }
-  .nx-medals { grid-area: medals; }
-  .nx-fav { grid-area: fav; }
-}
+/* Leaderboard styles moved to css/rankings.css — exclusive to rankings.html
+   (index.html links rankings.css too, since its homepage preview reuses the
+   same board-row component; both pages are the same developer's per
+   CLAUDE.md section 7). */
 
 /* --- Tournament cards ---------------------------------------------------- */
 .nx-tcard { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
@@ -818,86 +779,8 @@ img { max-width: 100%; height: auto; }
 }
 .nx-pcard__ach { font-size: 0.78rem; color: var(--text-muted); font-style: italic; }
 
-/* --- Hero / carousel ----------------------------------------------------- */
-.nx-hero { position: relative; }
-/* The height is declared on every level of the carousel: a floated
-   .carousel-item alone leaves .carousel-inner with no height to fill. */
-.nx-hero .carousel,
-.nx-hero .carousel-inner,
-.nx-hero .carousel-item { height: clamp(420px, 68vh, 660px); }
-.nx-hero .carousel-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* The hero photography is bright and busy, so the scrim has to work hard —
-   white display type over it must stay readable on every slide. */
-.nx-hero__scrim {
-  position: absolute; inset: 0;
-  z-index: 2;
-  background:
-    linear-gradient(to right,
-      rgba(6, 6, 9, 0.94) 0%,
-      rgba(6, 6, 9, 0.80) 38%,
-      rgba(6, 6, 9, 0.35) 70%,
-      rgba(6, 6, 9, 0.25) 100%),
-    linear-gradient(to top,
-      var(--bg) 0%,
-      rgba(6, 6, 9, 0.55) 34%,
-      rgba(6, 6, 9, 0.45) 100%);
-}
-.nx-hero__content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  z-index: 4;
-}
-.nx-hero__title { text-shadow: 0 2px 40px rgba(0, 0, 0, 0.5); }
-.nx-hero__title { max-width: 16ch; margin-bottom: 18px; }
-.nx-hero__lede { max-width: 46ch; color: var(--text-muted); font-size: 1.02rem; margin-bottom: 28px; }
-.nx-hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
-
-.nx-hero .carousel-indicators { margin-bottom: 24px; z-index: 4; }
-.nx-hero .carousel-indicators [data-bs-target] {
-  width: 34px; height: 3px;
-  border: 0;
-  background: rgba(255, 255, 255, 0.35);
-  opacity: 1;
-  transition: background var(--dur) var(--ease);
-}
-.nx-hero .carousel-indicators .active { background: var(--accent); }
-
-/* Game strip */
-.nx-gamestrip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-.nx-gamechip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 18px 22px;
-  min-width: 116px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  transition: all var(--dur) var(--ease);
-}
-.nx-gamechip:hover {
-  border-color: var(--accent);
-  transform: translateY(-4px);
-  background: var(--surface-raised);
-}
-.nx-gamechip img { height: 34px; width: auto; object-fit: contain; }
-.nx-gamechip span {
-  font-family: var(--font-heading);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.nx-gamechip:hover span { color: var(--text); }
+/* Hero/carousel and game-strip styles moved to css/index.css — exclusive to
+   index.html, nobody else uses them. See CLAUDE.md section 7. */
 
 /* --- About video window -------------------------------------------------- */
 .nx-videoframe {
@@ -941,43 +824,8 @@ img { max-width: 100%; height: auto; }
 }
 .nx-play:hover { transform: scale(1.1); background: var(--accent-hover); }
 
-/* --- Forms --------------------------------------------------------------- */
-.nx-field { margin-bottom: calc(var(--space) * 2.5); }
-.nx-label {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-.nx-input, .nx-select, .nx-textarea {
-  width: 100%;
-  padding: 13px 15px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-[data-theme="light"] .nx-input,
-[data-theme="light"] .nx-select,
-[data-theme="light"] .nx-textarea { background: rgba(11, 11, 14, 0.03); }
-.nx-input:focus, .nx-select:focus, .nx-textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-.nx-input::placeholder { color: var(--text-muted); opacity: 0.7; }
-.nx-textarea { min-height: 110px; resize: vertical; }
-.nx-select option { background: var(--surface); color: var(--text); }
-.nx-error { color: var(--accent); font-size: 0.78rem; margin-top: 6px; display: none; }
-.nx-field.has-error .nx-input,
-.nx-field.has-error .nx-select { border-color: var(--accent); }
-.nx-field.has-error .nx-error { display: block; }
+/* Form-control styles moved to css/register.css — register.html is the only
+   page with a form, so they belong to that page. See CLAUDE.md section 7. */
 
 /* --- Feedback states ----------------------------------------------------- */
 .nx-spinner {
@@ -1013,17 +861,35 @@ img { max-width: 100%; height: auto; }
 [data-theme="light"] .nx-footer { background: #FFFFFF; }
 
 .nx-footer__top {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  justify-content: space-between;
   padding-bottom: calc(var(--space) * 4);
 }
-.nx-footer__brand { max-width: 30ch; }
-.nx-footer__tag { color: var(--text-muted); font-size: 0.88rem; margin-top: 12px; }
+.nx-footer__brand { width: 100%; }
 
-.nx-social { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
-.nx-social__widget { min-height: 30px; }
+/* Club name on the left, social plugins/links on the right — same row. The
+   tagline sits on its own full-width line underneath. */
+.nx-footer__namerow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.nx-footer__tag { color: var(--text-muted); font-size: 0.88rem; margin-top: 14px; max-width: 60ch; }
+
+.nx-social { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.nx-social__widget { min-height: 30px; display: flex; align-items: center; gap: 8px; }
+
+/* Real platform logos, uploaded to socials/ — used as a small consistent
+   label next to each plugin so the row reads as one family regardless of
+   how different the official widgets each look. */
+.nx-social__icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.nx-icon-btn .nx-social__icon { width: 20px; height: 20px; border-radius: 5px; }
 
 /* Discord live card — populated by a real jQuery API call */
 .nx-discord {
@@ -1039,7 +905,6 @@ img { max-width: 100%; height: auto; }
   transition: all var(--dur) var(--ease);
 }
 .nx-discord:hover { border-color: var(--accent); color: var(--text); }
-.nx-discord i { color: #5865F2; font-size: 1.15rem; }
 .nx-discord__count { color: var(--text-muted); font-variant-numeric: tabular-nums; }
 .nx-discord__count .nx-online {
   display: inline-block;
@@ -1103,6 +968,10 @@ img { max-width: 100%; height: auto; }
 @keyframes nx-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.35; transform: scale(0.75); }
+}
+@keyframes nx-flare-shimmer {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
 }
 @keyframes nx-rise {
   from { opacity: 0; transform: translateY(18px); }

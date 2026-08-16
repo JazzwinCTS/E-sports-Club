@@ -12,6 +12,16 @@ Build a **mobile-responsive, multi-page e-sports club website**. Static front-en
 **The club does not exist.** All content is fictional and the site is a prototype.
 There are no real members, no real tournament results.
 
+**NextGen E-Sports is a community club, not an elite competitive program.** It's framed as
+welcoming amateur players and students who just want somewhere to play — membership itself has
+no skill bar. An optional, lighter-touch competitive pathway (tryouts, scrims) exists for anyone
+who wants it, but it's never the framing for the club as a whole.
+
+**Scope: three titles only — Valorant, Counter-Strike, PUBG.** Every page, filter, and dataset is
+scoped to these three. Don't add League of Legends / Dota 2 / EA SPORTS FC content back in without
+this section being revisited first — see §9 for what's still sitting unused in the asset folders
+from before the scope was narrowed.
+
 
 ---
 
@@ -59,12 +69,12 @@ duplicating content. This rule exists to prevent overlap — please preserve it.
 | # | File | Page | Owns exclusively | Storage | API / Plugin |
 |---|---|---|---|---|---|
 | 1 | `index.html` | Home | Hero, carousel, aggregated previews, stream embed | Cookie `returningVisitor` | Stream iframe |
-| 2 | `dashboard.html` | Dashboard | Personalised aggregate view (reads only) | All three, read-only | — |
+| 2 | `dashboard.html` | Dashboard / Profile | Profile: mini nav across Personal info / Favourites / Storage | All three, read-only (plus sign out, which deletes) | — |
 | 3 | `rankings.html` | Team Rankings | Team standings, W/L, points, team profiles | Local `favouriteTeam` | **API** — standings |
 | 4 | `players.html` | Player Profiles | Individual profiles, stats, achievements | Local `playerFilter` | — |
 | 5 | `tournaments.html` | Tournaments | Brackets, results, prize pools | Session `tournamentFilter` | Share buttons |
 | 6 | `events.html` | Event Schedule | Calendar: practices, workshops, socials | Session `eventView` | **API** — venue/weather |
-| 7 | `register.html` | Registration | Sign-up form, submitted entries | Session draft + Local submissions | — |
+| 7 | `register.html` | Registration | Sign-up form + live client-side validation, the member account, sign out | Session draft + Local account | — |
 | 8 | `about.html` | About / Join Us | Club identity, committee, concept gallery | Local `theme` (site-wide) | **Social feed embed** |
 
 *Social feed embed, fulfilled two ways: the footer's X/Facebook/Discord plugins are shared markup present on
@@ -93,13 +103,27 @@ Implement exactly these keys. camelCase. Agreed group-wide.
 | Type | Key | Page | Example value | Lifetime | Purpose |
 |---|---|---|---|---|---|
 | Local | `theme` | site-wide | `"dark"` \| `"light"` | until cleared | Colour scheme. Read before first paint to avoid a flash of wrong theme. |
-| Local | `favouriteTeam` | rankings | `"Team Nova"` | until cleared | Pins team to top of standings, highlights its row. |
+| Local | `favouriteTeam` | rankings | `"Team Nova"` | until cleared | Highlights the team's row in the standings (does not reorder the table). |
 | Local | `playerFilter` | players | `{"game":"Valorant","role":"Duelist"}` | until cleared | Last-used filter, restored next visit. |
-| Local | `registrations` | register, dashboard | `[{"id":"REG…","name":"…"}]` | until cleared | Submitted entries. Client-side store in place of a backend. |
+| Local | `registrations` | register, dashboard | `[{"id":"REG…","fullName":"…","passwordHash":"…"}]` | until cleared | The member account created on the join page. Client-side store in place of a backend; still an array so `dashboard.html` reads it unchanged, and `register.html` treats the last entry as the account signed in on this browser. Signing out removes the key. The password is stored only as a short non-reversible digest — never in readable form, and never written to `registerDraft`. |
 | Session | `registerDraft` | register | `{"step":2,"name":"…"}` | tab close | Partial form data, written on field change. |
 | Session | `tournamentFilter` | tournaments | `"valorant"` | tab close | Active filter + sort, survives in-tab navigation. |
 | Session | `eventView` | events | `"calendar"` \| `"list"` | tab close | Selected view and month. |
 | Cookie | `returningVisitor` | index | `"true"` | 30 days | Suppresses intro animation, shows welcome-back. `path=/; SameSite=Lax` |
+
+**Reserved, not yet implemented.** `dashboard.html`'s Favourites tab shows four categories.
+Two of them — favourite **players** and favourite **events** — have no way to be set yet: those
+pages are still to be built by the rest of the team, so the tiles render a "coming soon"
+placeholder. `js/dashboard.js` already reads `favouritePlayers` and `favouriteEvents` from
+localStorage defensively (array of display names) so the tiles light up the day those pages ship.
+**That shape is a proposal, not an agreed key** — whoever builds the star on `players.html` /
+`events.html` owns the decision and should add the real row to the table above first. Nothing in
+the project writes either key today.
+
+**Signed-in state is site-wide.** Once `registrations` holds an account, `js/main.js` relabels the
+navbar's "Join" link to the member's email address on all 8 pages. The href stays `register.html`
+— that page shows the membership panel and the sign-out button once an account exists. Every page
+reads the key itself rather than depending on `register.js` having run (§7).
 
 ### Why each technology (this reasoning is assessed in Q&A)
 
@@ -152,28 +176,31 @@ $.ajax({
   see §10) is itself a real keyless jQuery API call — it can stand in as a third demo, or as the one for
   whichever page's script renders it, since the footer is shared markup across all 8 pages.
 
-**Liquipedia (primary real data source for rankings/tournaments/players):**
+**Liquipedia (where the real names/photos/logos in `data/` came from — not a live call):**
 
-Full endpoint reference: `docs/liquipedia_api_guide.md`. Real rate limits: 1 req/2s general, **1 req/30s for
-`action=parse`** (everything in that guide uses `action=parse`), and a required descriptive User-Agent that
-browsers cannot send — full detail in that file.
-
-Because of those three constraints, Liquipedia is used as a **one-time data source, not a live runtime call**:
-
-1. Fetch the real data by hand once (`curl` or a browser request, with a real descriptive User-Agent, respecting
-   the 1-per-30s `parse` limit — a handful of manual requests, not a script or build step).
-2. Save the result into `data/standings.json`, `data/tournaments.json`, `data/players.json`.
-3. The live pages read these with `$.getJSON`, same as any other tier-2 local-JSON fetch above — declared
-   honestly in the report as a real-data snapshot with its source page + fetch date noted in each file (a
-   `_source` / `_fetchedAt` field), not relabeled as a live feed.
-
-This means **zero runtime requests to liquipedia.net** from the shipped site — no rate-limit exposure, no risk of
-a shared classroom IP getting blocked, and it still works fully offline per §2. Team logos (`TeamLogo/`) and
-tournament art (`TournamentThumbnail/`) are already covered by local assets, so the `imageinfo` endpoint (guide
-§5) is out of scope — don't call it, even by hand, unless a new team/player needs an image you don't have locally.
+`data/players.json`, `data/standings.json`, and every real headshot in `PlayerPhotos/` and logo in `TeamLogo/`
+were sourced once, by hand, from Liquipedia (`action=parse`/`imageinfo`) while building the site — never at
+runtime. That's a closed, already-done task, not an ongoing integration: **there is no live MediaWiki/Liquipedia
+call anywhere in this project, and none is planned.** The one-time fetch guide that used to live at
+`docs/liquipedia_api_guide.md` has been removed since there's nothing left to fetch it against — the data it
+described is already committed. If a new real player/team is ever added, source it the same way (Liquipedia,
+by hand, real descriptive User-Agent, respecting their real rate limits — 1 req/2s general, 1 req/30s for
+`action=parse`) and save the result straight into the relevant `data/*.json` file; don't reintroduce a runtime
+dependency on liquipedia.net to do it.
 
 `rankings.html`'s graded **API** slot (§4) stays exactly as already documented: `$.getJSON('data/standings.json')`
-— now populated with real Liquipedia standings instead of placeholder data, but mechanically unchanged.
+— populated with real names, mechanically just a local-JSON fetch like any other tier-2 source above.
+
+**Rank is computed, not stored.** `data/standings.json`'s `rank` field is only the canonical
+championship-points order — `js/rankings.js` never displays it directly. Every row's on-screen `#N`
+is the team's actual position in whatever sort/filter is currently active, computed from array
+index after sorting (`js/render.js`'s `boardRow()` takes `rank` as an explicit parameter). There is
+no `movement`/rank-change indicator — with rank now computed per sort rather than fixed, a "moved up
+2 places" arrow would have no single baseline to measure against, so the field was dropped rather
+than left showing a number with no real basis. The four sort criteria (rank/points/gold
+medals/win rate) are deliberately **decorrelated** in the data — each produces a genuinely different
+#1 team — so switching the sort dropdown visibly does something, rather than re-displaying the same
+order every time.
 
 ---
 
@@ -186,7 +213,17 @@ Pages are developed independently by four people. Consistency must come from sha
 ├── index.html  dashboard.html  rankings.html  players.html
 ├── tournaments.html  events.html  register.html  about.html
 ├── css/
-│   └── style.css        ← single source of truth for all tokens
+│   ├── style.css        ← general file: tokens, shell (nav/footer/cookie banner), base,
+│   │                       buttons/cards, and any component used by 3+ pages or by a
+│   │                       page outside the five below (filter bar, tabs, tournament
+│   │                       cards, player cards, video frame)
+│   ├── index.css         ← exclusive to index.html (hero, carousel, game strip)
+│   ├── rankings.css      ← exclusive to rankings.html (leaderboard/medals/favourite —
+│   │                       index.html links this too, see note below)
+│   ├── events.css        ← exclusive to events.html (event rows, calendar, weather panel)
+│   ├── dashboard.css     ← exclusive to dashboard.html (stat tiles, storage-table rows)
+│   └── register.css      ← exclusive to register.html (form controls, live validity
+│                           states, password checklist, joined/thank-you panel)
 ├── js/
 │   ├── main.js          ← site-wide only: nav, theme toggle, cookie banner, footer widget
 │   ├── storage.js       ← shared get/set helpers for all three storage types
@@ -196,12 +233,41 @@ Pages are developed independently by four people. Consistency must come from sha
 ├── data/                ← local JSON for API fetches
 ├── vendor/              ← jQuery, Bootstrap 5, Bootstrap Icons (local, for offline)
 ├── fonts/               ← Unbounded + Sora woff2 (self-hosted, see §11)
-└── GameLogos/ TeamLogo/ TournamentThumbnail/ carousel*.png Video1.mp4
+└── GameLogos/ TeamLogo/ TournamentThumbnail/ registerImgs/ carousel*.png Video1.mp4
 ```
 
 `render.js` and `filter.js` are **shared components**, not page scripts — they exist so a
 tournament card and a filter row are identical everywhere they appear. Treat them like
 `style.css`: change them once, and every page that uses them changes together.
+
+**CSS modularity — the five pages above are treated as two developer pairs (Home+Rankings,
+Events+Dashboard) plus Register, who never need to touch `style.css` or each other's page
+file for their own page's design:**
+
+- A rule only belongs in `style.css` if it's shell/tokens/base, **or** if a page outside
+  this set of five (players/tournaments/about) also depends on it. Those three pages are
+  untouched by this split and still only link `style.css` — moving something they use
+  would break them.
+- **Forms are register-exclusive.** `.nx-field`/`.nx-label`/`.nx-input`/`.nx-select`/
+  `.nx-textarea`/`.nx-error` moved out of `style.css` into `register.css`, because
+  `register.html` is the only page in the site that renders a form (grep those class names
+  across `*.html` and `js/*.js` before assuming otherwise). If a second page ever grows a
+  form, move those base control rules back into `style.css` and leave only the `reg-`
+  classes behind. The `nx-` prefix on them marks the design system, not the file they
+  live in, so they kept their names when they moved.
+- `index.css`/`rankings.css`/`events.css`/`dashboard.css`/`register.css` hold only what's
+  genuinely exclusive to that one page. `index.html` is the one exception: it links `rankings.css`
+  as well as its own `index.css`, because its homepage "Top of the table" preview reuses
+  `js/render.js`'s `boardRow()` — the exact same component rankings.html's full
+  leaderboard renders — so the styling has to be identical. That's only acceptable because
+  both consuming pages belong to the same developer pair; never reach into a page file
+  owned by the *other* pair.
+- `events.js`/`dashboard.js` render dedicated classes (`ev-*`, `dash-*`) instead of inline
+  `style="..."` — inline styles were the main reason those two pages had nothing of their
+  own to put in a page-exclusive file in the first place.
+- Before adding a new component class: if it's only ever used by one of these four pages,
+  it goes in that page's file. If a page outside this set needs it too, it goes in
+  `style.css`. Don't guess — grep for the class across `*.html` and `js/*.js` first.
 
 Images stayed in the asset folders they arrived in rather than moving to `img/` — the paths
 are already referenced throughout, so renaming them now buys nothing.
@@ -237,20 +303,26 @@ Durations stay short. Slow animation reads as sluggish and costs more on the UI/
 All image/video assets already exist in the repo root — don't re-source alternates unless a folder is
 genuinely missing an entry.
 
+**Scope note:** these folders were populated back when the club fielded six titles. §1 narrowed that to
+Valorant/CS2/PUBG only, so a chunk of what's physically in these folders is now unreferenced leftover from the
+pre-narrowing scope, kept on disk rather than deleted (nothing was forcibly removed, only unwired). Don't treat
+their presence as license to re-add League of Legends / Dota 2 / EA SPORTS FC content — check §1 first.
+
 | Folder / file | Contents | Used for |
 |---|---|---|
-| `GameLogos/` | valorantLogo, CS2Logo, LOLLogo, dota2Logo, pubgLogo, FC26Logo | Game-filter tabs/icons on rankings, players, tournaments; small badges on cards |
-| `TeamLogo/` | Team_Liquid, Natus_Vincere, Team_Vitality, Virtus.Pro, Team_Falcons, Faze_Clan, Team_Spirit, Aurora_Gaming, AG.AL, Team_Vision, T1, Fnatic, Sentinels, GenG | Club badges in the rankings leaderboard / team profile cards. **NextGen E-Sports has no logo file** — render its identity as a styled CSS wordmark/emblem, not an `<img>`. The last 4 were added after launch, sourced via Liquipedia's `imageinfo` endpoint (§6) to fill gaps where `players.json` referenced a team with no local logo |
-| `PlayerPhotos/` | 20 real headshots/event photos, one per `data/players.json` entry | Player cards on `players.html` (`nx-avatar--photo`); falls back to a generated monogram if a player has no `photo` field. Sourced once via Liquipedia's `action=parse` infobox image (§6), not hotlinked |
-| `TournamentThumbnail/` | one 16:9 poster per game | Card header art on `tournaments.html`; linked-event image when a tournament appears on `events.html`'s calendar |
+| `GameLogos/` | valorantLogo, CS2Logo, pubgLogo **in active use**; LOLLogo, dota2Logo, FC26Logo present but unreferenced | Game-filter tabs/icons on rankings, players, tournaments; small badges on cards |
+| `TeamLogo/` | Team_Liquid, Natus_Vincere, Team_Vitality, Virtus.Pro, Team_Falcons, Faze_Clan, Team_Spirit, Aurora_Gaming, AG.AL, Fnatic, Sentinels **in active use**; T1, GenG, Team_Vision present but unreferenced (their teams were League/Dota-only, dropped with the scope) | Club badges in the rankings leaderboard / team profile cards. **NextGen E-Sports has no logo file** — render its identity as a styled CSS wordmark/emblem, not an `<img>` |
+| `PlayerPhotos/` | 10 real headshots **in active use**, one per `data/players.json` entry; 10 more (League/Dota/FC players dropped with the scope) present but unreferenced | Player cards on `players.html` (`nx-avatar--photo`); falls back to a generated monogram if a player has no `photo` field. Sourced once via Liquipedia's `action=parse` infobox image (§6), not hotlinked |
+| `TournamentThumbnail/` | valorantTournament, CS2Tournament, pubgTournament **in active use**; LOLTournament, dota2Tournament, FC26Tournament present but unreferenced | Card header art on `tournaments.html`; linked-event image when a tournament appears on `events.html`'s calendar |
+| `registerImgs/` | `Joined.png` — celebratory group artwork | Background of `register.html`'s "Thank you for joining us" panel, behind a dark scrim in both themes. Set in `css/register.css`, not as an `<img>`, so it stays decorative and needs no alt text |
 | `carousel.png`, `carousel1.png`, `carousel2.png` | real event/gameplay photography | Homepage hero carousel (3 slides) |
 | `Video1.mp4` | real event footage | `about.html` hero video, framed like `design-refs/About.png` |
 
 **Before wiring these in:** several files are well above a sane per-image budget (`pubgTournament.png` ≈ 4.5MB,
-`LOLTournament.png` ≈ 2.7MB, multiple `TeamLogo`/`GameLogos` PNGs > 400KB, a few `PlayerPhotos/` infobox images
-> 400KB). Resize/recompress everything to roughly 300–400KB (compressed PNG or WebP) before final submission —
-do this once, late, after layout is frozen, not on every edit. A slow image-heavy page load costs marks on the
-UI/UX band.
+`registerImgs/Joined.png` ≈ 1.3MB, multiple `TeamLogo`/`GameLogos` PNGs > 400KB, a few `PlayerPhotos/` infobox images > 400KB) — this applies to the
+in-use files; the unreferenced leftovers don't need compressing since they don't ship. Resize/recompress the
+in-use ones to roughly 300–400KB (compressed PNG or WebP) before final submission — do this once, late, after
+layout is frozen, not on every edit. A slow image-heavy page load costs marks on the UI/UX band.
 
 Every `<img>` still needs `alt` text (e.g. `alt="Valorant"`, `alt="Team Vitality logo"`).
 
@@ -337,9 +409,9 @@ staying opaque when sticky over scrolled content. 1px bottom border at low-opaci
 
 ### Per-page layout notes
 
-- **index.html** — hero Bootstrap carousel (`carousel.png`/`1`/`2`), a 6-icon game-filter strip
-  (`GameLogos/`) linking into filtered rankings/tournaments, 2–3 live/upcoming tournament preview cards
-  (`TournamentThumbnail/`), stream embed, footer.
+- **index.html** — hero Bootstrap carousel (`carousel.png`/`1`/`2`), a static 3-icon title strip
+  (`GameLogos/` — Valorant/CS2/PUBG only, per §1; plain badges, not links or buttons), 2–3
+  live/upcoming tournament preview cards (`TournamentThumbnail/`), stream embed, footer.
 - **rankings.html** — filter row styled like `design-refs/filter.png` (single-row control, chevron flips on
   open) using `GameLogos/` as the game filter; leaderboard table styled like `design-refs/Leaderboard.png`
   (rank, `TeamLogo/` badge + name, points, gold/silver/bronze medal boxes) — standings data is a real
@@ -351,17 +423,25 @@ staying opaque when sticky over scrolled content. 1px bottom border at low-opaci
 - **about.html** — hero exactly like `design-refs/About.png`: large rounded video window playing `Video1.mp4`
   with an original hook line (not "Legacy Unrivaled" — pick NextGen's own), then club story, committee,
   gallery, and the real Instagram post embed described above.
-- **players.html** — no dedicated design ref — a real player database (e.g. Faker, s1mple, TenZ, ZywOo),
+- **players.html** — no dedicated design ref — a real player database (e.g. s1mple, ZywOo, TenZ, Derke),
   sourced from a Liquipedia snapshot (§6): real name, country, current team/role, achievements. Reuses the
   shared card/list patterns from §11. Not NextGen's own roster — the club has no real members (§1).
-- **events.html, register.html, dashboard.html** — no dedicated design ref; reuse the shared shell + the
+- **dashboard.html** — a profile page, taking the *idea* of `design-refs/profile.png` (title + subtitle,
+  sign-out top-right, a segmented pill mini-nav above one big panel) without copying its layout or its
+  light palette: the pill is accent-filled on our dark surface, the identity block gains a hexagon
+  monogram avatar reusing `.nx-avatar`, and the panels are Personal info / Favourites / Storage. The
+  Storage panel is where the whole original dashboard lives — the three storage tables are the graded
+  §3 requirement and must not be dropped in a redesign. The active panel is hash-linked
+  (`dashboard.html#favourites`), deliberately **not** stored: a section is worth deep-linking to but is
+  not a preference, so it does not take a storage key.
+- **events.html, register.html** — no dedicated design ref; reuse the shared shell + the
   card/list/table patterns above with the same tokens.
 
 ---
 
 ## 11. Visual design system
 
-**Reference screenshots:** `design-refs/filter.jpeg`,`design-refs/tournaments.jpeg`,`design-refs/Leaderboard.png`,`design-refs/About.png`,`design-refs/Footer.png`
+**Reference screenshots:** `design-refs/filter.jpeg`,`design-refs/tournaments.jpeg`,`design-refs/Leaderboard.png`,`design-refs/About.png`,`design-refs/Footer.png`,`design-refs/profile.png`
 
 **What to take from them:** in filter.jpeg, the single row filter control is appealing with the space and opacity being enough, the animation of the arrow when clicked on turns pointing up and a dropdown of the choices appear. intournaments.png, the presentations of tournaments below a toolbar for choosing all, live, upcoming, ongoing is clean and intuitive, integrate the idea but not copy. The leaderboard.png displays the medals for each team cleanly in boxes coloured gold, silver and bronze, along witht he points for each team. The About.png has a large round bordered window showing a video with a hook word"Legacy Unrivaled", the video serves as a hook, the club's details are then displayed below. The Footer.png is the footer of the website and lists the social media links/icons for the clubs's socials, use that idea and the copyright elements, cookie preferences.
 
