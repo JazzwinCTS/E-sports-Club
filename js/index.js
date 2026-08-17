@@ -341,10 +341,11 @@ $(function () {
   var topFive = [];
 
   function paintStandings() {
+    var favourite = NXStore.local.get('favouriteTeam');
     /* Same column headings rankings.html uses — the preview is the same
        component, so it gets the same header rather than bare rows. */
     $standings.html(NXRender.boardHead() + topFive.map(function (t, i) {
-      return NXRender.boardRow(t, i + 1);
+      return NXRender.boardRow(t, favourite, i + 1);
     }).join(''));
   }
 
@@ -353,8 +354,22 @@ $(function () {
     paintStandings();
   }, 'Loading standings…');
 
-  /* The rows are a read-only preview — the "Full standings" button is the
-     way through to rankings.html. */
+  /* The rows are a read-only preview — the "Full standings" button is the way
+     through to rankings.html, so the rows themselves are not click targets.
+     The star inside them is, though: it writes the same localStorage
+     `favouriteTeam` rankings.html reads (CLAUDE.md section 5), so the two
+     pages stay in step without either script knowing about the other. */
+  $standings.on('click', '.nx-fav', function () {
+    var team = $(this).closest('.nx-board__row').data('team');
+    var current = NXStore.local.get('favouriteTeam');
+
+    if (current === team) {
+      NXStore.local.remove('favouriteTeam');
+    } else {
+      NXStore.local.set('favouriteTeam', team);
+    }
+    paintStandings();
+  });
 
   /* ---- Stream embed -----------------------------------------------------
      Twitch requires a `parent` matching the host serving the page, so the

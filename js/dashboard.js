@@ -66,7 +66,7 @@ $(function () {
       return value ? 'Yes' : 'No';
     }
 
-    /* theme, registrations count — already plain, human text */
+    /* theme, favouriteTeam, registrations count — already plain, human text */
     return String(value);
   }
 
@@ -82,6 +82,11 @@ $(function () {
   }
 
   /* ---- Headline cards --------------------------------------------------- */
+  var fav = NXStore.local.get('favouriteTeam');
+  $('#favTeam').html(fav
+    ? card(fav, 'Highlighted on', { href: 'rankings.html', text: 'the standings' })
+    : card('None', 'Star a team on', { href: 'rankings.html', text: 'rankings' }));
+
   var regs = NXStore.local.get('registrations', []) || [];
   $('#appCount').html(regs.length
     ? card('Active', 'Member account stored on this browser.')
@@ -95,6 +100,7 @@ $(function () {
   /* ---- Storage tables --------------------------------------------------- */
   $('#localTable').html(
     row('theme', NXStore.local.get('theme'), 'Colour scheme, site-wide') +
+    row('favouriteTeam', NXStore.local.get('favouriteTeam'), 'Highlighted team on rankings') +
     row('playerFilter', NXStore.local.get('playerFilter'), 'Last-used filter on players') +
     row('registrations', regs.length
       ? (regs.length === 1 ? '1 account' : regs.length + ' entries')
@@ -171,9 +177,11 @@ $(function () {
   }
 
   /* ---- Personal information ---------------------------------------------- */
+  /* Each field is a Bootstrap column; the .dash-fields wrapper below is a
+     Bootstrap row, so the two-across / one-across switch is the grid's job. */
   function field(label, value) {
     var empty = !value;
-    return '<div class="dash-field">' +
+    return '<div class="col dash-field">' +
              '<p class="dash-field__label">' + NXRender.esc(label) + '</p>' +
              '<p class="dash-field__value' + (empty ? ' is-empty' : '') + '">' +
                NXRender.esc(empty ? 'Not set' : value) +
@@ -191,7 +199,7 @@ $(function () {
     );
   } else {
     $('#personalFields').html(
-      '<div class="dash-fields">' +
+      '<div class="dash-fields row row-cols-1 row-cols-md-2 g-4">' +
         field('Full name', account.fullName) +
         field('Email address', account.email) +
         field('In-game name', account.ign) +
@@ -214,7 +222,8 @@ $(function () {
 
   /* ---- Favourites --------------------------------------------------------- */
   function favTile(opts) {
-    return '<div class="dash-fav' + (opts.value ? '' : ' is-empty') + '">' +
+    return '<div class="col">' +
+           '<div class="dash-fav h-100' + (opts.value ? '' : ' is-empty') + '">' +
              '<div class="dash-fav__icon">' + opts.icon + '</div>' +
              '<div class="dash-fav__body">' +
                '<p class="dash-fav__label">' + NXRender.esc(opts.label) + '</p>' +
@@ -226,6 +235,7 @@ $(function () {
                  ' <i class="bi bi-arrow-right" aria-hidden="true"></i>' +
                '</a>' +
              '</div>' +
+           '</div>' +
            '</div>';
   }
 
@@ -252,6 +262,14 @@ $(function () {
       icon: gameIcon,
       href: 'register.html',
       action: account ? 'Browse this title' : 'Join the team'
+    }) +
+    favTile({
+      label: 'Favourite team',
+      value: fav,
+      placeholder: 'No team starred yet',
+      icon: '<i class="bi bi-shield-fill" aria-hidden="true"></i>',
+      href: 'rankings.html',
+      action: fav ? 'See the standings' : 'Star a team'
     }) +
     favTile({
       label: 'Favourite players',

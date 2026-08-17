@@ -7,13 +7,17 @@
 $(function () {
   'use strict';
 
-  /* ---- Mobile navigation ------------------------------------------------ */
-  $('#navToggle').on('click', function () {
-    var $links = $('#navLinks');
-    var open = $links.toggleClass('is-open').hasClass('is-open');
-    $(this).attr('aria-expanded', open ? 'true' : 'false')
-      .find('i').attr('class', open ? 'bi bi-x-lg' : 'bi bi-list');
-  });
+  /* ---- Mobile navigation ------------------------------------------------
+     Bootstrap's collapse plugin opens and closes the menu via data-bs-toggle
+     and keeps aria-expanded in step, so the only thing left to do by hand is
+     swap the icon between the burger and the close cross. */
+  $('#navLinks')
+    .on('show.bs.collapse', function () {
+      $('#navToggle i').attr('class', 'bi bi-x-lg');
+    })
+    .on('hide.bs.collapse', function () {
+      $('#navToggle i').attr('class', 'bi bi-list');
+    });
 
   /* Mark the current page in the navbar without hardcoding it per page */
   var here = window.location.pathname.split('/').pop() || 'index.html';

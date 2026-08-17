@@ -152,7 +152,16 @@ img { max-width: 100%; height: auto; }
 }
 .nx-skip:focus { left: 8px; top: 8px; color: #fff; }
 
-/* --- Layout shell -------------------------------------------------------- */
+/* --- Layout shell --------------------------------------------------------
+   Usually paired with Bootstrap's .container-fluid in the markup, but it must
+   stay self-sufficient: several page-specific shells (players' and
+   tournaments' hero rows, the tournament detail strip, the rules layout)
+   carry .nx-shell alongside their own grid class and no container-fluid.
+   Leaving width/margin to Bootstrap broke exactly those — they lost their
+   auto side margins and slid to the left edge while the rest of the page
+   stayed centred. Keep all four declarations here; container-fluid then
+   simply restates two of them.
+   -------------------------------------------------------------------------- */
 .nx-shell {
   width: 100%;
   max-width: var(--shell-max);
@@ -243,13 +252,11 @@ img { max-width: 100%; height: auto; }
 }
 [data-theme="light"] .nx-nav { background: #FFFFFF; }
 
+/* Bootstrap's .container-fluid + .navbar supply the flex row, wrapping and the
+   collapse; this only re-imposes the shell's max width and gutters. */
 .nx-nav__inner {
-  width: 100%;
   max-width: var(--shell-max);
-  margin-inline: auto;
   padding-inline: clamp(16px, 4vw, 32px);
-  display: flex;
-  align-items: center;
   gap: 20px;
 }
 
@@ -284,15 +291,10 @@ img { max-width: 100%; height: auto; }
 }
 .nx-wordmark__gen { color: var(--accent); margin-left: 2px; }
 
-.nx-nav__links {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: auto;
-  flex-wrap: wrap;
-}
+/* .navbar-nav handles direction and wrapping; only the spacing is ours. */
+.nx-nav__links { gap: 4px; }
 
-.nx-nav__link {
+.nx-nav__link.nav-link {
   position: relative;
   padding: 8px 12px;
   font-size: 0.82rem;
@@ -303,7 +305,8 @@ img { max-width: 100%; height: auto; }
   transition: color var(--dur) var(--ease);
   white-space: nowrap;
 }
-.nx-nav__link:hover { color: var(--text); }
+.nx-nav__link.nav-link:hover,
+.nx-nav__link.nav-link:focus { color: var(--text); }
 .nx-nav__link::after {
   content: '';
   position: absolute;
@@ -317,7 +320,7 @@ img { max-width: 100%; height: auto; }
   transition: transform var(--dur) var(--ease);
 }
 .nx-nav__link:hover::after { transform: scaleX(1); }
-.nx-nav__link.is-active { color: var(--text); }
+.nx-nav__link.nav-link.is-active { color: var(--text); }
 .nx-nav__link.is-active::after { transform: scaleX(1); }
 
 /* Signed in: js/main.js swaps the "Join" link for the member's email. Lower
@@ -361,31 +364,26 @@ img { max-width: 100%; height: auto; }
 }
 
 /* Mobile nav toggle */
-.nx-nav__toggle { display: none; }
+/* Bootstrap shows/hides .navbar-toggler at the lg breakpoint; it only needs
+   our icon-button skin and no focus ring of its own. */
+.navbar-toggler {
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.navbar-toggler:focus { box-shadow: none; }
 
-@media (max-width: 940px) {
-  .nx-nav__toggle { display: grid; }
-  /* The links become a fixed drawer below, so they leave the flex row and
-     take their margin-left:auto with them. Without this the theme and menu
-     buttons sit next to the wordmark instead of at the right edge. */
-  .nx-nav__actions { margin-left: auto; }
+@media (max-width: 991.98px) {
+  /* Below Bootstrap's lg breakpoint the links collapse into a panel. Bootstrap
+     animates the height; these rules only give the panel the shell's surface
+     and spacing. The old fixed drawer with its own transform is gone, as is
+     the custom toggle handler that drove it. */
   .nx-nav__links {
-    position: fixed;
-    inset: var(--nav-h) 0 auto 0;
-    flex-direction: column;
-    align-items: stretch;
     gap: 0;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 8px 16px 16px;
-    transform: translateY(-120%);
-    transition: transform var(--dur) var(--ease);
-    max-height: calc(100vh - var(--nav-h));
-    overflow-y: auto;
+    padding: 8px 0 12px;
   }
-  .nx-nav__links.is-open { transform: translateY(0); }
-  .nx-nav__link { padding: 14px 4px; font-size: 0.95rem; }
-  .nx-nav__link::after { left: 4px; right: 4px; }
+  .nx-nav__link.nav-link { padding: 14px 4px; font-size: 0.95rem; }
+  .nx-nav__link.nav-link::after { left: 4px; right: 4px; }
   /* The drawer is full width, so the address has room to show in full. */
   .nx-nav__email { max-width: none; }
 }
@@ -440,10 +438,9 @@ img { max-width: 100%; height: auto; }
 }
 .nx-card--flat:hover { transform: none; box-shadow: none; }
 
-.nx-grid { display: grid; gap: calc(var(--space) * 3); }
-.nx-grid--3 { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-.nx-grid--4 { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
-.nx-grid--2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+/* Card grids are Bootstrap's own row / row-cols-* / col in the markup — see
+   about.html, dashboard.html, events.html and register.html. Nothing custom is
+   needed here any more. */
 
 /* --- FILTER BAR ---------------------------------------------------------
    Shared control used on rankings, players and tournaments. Single airy row,
@@ -862,19 +859,26 @@ img { max-width: 100%; height: auto; }
 }
 .nx-footer__brand { width: 100%; }
 
-/* Club name on the left, social plugins/links on the right — same row. The
-   tagline sits on its own full-width line underneath. */
-.nx-footer__namerow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
+/* Team name on the left, social plugins/links on the right — same row. The
+   tagline sits on its own full-width line underneath. Bootstrap's flex
+   utilities do the layout in the markup (d-flex flex-wrap align-items-center
+   justify-content-between); only the gap, which is off Bootstrap's scale,
+   is set here. */
+.nx-footer__namerow { gap: 20px; }
 .nx-footer__tag { color: var(--text-muted); font-size: 0.88rem; margin-top: 14px; max-width: 60ch; }
 
-.nx-social { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-.nx-social__widget { min-height: 30px; display: flex; align-items: center; gap: 8px; }
+.nx-social { gap: 12px; }
+
+/* min-width:0 lets a widget shrink below its content's intrinsic size — the
+   Facebook Page Plugin ships a fixed width="280" iframe, which on a 320px
+   phone is wider than the footer column and pushed the whole page sideways.
+   With this the flex item shrinks and the plugin (adapt_container_width=true)
+   renders to fit. */
+.nx-social__widget { min-height: 30px; gap: 8px; min-width: 0; }
+/* min-width:0 on the iframe too: as a flex item its default min-width:auto
+   floors it at the 280px width attribute, so max-width alone cannot shrink it
+   past the icon and gap sitting beside it. */
+.nx-social__widget iframe { max-width: 100%; min-width: 0; }
 
 /* Real platform logos, uploaded to socials/ — used as a small consistent
    label next to each plugin so the row reads as one family regardless of
@@ -911,10 +915,9 @@ img { max-width: 100%; height: auto; }
   margin-right: 5px;
 }
 
+/* Layout from Bootstrap (d-flex flex-wrap align-items-center); the asymmetric
+   row/column gap has no Bootstrap equivalent, so it stays here. */
 .nx-footer__bottom {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   gap: 10px 22px;
   padding-block: 20px;
   border-top: 1px solid var(--border);
@@ -1022,9 +1025,11 @@ img { max-width: 100%; height: auto; }
 }
 
 /* --- Utilities ----------------------------------------------------------- */
+/* Horizontal rows use Bootstrap's flex utilities directly in the markup
+   (d-flex flex-wrap align-items-center justify-content-between gap-*), so the
+   old .nx-row / .nx-between pair is gone. .nx-stack stays: its 16px gap is off
+   Bootstrap's scale and it is used from JS-built strings in several places. */
 .nx-stack { display: flex; flex-direction: column; gap: calc(var(--space) * 2); }
-.nx-row { display: flex; flex-wrap: wrap; align-items: center; gap: calc(var(--space) * 1.5); }
-.nx-between { justify-content: space-between; }
 .nx-center { text-align: center; }
 .nx-mt-0 { margin-top: 0; }
 .nx-mb-0 { margin-bottom: 0; }

@@ -7,7 +7,7 @@
 <meta name="description" content="Join NextGen E-Sports. Open to players of every level across Valorant, Counter-Strike and PUBG.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css?v=5">
 <link rel="stylesheet" href="css/register.css?v=1">
 <script>
 (function () {
@@ -21,37 +21,42 @@
 <body>
 <a class="nx-skip" href="#main">Skip to content</a>
 
-<header class="nx-nav">
-  <nav class="nx-nav__inner" aria-label="Primary">
-    <a class="nx-wordmark" href="index.html">
+<header class="nx-nav navbar navbar-expand-lg p-0">
+  <nav class="nx-nav__inner container-fluid" aria-label="Primary">
+    <a class="nx-wordmark navbar-brand" href="index.html">
       <span class="nx-wordmark__mark">N</span>
       <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>
     </a>
-    <div class="nx-nav__links" id="navLinks">
-      <a class="nx-nav__link" href="index.html">Home</a>
-      <a class="nx-nav__link" href="rankings.html">Rankings</a>
-      <a class="nx-nav__link" href="players.html">Players</a>
-      <a class="nx-nav__link" href="tournaments.html">Tournaments</a>
-      <a class="nx-nav__link" href="events.html">Events</a>
-      <a class="nx-nav__link" href="dashboard.html">Dashboard</a>
-      <a class="nx-nav__link" href="about.html">About</a>
-      <a class="nx-nav__link" href="register.html">Join</a>
-    </div>
-    <div class="nx-nav__actions">
+
+    <div class="nx-nav__actions d-flex align-items-center gap-2 ms-auto order-lg-last">
       <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
         <i class="bi bi-sun" aria-hidden="true"></i>
       </button>
-      <button class="nx-icon-btn nx-nav__toggle" id="navToggle" type="button"
-              aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+      <button class="nx-icon-btn navbar-toggler" id="navToggle" type="button"
+              data-bs-toggle="collapse" data-bs-target="#navLinks"
+              aria-controls="navLinks" aria-expanded="false" aria-label="Toggle navigation">
         <i class="bi bi-list" aria-hidden="true"></i>
       </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navLinks">
+      <ul class="navbar-nav nx-nav__links ms-lg-auto">
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="rankings.html">Rankings</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="players.html">Players</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="tournaments.html">Tournaments</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="events.html">Events</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="register.html">Join</a></li>
+      </ul>
     </div>
   </nav>
 </header>
 
 <main id="main" class="page-body">
   <section class="nx-section">
-    <div class="nx-shell">
+    <div class="nx-shell container-fluid">
 
       <!-- Sign-up state. js/register.js swaps this for #joinedPanel below once
            an account exists in localStorage `registrations`. -->
@@ -66,8 +71,9 @@
           </p>
         </div>
 
-        <div class="nx-grid nx-grid--2" style="align-items:start">
+        <div class="row row-cols-1 row-cols-lg-2 g-4 align-items-start">
 
+          <div class="col">
           <form class="nx-card nx-card--flat" id="registerForm" novalidate>
             <p class="nx-eyebrow">Create your account</p>
 
@@ -151,10 +157,10 @@
             <div class="nx-field">
               <label class="nx-label" for="notes">Anything else?</label>
               <textarea class="nx-textarea" id="notes" name="notes"
-                        placeholder="Availability, past teams, what you want out of the club…"></textarea>
+                        placeholder="Availability, past teams, what you want out of the team…"></textarea>
             </div>
 
-            <div class="nx-row" style="gap:10px">
+            <div class="d-flex flex-wrap align-items-center gap-2">
               <button class="nx-btn nx-btn--primary" type="submit">
                 <i class="bi bi-person-plus" aria-hidden="true"></i> Create my account
               </button>
@@ -167,7 +173,9 @@
               readable form — a real deployment would hash it server-side.
             </p>
           </form>
+          </div>
 
+          <div class="col">
           <aside>
             <div class="nx-card nx-card--flat">
               <p class="nx-eyebrow">What happens next</p>
@@ -180,6 +188,7 @@
               </ol>
             </div>
           </aside>
+          </div>
         </div>
       </div>
 
@@ -207,22 +216,22 @@
 </main>
 
 <footer class="nx-footer">
-  <div class="nx-shell">
+  <div class="nx-shell container-fluid">
     <div class="nx-footer__top">
       <div class="nx-footer__brand">
-        <div class="nx-footer__namerow">
+        <div class="nx-footer__namerow d-flex flex-wrap align-items-center justify-content-between">
           <a class="nx-wordmark" href="index.html">
             <span class="nx-wordmark__mark">N</span>
             <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
           </a>
 
-          <div class="nx-social">
-            <div class="nx-social__widget">
+          <div class="nx-social d-flex flex-wrap align-items-center">
+            <div class="nx-social__widget d-flex align-items-center">
               <img src="socials/x.png" alt="" class="nx-social__icon">
               <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
                  data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
             </div>
-            <div class="nx-social__widget">
+            <div class="nx-social__widget d-flex align-items-center">
               <img src="socials/facebook.png" alt="" class="nx-social__icon">
               <iframe title="NextGen E-Sports on Facebook"
                 src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fapuesportsclub%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
@@ -249,7 +258,7 @@
       </div>
     </div>
 
-    <div class="nx-footer__bottom">
+    <div class="nx-footer__bottom d-flex flex-wrap align-items-center">
       <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
       <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
       <a href="about.html">About</a>
@@ -277,9 +286,9 @@
 
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
-<script src="js/storage.js?v=2"></script>
-<script src="js/render.js?v=2"></script>
-<script src="js/main.js?v=1"></script>
+<script src="js/storage.js?v=3"></script>
+<script src="js/render.js?v=4"></script>
+<script src="js/main.js?v=3"></script>
 <script src="js/register.js?v=1"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>

@@ -241,11 +241,8 @@
 .teams-panel { animation: playersFadeIn 220ms ease both; }
 .teams-panel__heading { margin-bottom: 26px; }
 
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 18px;
-}
+/* Bootstrap row on #teamGrid in players.html
+   (row-cols-1 / sm-2 / lg-3 / xl-4, g-3) — no custom grid needed. */
 
 .team-card {
   position: relative;
@@ -498,11 +495,8 @@
 
 .team-modal__roster-heading h3 { margin: 0; }
 
-.roster-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
-}
+/* Bootstrap row on #teamModalRoster in players.html
+   (row-cols-2 / md-3 / xl-5, g-3). */
 
 .player-card {
   min-width: 0;
@@ -576,8 +570,6 @@
 }
 
 @media (max-width: 1100px) {
-  .team-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .roster-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 860px) {
@@ -590,9 +582,7 @@
     scroll-snap-type: x proximity;
   }
   .game-card { min-height: 74px; scroll-snap-align: start; }
-  .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .team-modal__overview { grid-template-columns: 1fr; }
-  .team-coaches__grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 560px) {
@@ -603,14 +593,11 @@
   .game-picker { top: 64px; grid-template-columns: repeat(3, 174px); }
   .game-card { min-height: 70px; padding: 10px 12px; }
   .game-card__icon { width: 40px; height: 40px; }
-  .team-grid { grid-template-columns: 1fr; }
   .team-card__base { min-height: 0; }
   .team-modal__header,
   .team-modal .modal-body { padding: 20px; }
   .team-modal__identity { align-items: flex-start; }
   .team-mark--large { --mark-size: 64px; border-radius: 16px; }
-  .roster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .team-coaches__grid { grid-template-columns: 1fr; }
   .coach-card { grid-template-columns: 1fr; }
 }
 

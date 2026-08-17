@@ -10,19 +10,10 @@
 /* --- Profile header --------------------------------------------------------
    Identity on the left, sign out on the right — the same shape as
    design-refs/profile.png, in this site's own palette and type. */
-.dash-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: calc(var(--space) * 3);
-  margin-bottom: calc(var(--space) * 4);
-}
-.dash-head__id {
-  display: flex;
-  align-items: center;
-  gap: calc(var(--space) * 2.5);
-}
+/* Both rows lay out with Bootstrap flex utilities in dashboard.html; the
+   identity row also takes its responsive gap from Bootstrap (gap-3 gap-md-4),
+   which is what the old max-width query here used to do by hand. */
+.dash-head { margin-bottom: calc(var(--space) * 4); }
 /* Reuses the shared hexagon .nx-avatar, minus its centred card margins. */
 .dash-avatar {
   width: 84px; height: 84px;
@@ -107,13 +98,10 @@
 /* --- Read-only detail fields -----------------------------------------------
    Boxed values rather than inputs: there is no server to save an edit to, so
    presenting them as editable fields would be a lie. */
-/* Two columns, not auto-fit: at full shell width auto-fit gives four narrow
-   columns and an email address then wraps mid-address. */
-.dash-fields {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: calc(var(--space) * 2.5);
-}
+/* A Bootstrap row (row-cols-1 row-cols-md-2 g-4, set in js/dashboard.js) —
+   a fixed two-across rather than auto-fit, because at full shell width
+   auto-fit gives four narrow columns and an email address then wraps
+   mid-address. Bootstrap collapses it to one column below md. */
 .dash-field--wide { margin-top: calc(var(--space) * 2.5); }
 .dash-field__label {
   font-size: 0.68rem;
@@ -140,12 +128,8 @@
    star of their own — they are dimmed rather than hidden so the section shows
    its full shape. */
 /* Four tiles, so two columns — auto-fit lands three across and leaves the
-   fourth stranded on its own row. */
-.dash-favs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: calc(var(--space) * 2);
-}
+   fourth stranded on its own row. Bootstrap row on #favFields in
+   dashboard.html (row-cols-1 row-cols-md-2 g-3). */
 .dash-fav {
   display: flex;
   gap: calc(var(--space) * 2);
@@ -196,15 +180,16 @@
 .dash-fav__link { font-size: 0.76rem; font-weight: 600; }
 .dash-fav__link i { font-size: 0.7rem; }
 
-@media (max-width: 720px) {
-  .dash-head__id { gap: calc(var(--space) * 2); }
+/* The column counts that used to live in a media query here are now Bootstrap
+   breakpoints in the markup. What is left is pure sizing, which Bootstrap has
+   no utility for — so it keeps a query, aligned to Bootstrap's own md edge. */
+@media (max-width: 767.98px) {
   .dash-avatar { width: 64px; height: 64px; font-size: 1.3rem; }
   .dash-tab { padding: 10px 16px; }
-  .dash-fields, .dash-favs { grid-template-columns: 1fr; }
 }
 
 /* --- Headline stat cards ---------------------------------------------------
-   The three "favourite club / applications / visitor status" tiles. */
+   The three "favourite team / membership / visitor status" tiles. */
 .dash-stat__value {
   font-family: var(--font-heading);
   font-size: 1.6rem;

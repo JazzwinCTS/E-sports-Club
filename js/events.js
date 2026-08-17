@@ -28,14 +28,14 @@ $(function () {
 
     return '' +
       '<article class="nx-card nx-reveal ev-row">' +
-        '<div class="nx-row ev-row__inner">' +
+        '<div class="ev-row__inner d-flex flex-nowrap align-items-start">' +
           '<div class="ev-row__date">' +
             '<div class="ev-row__day">' + d.getDate() + '</div>' +
             '<div class="ev-row__month">' +
               d.toLocaleDateString('en-US', { month: 'short' }) + '</div>' +
           '</div>' +
           '<div class="ev-row__body">' +
-            '<div class="nx-row ev-row__meta">' +
+            '<div class="ev-row__meta d-flex flex-wrap align-items-center">' +
               '<span class="nx-badge nx-badge--game">' +
                 '<i class="bi ' + (TYPE_ICON[e.type] || 'bi-calendar') + '"></i> ' +
                 NXRender.esc(e.type) + '</span>' +
@@ -68,7 +68,7 @@ $(function () {
       return '' +
         '<div class="nx-reveal ev-cal">' +
           '<p class="nx-eyebrow">' + NXRender.esc(month) + '</p>' +
-          '<div class="nx-grid ev-cal__grid">' +
+          '<div class="ev-cal__grid">' +
             months[month].map(function (e) {
               var d = new Date(e.date + 'T00:00:00');
               return '<div class="nx-card ev-cal__day">' +
