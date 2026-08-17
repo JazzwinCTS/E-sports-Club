@@ -1,6 +1,6 @@
 /* ==========================================================================
    events.js — events.html only.
-   Owns the club activity calendar. Uses sessionStorage `eventView`
+   Owns the team activity calendar. Uses sessionStorage `eventView`
    (CLAUDE.md section 5) and calls the Open-Meteo REST API with jQuery.
    ========================================================================== */
 

@@ -12,13 +12,13 @@ Build a **mobile-responsive, multi-page e-sports club website**. Static front-en
 **The club does not exist.** All content is fictional and the site is a prototype.
 There are no real members, no real tournament results.
 
-**NextGen E-Sports is a community club, not an elite competitive program.** It's framed as
+**NextGen E-Sports is a community team, not an elite competitive program.** It's framed as
 welcoming amateur players and students who just want somewhere to play — membership itself has
 no skill bar. An optional, lighter-touch competitive pathway (scrims, the championship below)
 exists for anyone who wants it, but it's never the framing for the club as a whole.
 
-**The club currently hosts one competition: the 2026 NextGen Youth Championship**, for players
-aged 16–18, split into three divisions (Valorant / CS2 / PUBG) contested by **eight member clubs**
+**The team currently hosts one competition: the 2026 NextGen Youth Championship**, for players
+aged 16–18, split into three divisions (Valorant / CS2 / PUBG) contested by **eight member teams**
 (VYNE, KOVA, RIFT, ZERA, AXEN, MIRA, TALO, BRIX). This is *one event the club runs*, not what the
 club is — `players.html`, `tournaments.html` and `rankings.html` are all scoped to it, while
 `index.html`, `about.html` and `register.html` speak for the club and stay open to everyone. Don't
@@ -33,6 +33,11 @@ as history of where the *old* data came from — do not source new data that way
 from all 8 pages by request: it presents as a real club's site. That's a presentation choice for
 the deliverable, and it does not license inventing *real-world* claims — no real people, real
 orgs, or real results anywhere.
+
+**Terminology: the site says "team", never "club".** Renamed by request across all 8 pages,
+including the leaderboard heading and every count ("8 of 8 teams"). The favourite-a-team
+feature and its `favouriteTeam` key were removed at the same time — the standings are
+read-only now, with no star column.
 
 **Scope: three titles only — Valorant, Counter-Strike, PUBG.** Every page, filter, and dataset is
 scoped to these three. Don't add League of Legends / Dota 2 / EA SPORTS FC content back in without
@@ -87,7 +92,7 @@ duplicating content. This rule exists to prevent overlap — please preserve it.
 |---|---|---|---|---|---|
 | 1 | `index.html` | Home | Hero, carousel, aggregated previews, stream embed | Cookie `returningVisitor` | Stream iframe |
 | 2 | `dashboard.html` | Dashboard / Profile | Profile: mini nav across Personal info / Favourites / Storage | All three, read-only (plus sign out, which deletes) | — |
-| 3 | `rankings.html` | Team Rankings | Team standings, W/L, points, team profiles | Local `favouriteTeam` | **API** — standings |
+| 3 | `rankings.html` | Team Rankings | Team standings, W/L, points, team profiles | — | **API** — standings |
 | 4 | `players.html` | Player Profiles | Individual profiles, stats, achievements | Local `playerFilter` | — |
 | 5 | `tournaments.html` | Tournaments | Brackets, results, prize pools | Session `tournamentFilter` | Share buttons |
 | 6 | `events.html` | Event Schedule | Calendar: practices, workshops, socials | Session `eventView` | **API** — venue/weather |
@@ -120,7 +125,6 @@ Implement exactly these keys. camelCase. Agreed group-wide.
 | Type | Key | Page | Example value | Lifetime | Purpose |
 |---|---|---|---|---|---|
 | Local | `theme` | site-wide | `"dark"` \| `"light"` | until cleared | Colour scheme. Read before first paint to avoid a flash of wrong theme. |
-| Local | `favouriteTeam` | rankings | `"Team Nova"` | until cleared | Highlights the team's row in the standings (does not reorder the table). |
 | Local | `playerFilter` | players | `{"game":"Valorant","role":"Duelist"}` | until cleared | Last-used filter, restored next visit. |
 | Local | `registrations` | register, dashboard | `[{"id":"REG…","fullName":"…","passwordHash":"…"}]` | until cleared | The member account created on the join page. Client-side store in place of a backend; still an array so `dashboard.html` reads it unchanged, and `register.html` treats the last entry as the account signed in on this browser. Signing out removes the key. The password is stored only as a short non-reversible digest — never in readable form, and never written to `registerDraft`. |
 | Session | `registerDraft` | register | `{"step":2,"name":"…"}` | tab close | Partial form data, written on field change. |

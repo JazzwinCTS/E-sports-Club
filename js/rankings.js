@@ -1,6 +1,6 @@
 /* ==========================================================================
    rankings.js — rankings.html only.
-   Owns team standings. Uses localStorage `favouriteTeam` (CLAUDE.md section 5).
+   Owns team standings.
    ========================================================================== */
 
 $(function () {
@@ -29,7 +29,7 @@ $(function () {
     return opts;
   }
 
-  /* Every club fields all three divisions, so filtering by title would change
+  /* Every team fields all three divisions, so filtering by title would change
      nothing on its own. Selecting a title instead swaps each row's numbers for
      that division's record; "All games" shows the season total, which
      data/standings.json stores as the sum of the three. */
@@ -50,7 +50,6 @@ $(function () {
   }
 
   function apply(state) {
-    var favourite = NXStore.local.get('favouriteTeam');
     var rows = allTeams.slice();
 
     if (state.game !== 'all') {
@@ -75,24 +74,22 @@ $(function () {
       rows.sort(function (a, b) { return a.rank - b.rank; });
     }
 
-    /* Rank is each team's position in the sort above. The starred team stays
-       exactly where its sort places it — starring only highlights the row
-       (NXRender.boardRow adds the .is-favourite class), it never reorders
-       the table. */
+    /* Rank is each team's position in the sort above, not the `rank` field
+       in the data — that is only the canonical championship-points order. */
     var ranked = rows.map(function (t, i) { return { team: t, rank: i + 1 }; });
 
     $board.find('.nx-board__row, .nx-empty').remove();
 
     if (!ranked.length) {
-      $board.append(NXRender.empty('No clubs compete in that title yet.'));
+      $board.append(NXRender.empty('No teams compete in that title yet.'));
     } else {
       $board.append(ranked.map(function (r) {
-        return NXRender.boardRow(r.team, favourite, r.rank);
+        return NXRender.boardRow(r.team, r.rank);
       }).join(''));
     }
 
     if (filters) {
-      filters.setCount(rows.length + ' of ' + allTeams.length + ' clubs');
+      filters.setCount(rows.length + ' of ' + allTeams.length + ' teams');
     }
   }
 
@@ -123,19 +120,5 @@ $(function () {
 
     apply(filters.state());
   }, 'Loading standings…');
-
-  /* ---- Favourite team (localStorage) ------------------------------------ */
-  $board.on('click', '.nx-fav', function (e) {
-    e.stopPropagation();
-    var team = $(this).closest('.nx-board__row').data('team');
-    var current = NXStore.local.get('favouriteTeam');
-
-    if (current === team) {
-      NXStore.local.remove('favouriteTeam');
-    } else {
-      NXStore.local.set('favouriteTeam', team);
-    }
-    apply(filters ? filters.state() : { game: 'all', sort: 'rank' });
-  });
 
 });

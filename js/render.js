@@ -145,9 +145,9 @@ var NXRender = (function ($) {
       return '' +
         '<div class="nx-board__head" aria-hidden="true">' +
           /* "Rank" is wider than the rank column once the table scales down,
-             so it would run into "Club". The short form takes over there. */
+             so it would run into "Team". The short form takes over there. */
           '<div><span class="nx-lbl-full">Rank</span><span class="nx-lbl-short">#</span></div>' +
-          '<div>Club</div>' +
+          '<div>Team</div>' +
           '<div class="nx-board__pl" style="text-align:center" title="Played">PL</div>' +
           '<div class="nx-board__w" style="text-align:center" title="Won">W</div>' +
           '<div class="nx-board__l" style="text-align:center" title="Lost">L</div>' +
@@ -155,20 +155,18 @@ var NXRender = (function ($) {
             '<span class="nx-lbl-full">Points</span><span class="nx-lbl-short">Pts</span>' +
           '</div>' +
           '<div style="text-align:right">Medals</div>' +
-          '<div></div>' +
         '</div>';
     },
 
-    /* League-table row: Rank | Team | PL | W | L | Points | Medals | star.
+    /* League-table row: Rank | Team | PL | W | L | Points | Medals.
        Rank and team read left, every number sits in its own narrow column so
        the values line up down the table (design-refs/PremierLeague.png).
        There are no draws in these formats, so PL is simply W + L. */
-    boardRow: function (team, favourite, rank) {
-      var isFav = favourite === team.team;
+    boardRow: function (team, rank) {
       var played = Number(team.wins) + Number(team.losses);
 
       return '' +
-        '<div class="nx-board__row nx-reveal' + (isFav ? ' is-favourite' : '') + '" data-team="' + esc(team.team) + '">' +
+        '<div class="nx-board__row nx-reveal" data-team="' + esc(team.team) + '">' +
           '<div class="nx-board__rank">' + esc(rank) + '</div>' +
           '<div class="nx-board__team">' +
             '<img class="nx-board__logo" src="' + esc(team.logo) + '" alt="' + esc(team.team) + ' logo" loading="lazy">' +
@@ -189,10 +187,6 @@ var NXRender = (function ($) {
             '<span class="nx-medal nx-medal--silver"><i class="bi bi-award-fill"></i>' + esc(team.medals.silver) + '</span>' +
             '<span class="nx-medal nx-medal--bronze"><i class="bi bi-award"></i>' + esc(team.medals.bronze) + '</span>' +
           '</div>' +
-          '<button class="nx-fav' + (isFav ? ' is-on' : '') + '" type="button" ' +
-                  'aria-label="Set ' + esc(team.team) + ' as favourite team">' +
-            '<i class="bi bi-star' + (isFav ? '-fill' : '') + '"></i>' +
-          '</button>' +
         '</div>';
     },
 

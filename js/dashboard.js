@@ -66,7 +66,7 @@ $(function () {
       return value ? 'Yes' : 'No';
     }
 
-    /* theme, favouriteTeam, registrations count — already plain, human text */
+    /* theme, registrations count — already plain, human text */
     return String(value);
   }
 
@@ -82,11 +82,6 @@ $(function () {
   }
 
   /* ---- Headline cards --------------------------------------------------- */
-  var fav = NXStore.local.get('favouriteTeam');
-  $('#favTeam').html(fav
-    ? card(fav, 'Highlighted on', { href: 'rankings.html', text: 'the standings' })
-    : card('None', 'Star a club on', { href: 'rankings.html', text: 'rankings' }));
-
   var regs = NXStore.local.get('registrations', []) || [];
   $('#appCount').html(regs.length
     ? card('Active', 'Member account stored on this browser.')
@@ -100,7 +95,6 @@ $(function () {
   /* ---- Storage tables --------------------------------------------------- */
   $('#localTable').html(
     row('theme', NXStore.local.get('theme'), 'Colour scheme, site-wide') +
-    row('favouriteTeam', NXStore.local.get('favouriteTeam'), 'Highlighted club on rankings') +
     row('playerFilter', NXStore.local.get('playerFilter'), 'Last-used filter on players') +
     row('registrations', regs.length
       ? (regs.length === 1 ? '1 account' : regs.length + ' entries')
@@ -125,7 +119,7 @@ $(function () {
   if (!regs.length) {
     $subs.html('<p class="nx-muted nx-mb-0" style="font-size:.86rem">' +
       'No account stored in this browser. ' +
-      '<a href="register.html">Join the club</a>.</p>');
+      '<a href="register.html">Join the team</a>.</p>');
   } else {
     $subs.html(regs.slice().reverse().map(function (r) {
       var when = new Date(r.submittedAt);
@@ -192,7 +186,7 @@ $(function () {
       '<div class="nx-empty">' +
         '<i class="bi bi-person-x" aria-hidden="true"></i>' +
         'No account on this browser yet.<br>' +
-        '<a href="register.html">Join the club</a> and your details appear here.' +
+        '<a href="register.html">Join the team</a> and your details appear here.' +
       '</div>'
     );
   } else {
@@ -257,15 +251,7 @@ $(function () {
       placeholder: 'Set when you join',
       icon: gameIcon,
       href: 'register.html',
-      action: account ? 'Browse this title' : 'Join the club'
-    }) +
-    favTile({
-      label: 'Favourite club',
-      value: fav,
-      placeholder: 'No club starred yet',
-      icon: '<i class="bi bi-shield-fill" aria-hidden="true"></i>',
-      href: 'rankings.html',
-      action: fav ? 'See the standings' : 'Star a club'
+      action: account ? 'Browse this title' : 'Join the team'
     }) +
     favTile({
       label: 'Favourite players',

@@ -230,13 +230,6 @@ img { max-width: 100%; height: auto; }
   color: var(--accent);
   margin-bottom: 12px;
 }
-.nx-eyebrow::before {
-  content: '';
-  width: 28px;
-  height: 2px;
-  background: var(--accent);
-}
-
 /* --- Navbar -------------------------------------------------------------- */
 .nx-nav {
   position: sticky;

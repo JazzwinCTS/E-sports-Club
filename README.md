@@ -1,12 +1,12 @@
 # NextGen E-Sports
 
-NextGen E-Sports is a **community esports club** — open to players of every level, not an elite
-competitive program. The club focuses on three titles: **Valorant, Counter-Strike, and PUBG**.
+NextGen E-Sports is a **community esports team** — open to players of every level, not an elite
+competitive program. The team focuses on three titles: **Valorant, Counter-Strike, and PUBG**.
 
 It currently hosts one competition, the **2026 NextGen Youth Championship** for players aged
-16–18, contested by eight member clubs (VYNE, KOVA, RIFT, ZERA, AXEN, MIRA, TALO, BRIX) across
+16–18, contested by eight member teams (VYNE, KOVA, RIFT, ZERA, AXEN, MIRA, TALO, BRIX) across
 three divisions. That championship is what `players.html`, `tournaments.html` and `rankings.html`
-cover; the club itself stays open to everyone. All of it — clubs, players, results — is fictional
+cover; the team itself stays open to everyone. All of it — teams, players, results — is fictional
 content written for this project.
 
 This repository is a university coursework prototype: a mobile-responsive, eight-page website built
@@ -62,10 +62,8 @@ preview of the top 5 club standings, and a live stream embed.
 
 ### Team Rankings — `rankings.html`
 Club championship standings across every competing organisation the site tracks. A shared filter
-bar (game + sort), a leaderboard with real team logos, medal counts and win/loss records, and a
-star button to highlight a favourite team.
-- **Storage:** reads/writes `favouriteTeam` in **localStorage** — persists which club is starred
-  and highlighted, independent of sort order. Starring a team does not move it in the table.
+bar (game + sort), and a league table with team logos, played/won/lost, points and medal counts.
+- **Storage:** none of its own — the page is read-only.
 - **API:** this page owns the graded "RESTful API via jQuery" feature. `$.getJSON('data/standings.json')`
   fetches real team names (cross-checked against Liquipedia) with illustrative points/records,
   rendered into the DOM with a loading spinner and an error fallback.
@@ -128,8 +126,8 @@ across three panels — deep-linkable as `dashboard.html#favourites` / `#storage
 - **Personal info** — name, email, in-game name, member ID, primary title, experience and notes,
   shown as read-only boxes. They are not editable inputs on purpose: there is no server to save an
   edit to, so presenting them as editable would be a lie.
-- **Favourites** — your primary title, your favourite club (`favouriteTeam`, starred on the
-  rankings page), and tiles for favourite players and events. Those last two are **placeholders**:
+- **Favourites** — your primary title, plus tiles for favourite players and events. Those two are
+  **placeholders**:
   `players.html` and `events.html` have no star yet, so nothing can set them. The code already
   reads `favouritePlayers` / `favouriteEvents` defensively, so the tiles start working the day
   those pages ship — see `CLAUDE.md` §5 "reserved, not yet implemented".
@@ -161,7 +159,6 @@ presence (Instagram post embed, plus links to Discord/X/Facebook).
 |---|---|---|---|---|
 | Cookie | `returningVisitor` | index | 30 days | Suppresses the intro animation, shows welcome-back |
 | Local | `theme` | about (site-wide) | until cleared | Dark/light choice, read before first paint |
-| Local | `favouriteTeam` | rankings | until cleared | Highlights a club's row in the standings |
 | Local | `playerFilter` | players | until cleared | Restores your last-used filter |
 | Local | `registrations` | register (dashboard reads) | until cleared | The member account created on the join page |
 | Session | `registerDraft` | register | tab close | In-progress form, saved on every keystroke |
