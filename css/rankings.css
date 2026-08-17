@@ -15,14 +15,20 @@
 
 .nx-board { display: flex; flex-direction: column; gap: 8px; }
 
+/* Rank | Team | PL | W | L | Points | Medals | star.
+   Fixed narrow columns for the numbers so they align down the table; only the
+   team column flexes, which is what keeps the whole row inside the shell
+   without a horizontal scrollbar. */
 .nx-board__head,
 .nx-board__row {
   display: grid;
-  grid-template-columns: 64px 1fr 92px 150px 44px;
+  grid-template-columns: 46px minmax(0, 1fr) 38px 38px 38px 78px 132px;
   align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
+  gap: 10px;
+  padding: 10px 16px;
 }
+.nx-lbl-short { display: none; }
+
 .nx-board__head {
   font-family: var(--font-heading);
   font-size: 0.62rem;
@@ -36,52 +42,56 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  transition: all var(--dur) var(--ease);
-  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
-.nx-board__row:hover { border-color: var(--accent); transform: translateX(4px); }
-.nx-board__row.is-favourite {
-  border-color: var(--accent);
-  background: linear-gradient(90deg, var(--accent-soft), var(--surface) 40%);
-}
-
+/* The row itself is not a control — only the star inside it is — so it gets a
+   readable hover, not a pointer cursor or a shift. */
+.nx-board__row:hover { border-color: var(--border-strong); }
 .nx-board__rank {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 1rem;
   color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: left;
 }
 .nx-board__row:nth-child(1) .nx-board__rank,
 .nx-board__row:nth-child(2) .nx-board__rank,
 .nx-board__row:nth-child(3) .nx-board__rank { color: var(--text); }
 
-.nx-board__team { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.nx-board__team { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .nx-board__logo {
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
   flex-shrink: 0;
 }
 .nx-board__name {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.nx-board__sub { font-size: 0.74rem; color: var(--text-muted); }
+/* Mobile-only stand-in for the PL/W/L columns. */
+.nx-board__mini { display: none; font-size: 0.72rem; color: var(--text-muted); }
+
+.nx-board__num {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.nx-board__w { color: var(--text); }
 
 .nx-board__pts {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   text-align: right;
 }
 
-.nx-medals { display: flex; gap: 6px; justify-content: flex-end; }
+.nx-medals { display: flex; gap: 5px; justify-content: flex-end; }
 .nx-medal {
   display: inline-flex;
   align-items: center;
@@ -97,30 +107,70 @@
 .nx-medal--silver { background: rgba(184, 188, 198, 0.14); color: var(--silver); border-color: rgba(184, 188, 198, 0.3); }
 .nx-medal--bronze { background: rgba(196, 121, 74, 0.14); color: var(--bronze); border-color: rgba(196, 121, 74, 0.3); }
 
-.nx-fav {
-  background: transparent;
-  border: 0;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 1.05rem;
-  padding: 4px;
-  transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.nx-fav:hover { color: var(--accent); transform: scale(1.2); }
-.nx-fav.is-on { color: var(--accent); }
+/* Every track below is an explicit width apart from the club column. The
+   header and the rows are separate grid containers, so an `auto` track is
+   sized by that element's own content -- the word "MEDALS" in the header, the
+   three chips in a row -- and the two came out different widths, which threw
+   the headings out of line with their columns on phones.
 
-@media (max-width: 780px) {
-  .nx-board__head { display: none; }
+   Narrow screens keep the full desktop table -- same eight columns, same
+   order, nothing hidden and nothing reflowed into a second row. Everything
+   just scales: the gaps, the padding, the logo, the type and the medal chips.
+   The mini line stays hidden because PL/W/L keep their own columns. */
+@media (max-width: 900px) {
+  .nx-board__head,
   .nx-board__row {
-    grid-template-columns: 48px 1fr auto;
-    grid-template-areas:
-      'rank team fav'
-      'rank pts medals';
-    row-gap: 8px;
+    grid-template-columns: 34px minmax(0, 1fr) 30px 30px 30px 62px 108px;
+    gap: 7px;
+    padding: 9px 12px;
   }
-  .nx-board__rank { grid-area: rank; }
-  .nx-board__team { grid-area: team; }
-  .nx-board__pts { grid-area: pts; text-align: left; }
-  .nx-medals { grid-area: medals; }
-  .nx-fav { grid-area: fav; }
+  .nx-board__logo { width: 26px; height: 26px; }
+  .nx-board__team { gap: 9px; }
+  .nx-board__name { font-size: 0.88rem; }
+  .nx-board__rank { font-size: 0.9rem; }
+  .nx-board__num { font-size: 0.82rem; }
+  .nx-board__pts { font-size: 0.95rem; }
+  .nx-medals { gap: 4px; }
+  .nx-medal { padding: 3px 5px; font-size: 0.7rem; gap: 3px; }
+  .nx-board__head { font-size: 0.55rem; letter-spacing: 0.08em; }
+  /* The rank column is now narrower than the word "Rank", which ran it into
+     "Club". Swap to the short labels from here down. */
+  .nx-lbl-full { display: none; }
+  .nx-lbl-short { display: inline; }
+}
+
+@media (max-width: 620px) {
+  .nx-board__head,
+  .nx-board__row {
+    grid-template-columns: 26px minmax(0, 1fr) 24px 24px 24px 48px 64px;
+    gap: 5px;
+    padding: 8px 9px;
+  }
+  .nx-board__logo { width: 21px; height: 21px; }
+  .nx-board__team { gap: 7px; }
+  .nx-board__name { font-size: 0.78rem; }
+  .nx-board__rank { font-size: 0.8rem; }
+  .nx-board__num { font-size: 0.72rem; }
+  .nx-board__pts { font-size: 0.82rem; }
+  .nx-board__head { font-size: 0.48rem; letter-spacing: 0.04em; }
+
+  /* The medal chips are the widest thing left, so below this width they drop
+     their icons and keep the count, colour-coded as before. */
+  .nx-medals { gap: 3px; }
+  .nx-medal { padding: 2px 5px; font-size: 0.68rem; gap: 0; }
+  .nx-medal i { display: none; }
+}
+
+@media (max-width: 420px) {
+  .nx-board__head,
+  .nx-board__row {
+    grid-template-columns: 20px minmax(0, 1fr) 20px 20px 20px 40px 58px;
+    gap: 4px;
+    padding: 7px;
+  }
+  .nx-board__logo { width: 18px; height: 18px; }
+  .nx-board__name { font-size: 0.7rem; }
+  .nx-board__num { font-size: 0.65rem; }
+  .nx-board__pts { font-size: 0.74rem; }
+  .nx-medal { padding: 2px 4px; font-size: 0.62rem; }
 }

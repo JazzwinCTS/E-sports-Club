@@ -1,245 +1,463 @@
 {
-  "_source": "Club and organisation names are real esports organisations. Points, medal counts and win-loss records shown here are illustrative and are not verified competitive results.",
-  "_fetchedAt": "2026-08-15",
-  "_note": "Snapshot sourced while building the site; read at runtime with $.getJSON. No runtime requests are made to liquipedia.net. `rank` is the canonical championship-points order — the page computes each row's displayed rank dynamically from its position in whatever sort/filter is active, it does not read this field for display. See CLAUDE.md sections 2 and 6.",
-  "season": "NextGen Club Championship 2026",
+  "_source": "Coursework prototype data. All eight organisations, players and results are fictional and were written for this project; they are not real clubs and the points, medals and win-loss records are illustrative, not verified results.",
+  "_note": "Season totals are the sum of the three division records below them, so the overall table and the per-division view can never disagree. `rank` is the canonical championship-points order; js/rankings.js computes each row's displayed rank from its position in whatever sort/filter is active and never reads this field for display. See CLAUDE.md sections 6 and 10.",
+  "season": "NextGen Youth Championship 2026",
   "standings": [
     {
       "rank": 1,
-      "team": "AG.AL",
-      "logo": "TeamLogo/AG.AL.png",
-      "points": 3650,
-      "wins": 38,
-      "losses": 19,
+      "team": "VYNE",
+      "code": "VYNE",
+      "logo": "TeamLogo/vyne.png",
+      "color": "#e23b4d",
+      "points": 3720,
+      "wins": 41,
+      "losses": 17,
       "medals": {
-        "gold": 0,
-        "silver": 3,
-        "bronze": 2
+        "gold": 3,
+        "silver": 2,
+        "bronze": 1
       },
       "games": [
+        "valorant",
         "cs2",
         "pubg"
       ],
       "roster": [
-        "Sneyking",
-        "Ammar",
-        "Whitemon"
-      ]
+        "Drift",
+        "Nori",
+        "Jolt"
+      ],
+      "divisions": {
+        "valorant": {
+          "points": 1380,
+          "wins": 15,
+          "losses": 5,
+          "medals": {
+            "gold": 2,
+            "silver": 0,
+            "bronze": 0
+          }
+        },
+        "cs2": {
+          "points": 1290,
+          "wins": 14,
+          "losses": 6,
+          "medals": {
+            "gold": 1,
+            "silver": 1,
+            "bronze": 0
+          }
+        },
+        "pubg": {
+          "points": 1050,
+          "wins": 12,
+          "losses": 6,
+          "medals": {
+            "gold": 0,
+            "silver": 1,
+            "bronze": 1
+          }
+        }
+      }
     },
     {
       "rank": 2,
-      "team": "Team Falcons",
-      "logo": "TeamLogo/Team_Falcons.png",
-      "points": 3600,
-      "wins": 44,
-      "losses": 9,
+      "team": "KOVA",
+      "code": "KOVA",
+      "logo": "TeamLogo/kova.png",
+      "color": "#e6a126",
+      "points": 3610,
+      "wins": 38,
+      "losses": 14,
       "medals": {
-        "gold": 3,
-        "silver": 1,
-        "bronze": 0
+        "gold": 2,
+        "silver": 4,
+        "bronze": 2
       },
       "games": [
+        "valorant",
         "cs2",
         "pubg"
       ],
       "roster": [
-        "Kickstart",
-        "Shrimzy",
-        "ATF"
-      ]
+        "Aero",
+        "Glint",
+        "Lotus"
+      ],
+      "divisions": {
+        "valorant": {
+          "points": 1200,
+          "wins": 12,
+          "losses": 5,
+          "medals": {
+            "gold": 0,
+            "silver": 2,
+            "bronze": 1
+          }
+        },
+        "cs2": {
+          "points": 1330,
+          "wins": 13,
+          "losses": 4,
+          "medals": {
+            "gold": 1,
+            "silver": 1,
+            "bronze": 0
+          }
+        },
+        "pubg": {
+          "points": 1080,
+          "wins": 13,
+          "losses": 5,
+          "medals": {
+            "gold": 1,
+            "silver": 1,
+            "bronze": 1
+          }
+        }
+      }
     },
     {
       "rank": 3,
-      "team": "Natus Vincere",
-      "logo": "TeamLogo/Natus_Vincere.png",
-      "points": 2450,
-      "wins": 30,
-      "losses": 10,
+      "team": "RIFT",
+      "code": "RIFT",
+      "logo": "TeamLogo/rift.png",
+      "color": "#3478e5",
+      "points": 3480,
+      "wins": 44,
+      "losses": 12,
       "medals": {
         "gold": 1,
-        "silver": 1,
-        "bronze": 1
+        "silver": 3,
+        "bronze": 4
       },
       "games": [
+        "valorant",
         "cs2",
-        "valorant"
+        "pubg"
       ],
       "roster": [
-        "s1mple",
-        "w0nderful",
-        "jL"
-      ]
+        "Pace",
+        "Uma",
+        "Zen"
+      ],
+      "divisions": {
+        "valorant": {
+          "points": 1150,
+          "wins": 15,
+          "losses": 4,
+          "medals": {
+            "gold": 0,
+            "silver": 1,
+            "bronze": 2
+          }
+        },
+        "cs2": {
+          "points": 1160,
+          "wins": 15,
+          "losses": 4,
+          "medals": {
+            "gold": 1,
+            "silver": 1,
+            "bronze": 1
+          }
+        },
+        "pubg": {
+          "points": 1170,
+          "wins": 14,
+          "losses": 4,
+          "medals": {
+            "gold": 0,
+            "silver": 1,
+            "bronze": 1
+          }
+        }
+      }
     },
     {
       "rank": 4,
-      "team": "Team Vitality",
-      "logo": "TeamLogo/Team_Vitality.png",
-      "points": 2400,
-      "wins": 30,
-      "losses": 6,
+      "team": "ZERA",
+      "code": "ZERA",
+      "logo": "TeamLogo/zera.png",
+      "color": "#c84edc",
+      "points": 3350,
+      "wins": 33,
+      "losses": 21,
       "medals": {
-        "gold": 1,
+        "gold": 5,
         "silver": 0,
         "bronze": 1
       },
       "games": [
+        "valorant",
         "cs2",
-        "valorant"
+        "pubg"
       ],
       "roster": [
-        "ZywOo",
-        "apEX",
-        "flameZ"
-      ]
+        "Delta",
+        "Iris",
+        "Nyx"
+      ],
+      "divisions": {
+        "valorant": {
+          "points": 1250,
+          "wins": 12,
+          "losses": 6,
+          "medals": {
+            "gold": 2,
+            "silver": 0,
+            "bronze": 0
+          }
+        },
+        "cs2": {
+          "points": 1100,
+          "wins": 11,
+          "losses": 7,
+          "medals": {
+            "gold": 2,
+            "silver": 0,
+            "bronze": 0
+          }
+        },
+        "pubg": {
+          "points": 1000,
+          "wins": 10,
+          "losses": 8,
+          "medals": {
+            "gold": 1,
+            "silver": 0,
+            "bronze": 1
+          }
+        }
+      }
     },
     {
       "rank": 5,
-      "team": "Virtus.Pro",
-      "logo": "TeamLogo/Virtus.Pro.png",
-      "points": 2200,
-      "wins": 24,
-      "losses": 20,
+      "team": "AXEN",
+      "code": "AXEN",
+      "logo": "TeamLogo/axen.png",
+      "color": "#16a678",
+      "points": 3180,
+      "wins": 30,
+      "losses": 24,
       "medals": {
-        "gold": 0,
-        "silver": 1,
-        "bronze": 4
+        "gold": 2,
+        "silver": 2,
+        "bronze": 5
       },
       "games": [
-        "cs2"
+        "valorant",
+        "cs2",
+        "pubg"
       ],
       "roster": [
-        "FL1T",
-        "ICY",
-        "electroNic"
-      ]
+        "Rift",
+        "Wave",
+        "Bolt"
+      ],
+      "divisions": {
+        "valorant": {
+          "points": 1100,
+          "wins": 11,
+          "losses": 8,
+          "medals": {
+            "gold": 1,
+            "silver": 1,
+            "bronze": 2
+          }
+        },
+        "cs2": {
+          "points": 1080,
+          "wins": 10,
+          "losses": 8,
+          "medals": {
+            "gold": 1,
+            "silver": 0,
+            "bronze": 2
+          }
+        },
+        "pubg": {
+          "points": 1000,
+          "wins": 9,
+          "losses": 8,
+          "medals": {
+            "gold": 0,
+            "silver": 1,
+            "bronze": 1
+          }
+        }
+      }
     },
     {
       "rank": 6,
-      "team": "Team Liquid",
-      "logo": "TeamLogo/Team_Liquid.png",
-      "points": 1750,
-      "wins": 20,
-      "losses": 19,
+      "team": "MIRA",
+      "code": "MIRA",
+      "logo": "TeamLogo/mira.png",
+      "color": "#ef762f",
+      "points": 2960,
+      "wins": 28,
+      "losses": 26,
       "medals": {
         "gold": 0,
-        "silver": 3,
-        "bronze": 1
+        "silver": 5,
+        "bronze": 3
       },
       "games": [
+        "valorant",
         "cs2",
-        "valorant"
+        "pubg"
       ],
       "roster": [
-        "NAF",
-        "33",
-        "Insania"
-      ]
+        "Flux",
+        "Koda",
+        "Pulse"
+      ],
+      "divisions": {
+        "valorant": {
+          "points": 1000,
+          "wins": 10,
+          "losses": 9,
+          "medals": {
+            "gold": 0,
+            "silver": 2,
+            "bronze": 1
+          }
+        },
+        "cs2": {
+          "points": 990,
+          "wins": 9,
+          "losses": 9,
+          "medals": {
+            "gold": 0,
+            "silver": 2,
+            "bronze": 1
+          }
+        },
+        "pubg": {
+          "points": 970,
+          "wins": 9,
+          "losses": 8,
+          "medals": {
+            "gold": 0,
+            "silver": 1,
+            "bronze": 1
+          }
+        }
+      }
     },
     {
       "rank": 7,
-      "team": "Team Spirit",
-      "logo": "TeamLogo/Team_Spirit.png",
-      "points": 1700,
-      "wins": 22,
-      "losses": 19,
+      "team": "TALO",
+      "code": "TALO",
+      "logo": "TeamLogo/talo.png",
+      "color": "#159bb5",
+      "points": 2740,
+      "wins": 24,
+      "losses": 30,
       "medals": {
-        "gold": 0,
+        "gold": 1,
         "silver": 1,
         "bronze": 2
       },
       "games": [
-        "cs2"
-      ],
-      "roster": [
-        "donk",
-        "chopper",
-        "sh1ro"
-      ]
-    },
-    {
-      "rank": 8,
-      "team": "Fnatic",
-      "logo": "TeamLogo/Fnatic.png",
-      "points": 1650,
-      "wins": 19,
-      "losses": 21,
-      "medals": {
-        "gold": 2,
-        "silver": 0,
-        "bronze": 1
-      },
-      "games": [
-        "valorant"
-      ],
-      "roster": [
-        "Derke",
-        "Alfajer",
-        "Boaster"
-      ]
-    },
-    {
-      "rank": 9,
-      "team": "FaZe Clan",
-      "logo": "TeamLogo/Faze_Clan.png",
-      "points": 1500,
-      "wins": 18,
-      "losses": 22,
-      "medals": {
-        "gold": 1,
-        "silver": 0,
-        "bronze": 1
-      },
-      "games": [
+        "valorant",
         "cs2",
         "pubg"
       ],
       "roster": [
-        "karrigan",
-        "ropz",
-        "broky"
-      ]
+        "Tempo",
+        "Yale",
+        "Dash"
+      ],
+      "divisions": {
+        "valorant": {
+          "points": 950,
+          "wins": 9,
+          "losses": 10,
+          "medals": {
+            "gold": 1,
+            "silver": 0,
+            "bronze": 1
+          }
+        },
+        "cs2": {
+          "points": 900,
+          "wins": 8,
+          "losses": 10,
+          "medals": {
+            "gold": 0,
+            "silver": 1,
+            "bronze": 0
+          }
+        },
+        "pubg": {
+          "points": 890,
+          "wins": 7,
+          "losses": 10,
+          "medals": {
+            "gold": 0,
+            "silver": 0,
+            "bronze": 1
+          }
+        }
+      }
     },
     {
-      "rank": 10,
-      "team": "Aurora Gaming",
-      "logo": "TeamLogo/Aurora_Gaming.png",
-      "points": 1500,
-      "wins": 17,
-      "losses": 23,
+      "rank": 8,
+      "team": "BRIX",
+      "code": "BRIX",
+      "logo": "TeamLogo/brix.png",
+      "color": "#8255d9",
+      "points": 2510,
+      "wins": 21,
+      "losses": 33,
       "medals": {
-        "gold": 1,
-        "silver": 0,
-        "bronze": 0
+        "gold": 0,
+        "silver": 2,
+        "bronze": 4
       },
       "games": [
-        "pubg",
-        "cs2"
+        "valorant",
+        "cs2",
+        "pubg"
       ],
       "roster": [
-        "Kataomi",
-        "Mira"
-      ]
-    },
-    {
-      "rank": 11,
-      "team": "Sentinels",
-      "logo": "TeamLogo/Sentinels.png",
-      "points": 1400,
-      "wins": 14,
-      "losses": 26,
-      "medals": {
-        "gold": 1,
-        "silver": 0,
-        "bronze": 0
-      },
-      "games": [
-        "valorant"
+        "Hush",
+        "Maven",
+        "Rush"
       ],
-      "roster": [
-        "TenZ",
-        "zekken",
-        "Sacy"
-      ]
+      "divisions": {
+        "valorant": {
+          "points": 880,
+          "wins": 8,
+          "losses": 11,
+          "medals": {
+            "gold": 0,
+            "silver": 1,
+            "bronze": 2
+          }
+        },
+        "cs2": {
+          "points": 830,
+          "wins": 7,
+          "losses": 11,
+          "medals": {
+            "gold": 0,
+            "silver": 1,
+            "bronze": 1
+          }
+        },
+        "pubg": {
+          "points": 800,
+          "wins": 6,
+          "losses": 11,
+          "medals": {
+            "gold": 0,
+            "silver": 0,
+            "bronze": 1
+          }
+        }
+      }
     }
   ]
 }

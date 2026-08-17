@@ -1,5 +1,5 @@
 /* ==========================================================================
-   about.js — about.html only. Club film playback.
+   about.js — about.html only. Team film playback.
    ========================================================================== */
 
 $(function () {

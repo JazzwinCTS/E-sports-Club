@@ -5,13 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Player Directory — Youth Esports League</title>
 <meta name="description" content="Explore 16–18-year-old VALORANT, Counter-Strike 2 and PUBG players representing eight independent youth esports teams.">
-<title>Player Directory — Youth Esports League</title>
-<meta name="description" content="Explore 16–18-year-old VALORANT, Counter-Strike 2 and PUBG players representing eight independent youth esports teams.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=2">
   <link rel="stylesheet" href="css/players.css?v=18">
-<script src="js/theme-init.js"></script>
+<script>
+(function () {
+  try {
+    var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) { /* storage unavailable - dark stays */ }
+})();
+</script>
 </head>
 <body>
 <a class="nx-skip" href="#main">Skip to content</a>
@@ -118,13 +123,7 @@
         <span class="nx-spinner" aria-hidden="true"></span>
         Loading league rosters…
       </div>
-      <div class="players-loading" id="playersLoading" role="status">
-        <span class="nx-spinner" aria-hidden="true"></span>
-        Loading league rosters…
-      </div>
 
-      <p class="players-data-note" id="dataNote"></p>
-      <p class="players-data-note" id="dataNote"></p>
     </div>
   </section>
 </main>
@@ -204,22 +203,20 @@
   <div class="nx-shell">
     <div class="nx-footer__top">
       <div class="nx-footer__brand">
-        <a class="nx-wordmark" href="index.html">
-          <span class="nx-wordmark__mark">N</span>
-          Next<span class="nx-wordmark__gen">Gen</span>&nbsp;E-Sports
-        </a>
-        <p class="nx-footer__tag">
-          An independent youth league creating a visible pathway for emerging players aged 16–18.
-          An independent youth league creating a visible pathway for emerging players aged 16–18.
-        </p>
-      </div>
+        <div class="nx-footer__namerow">
+          <a class="nx-wordmark" href="index.html">
+            <span class="nx-wordmark__mark">N</span>
+            <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
+          </a>
 
           <div class="nx-social">
+            <!-- X: official follow button widget -->
             <div class="nx-social__widget">
               <img src="socials/x.png" alt="" class="nx-social__icon">
               <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
                  data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
             </div>
+            <!-- Facebook: official page plugin -->
             <div class="nx-social__widget">
               <img src="socials/facebook.png" alt="" class="nx-social__icon">
               <iframe title="NextGen E-Sports on Facebook"
@@ -228,12 +225,14 @@
                 frameborder="0" allowfullscreen="true"
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
             </div>
+            <!-- Discord: live member count via a real jQuery REST call -->
             <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/theesportsclub"
                target="_blank" rel="noopener">
               <img src="socials/discord.png" alt="" class="nx-social__icon">
               <span>Discord</span>
               <span class="nx-discord__count">…</span>
             </a>
+            <!-- Instagram: anchors to the real post embed on the About page -->
             <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
               <img src="socials/instagram.png" alt="" class="nx-social__icon">
             </a>
@@ -241,8 +240,8 @@
         </div>
 
         <p class="nx-footer__tag">
-          A community esports club for Valorant, Counter-Strike and PUBG — open to amateur
-          players and students who just want to play.
+          A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
+          players of every level, and host of the 2026 NextGen Youth Championship.
         </p>
       </div>
     </div>
@@ -253,25 +252,20 @@
       <a href="about.html">About</a>
       <a href="register.html">Join us</a>
     </div>
-    <p class="nx-disclaimer">
-      Coursework prototype. All teams, histories and player identities shown on this page are fictional;
-      generated portraits will be illustrative and will not represent real minors.
-      Coursework prototype. All teams, histories and player identities shown on this page are fictional;
-      generated portraits will be illustrative and will not represent real minors.
-    </p>
   </div>
 </footer>
 
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 class="players-cookie-title">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0 players-cookie-copy">
-  <h3 class="players-cookie-title">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0 players-cookie-copy">
-    We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-    here before, plus local and session storage for your theme and selected game.
-    here before, plus local and session storage for your theme and selected game.
-    Nothing is sent anywhere — this site has no server.
+  <h3 class="nx-cookie__title">Cookies on this site</h3>
+  <p class="nx-cookie__text">
+    We use cookies and other tracking technologies to improve your browsing experience on our
+    website for the following purposes:
   </p>
+  <ul class="nx-cookie__list">
+    <li>Remember your settings &mdash; your theme, your filters and your member account</li>
+    <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
+    <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
+  </ul>
   <div class="nx-cookie__actions">
     <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
     <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
@@ -280,8 +274,8 @@
 
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/main.js"></script>
+<script src="js/storage.js?v=2"></script>
+<script src="js/main.js?v=1"></script>
 <script src="js/players.js?v=11"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>

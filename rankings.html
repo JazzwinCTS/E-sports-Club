@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Team Rankings — NextGen E-Sports</title>
-<meta name="description" content="Club championship standings: points, medals and win-loss records for every competing organisation.">
+<meta name="description" content="Standings: points, medals and win-loss records for all eight member teams, by division.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=2">
 <!-- Page-exclusive: this page's own leaderboard design. -->
-<link rel="stylesheet" href="css/rankings.css">
+<link rel="stylesheet" href="css/rankings.css?v=3">
 <script>
 (function () {
   try {
@@ -55,11 +55,10 @@
     <div class="nx-shell">
 
       <div class="nx-section-head">
-        <p class="nx-eyebrow">Club championship 2026</p>
+        <p class="nx-eyebrow">Youth championship 2026</p>
         <h1 class="nx-mb-0">Team rankings</h1>
         <p class="nx-muted" style="max-width:62ch;margin-top:14px">
-          Standings across every competing organisation. Star a team to highlight it —
-          the choice is remembered on this device. Player names link through to
+          Standings across every competing team. Player names link through to
           <a href="players.html">player profiles</a>.
         </p>
       </div>
@@ -67,17 +66,8 @@
       <!-- Shared filter bar, built by js/filter.js -->
       <div id="rankingsFilter"></div>
 
-      <div class="nx-board" id="board" aria-live="polite">
-        <div class="nx-board__head" aria-hidden="true">
-          <div>Rank</div>
-          <div>Club</div>
-          <div style="text-align:right">Points</div>
-          <div style="text-align:right">Medals</div>
-          <div></div>
-        </div>
-      </div>
+      <div class="nx-board" id="board" aria-live="polite"></div>
 
-      <p class="nx-muted" style="font-size:.78rem;margin-top:24px" id="dataNote"></p>
     </div>
   </section>
 </main>
@@ -119,8 +109,8 @@
         </div>
 
         <p class="nx-footer__tag">
-          A community esports club for Valorant, Counter-Strike and PUBG — open to amateur
-          players and students who just want to play.
+          A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
+          players of every level, and host of the 2026 NextGen Youth Championship.
         </p>
       </div>
     </div>
@@ -131,20 +121,20 @@
       <a href="about.html">About</a>
       <a href="register.html">Join us</a>
     </div>
-    <p class="nx-disclaimer">
-      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
-      competitive statistics shown are not verified results.
-    </p>
   </div>
 </footer>
 
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
-    We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-    here before, plus local and session storage for your theme, filters and saved entries.
-    Nothing is sent anywhere — this site has no server.
+  <h3 class="nx-cookie__title">Cookies on this site</h3>
+  <p class="nx-cookie__text">
+    We use cookies and other tracking technologies to improve your browsing experience on our
+    website for the following purposes:
   </p>
+  <ul class="nx-cookie__list">
+    <li>Remember your settings &mdash; your theme, your filters and your member account</li>
+    <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
+    <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
+  </ul>
   <div class="nx-cookie__actions">
     <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
     <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
@@ -153,11 +143,11 @@
 
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/render.js"></script>
-<script src="js/filter.js"></script>
-<script src="js/main.js"></script>
-<script src="js/rankings.js"></script>
+<script src="js/storage.js?v=2"></script>
+<script src="js/render.js?v=2"></script>
+<script src="js/filter.js?v=1"></script>
+<script src="js/main.js?v=1"></script>
+<script src="js/rankings.js?v=2"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

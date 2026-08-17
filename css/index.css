@@ -97,3 +97,227 @@
   text-transform: uppercase;
   color: var(--text-muted);
 }
+
+/* --- "Happening now" panel --------------------------------------------------
+   One championship is running across three divisions, so this is a facts block
+   plus a card per division rather than a grid of tournament cards. No key art:
+   the section is about what is on and when, and a 16:9 image pushed the actual
+   information below the fold. Exclusive to index.html. */
+.hn {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.hn-main { padding: clamp(22px, 3vw, 32px); }
+.hn-name { font-size: clamp(1.25rem, 2.6vw, 1.8rem); margin: 14px 0 22px; }
+
+.hn-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 18px 16px;
+}
+.hn-fact__k {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.hn-fact__v {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Per-division fixtures -------------------------------------------------- */
+.hn-fixtures {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  padding: clamp(20px, 3vw, 28px);
+}
+.hn-fixtures__label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.hn-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.hn-card {
+  --division: var(--accent);
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: border-color var(--dur) var(--ease);
+}
+.hn-card:hover { border-color: var(--border-strong); }
+
+/* The division's key art is the header, so there is no coloured rule above the
+   card. The art sits under a scrim heavy enough for the logo and label to stay
+   legible in both themes. */
+.hn-card__head {
+  position: relative;
+  margin: -18px -18px 16px;
+  padding: 16px;
+  /* A ratio rather than a fixed height, so the art is never squashed into a
+     band shorter than it can fill. */
+  aspect-ratio: 16 / 5;
+  display: flex;
+  align-items: flex-end;
+  background-color: var(--bg);
+  /* Same treatment as the division tabs in css/tournaments.css: the artwork
+     covers the box, centred, with a gradient laid over it. */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  overflow: hidden;
+}
+.hn-card__head::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    rgba(11, 11, 14, 0.94) 0%,
+    rgba(11, 11, 14, 0.5) 60%,
+    rgba(11, 11, 14, 0.2) 100%);
+}
+.hn-card__headrow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.hn-card__logo {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.hn-card__division {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.8);
+  min-width: 0;
+}
+.hn-card__live {
+  margin-left: auto;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: nx-pulse 1.6s ease-in-out infinite;
+}
+
+.hn-clock { display: flex; gap: 6px; margin-bottom: 16px; }
+.hn-unit {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 2px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.hn-unit b {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.hn-clock__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.hn-fixture {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.hn-fixture__vs {
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.hn-team {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+.hn-team__logo { width: 24px; height: 24px; object-fit: contain; }
+.hn-team--tbd { color: var(--text-muted); font-weight: 700; font-size: 0.84rem; }
+.hn-team__badge {
+  width: 24px; height: 24px;
+  display: grid; place-items: center;
+  border: 1px dashed var(--border-strong);
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.hn-card__meta { font-size: 0.8rem; color: var(--text-muted); margin: 0 0 4px; }
+.hn-card__when {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0;
+  margin-top: auto;
+  padding-top: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* This section's heading is long enough to push the button onto its own line,
+   which left it sitting under the heading instead of opposite it like the
+   "Full standings" button below. Keeping the row on one line lets the heading
+   wrap internally and the button stay where the other one is. */
+.hn-head { flex-wrap: nowrap; align-items: flex-end; gap: 24px; }
+.hn-head > div { min-width: 0; }
+.hn-head .nx-btn { flex-shrink: 0; }
+
+@media (max-width: 700px) {
+  .hn-head { flex-wrap: wrap; align-items: flex-start; }
+}

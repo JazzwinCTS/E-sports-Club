@@ -26,8 +26,10 @@ var NXRender = (function ($) {
     return $('<div></div>').text(value == null ? '' : value).html();
   }
 
+  /* Prize money is in ringgit — tournaments.html and data/youth-tournament.json
+     both quote RM, so the shared card must not print a dollar sign. */
   function money(n) {
-    return '$' + Number(n).toLocaleString('en-US');
+    return 'RM' + Number(n).toLocaleString('en-US');
   }
 
   function dateRange(start, end) {
@@ -136,29 +138,55 @@ var NXRender = (function ($) {
        sort option. There is no rank-change indicator: once rank depends on
        whichever sort is active, "moved up 2 places" has no single baseline
        to be measured against, so no such number is shown. */
-    boardRow: function (team, favourite, rank) {
-      var isFav = favourite === team.team;
+    /* The leaderboard's column headings. Shared so the homepage preview and
+       rankings.html cannot drift apart — the column set here must match
+       boardRow() below exactly, or the grid columns misalign. */
+    boardHead: function () {
+      return '' +
+        '<div class="nx-board__head" aria-hidden="true">' +
+          /* "Rank" is wider than the rank column once the table scales down,
+             so it would run into "Team". The short form takes over there. */
+          '<div><span class="nx-lbl-full">Rank</span><span class="nx-lbl-short">#</span></div>' +
+          '<div>Team</div>' +
+          '<div class="nx-board__pl" style="text-align:center" title="Played">PL</div>' +
+          '<div class="nx-board__w" style="text-align:center" title="Won">W</div>' +
+          '<div class="nx-board__l" style="text-align:center" title="Lost">L</div>' +
+          '<div style="text-align:right">' +
+            '<span class="nx-lbl-full">Points</span><span class="nx-lbl-short">Pts</span>' +
+          '</div>' +
+          '<div style="text-align:right">Medals</div>' +
+        '</div>';
+    },
+
+    /* League-table row: Rank | Team | PL | W | L | Points | Medals.
+       Rank and team read left, every number sits in its own narrow column so
+       the values line up down the table (design-refs/PremierLeague.png).
+       There are no draws in these formats, so PL is simply W + L. */
+    boardRow: function (team, rank) {
+      var played = Number(team.wins) + Number(team.losses);
 
       return '' +
-        '<div class="nx-board__row nx-reveal' + (isFav ? ' is-favourite' : '') + '" data-team="' + esc(team.team) + '">' +
-          '<div class="nx-board__rank">#' + esc(rank) + '</div>' +
+        '<div class="nx-board__row nx-reveal" data-team="' + esc(team.team) + '">' +
+          '<div class="nx-board__rank">' + esc(rank) + '</div>' +
           '<div class="nx-board__team">' +
             '<img class="nx-board__logo" src="' + esc(team.logo) + '" alt="' + esc(team.team) + ' logo" loading="lazy">' +
             '<div style="min-width:0">' +
               '<div class="nx-board__name">' + esc(team.team) + '</div>' +
-              '<div class="nx-board__sub">' + esc(team.wins) + 'W · ' + esc(team.losses) + 'L</div>' +
+              /* Narrow screens drop the PL/W/L columns; this line carries the
+                 same three numbers so nothing is lost on mobile. */
+              '<div class="nx-board__mini nx-num">' + played + ' PL · ' +
+                esc(team.wins) + 'W · ' + esc(team.losses) + 'L</div>' +
             '</div>' +
           '</div>' +
+          '<div class="nx-board__num nx-board__pl nx-num">' + played + '</div>' +
+          '<div class="nx-board__num nx-board__w nx-num">' + esc(team.wins) + '</div>' +
+          '<div class="nx-board__num nx-board__l nx-num">' + esc(team.losses) + '</div>' +
           '<div class="nx-board__pts nx-num">' + Number(team.points).toLocaleString('en-US') + '</div>' +
           '<div class="nx-medals">' +
             '<span class="nx-medal nx-medal--gold"><i class="bi bi-trophy-fill"></i>' + esc(team.medals.gold) + '</span>' +
             '<span class="nx-medal nx-medal--silver"><i class="bi bi-award-fill"></i>' + esc(team.medals.silver) + '</span>' +
             '<span class="nx-medal nx-medal--bronze"><i class="bi bi-award"></i>' + esc(team.medals.bronze) + '</span>' +
           '</div>' +
-          '<button class="nx-fav' + (isFav ? ' is-on' : '') + '" type="button" ' +
-                  'aria-label="Set ' + esc(team.team) + ' as favourite team">' +
-            '<i class="bi bi-star' + (isFav ? '-fill' : '') + '"></i>' +
-          '</button>' +
         '</div>';
     },
 

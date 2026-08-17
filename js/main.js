@@ -36,12 +36,17 @@ $(function () {
   var account = accounts.length ? accounts[accounts.length - 1] : null;
 
   if (account && account.email) {
+    /* Built with .text() rather than an HTML string: main.js runs on all 8
+       pages and must not depend on render.js being loaded (players.html and
+       tournaments.html do not load it). Using NXRender.esc here threw on
+       those two pages, which killed every later handler in this file. */
     $('.nx-nav__link[href="register.html"]')
       .addClass('nx-nav__link--account')
       .attr('title', account.email)
       .attr('aria-label', 'Signed in as ' + account.email)
-      .html('<i class="bi bi-person-circle" aria-hidden="true"></i>' +
-            '<span class="nx-nav__email">' + NXRender.esc(account.email) + '</span>');
+      .empty()
+      .append($('<i class="bi bi-person-circle" aria-hidden="true"></i>'))
+      .append($('<span class="nx-nav__email"></span>').text(account.email));
   }
 
   /* ---- Theme toggle (localStorage `theme`, site-wide) -------------------- */

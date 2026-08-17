@@ -1,6 +1,6 @@
 /* ==========================================================================
    events.js — events.html only.
-   Owns the club activity calendar. Uses sessionStorage `eventView`
+   Owns the team activity calendar. Uses sessionStorage `eventView`
    (CLAUDE.md section 5) and calls the Open-Meteo REST API with jQuery.
    ========================================================================== */
 
@@ -94,7 +94,6 @@ $(function () {
   NXRender.load($list, 'data/events.json', function (data) {
     events = data.events;
     venue = data.venue;
-    $('#dataNote').text(data._source);
     $('#venueName').text(venue.name);
     paint();
     loadWeather();

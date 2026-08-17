@@ -39,7 +39,7 @@ var NXStore = (function () {
   }
 
   return {
-    /* ---- localStorage: theme, favouriteTeam, playerFilter, registrations -- */
+    /* ---- localStorage: theme, playerFilter, registrations ---------------- */
     local: {
       get: function (key, fallback) {
         var v = safeGet(window.localStorage, key);
@@ -89,7 +89,7 @@ var NXStore = (function () {
 
     /* Wipe everything this site owns — used by the cookie preferences modal. */
     clearAll: function () {
-      ['theme', 'favouriteTeam', 'playerFilter', 'registrations'].forEach(function (k) {
+      ['theme', 'playerFilter', 'registrations'].forEach(function (k) {
         safeRemove(window.localStorage, k);
       });
       ['registerDraft', 'tournamentFilter', 'eventView'].forEach(function (k) {

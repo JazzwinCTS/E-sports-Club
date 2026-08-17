@@ -129,10 +129,6 @@
 
         <div class="nx-grid nx-grid--3" style="margin-bottom:32px">
           <div class="nx-card nx-reveal">
-            <p class="nx-eyebrow">Favourite club</p>
-            <div id="favTeam"></div>
-          </div>
-          <div class="nx-card nx-reveal">
             <p class="nx-eyebrow">Membership</p>
             <div id="appCount"></div>
           </div>
@@ -212,8 +208,8 @@
         </div>
 
         <p class="nx-footer__tag">
-          A community esports club for Valorant, Counter-Strike and PUBG — open to amateur
-          players and students who just want to play.
+          A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
+          players of every level, and host of the 2026 NextGen Youth Championship.
         </p>
       </div>
     </div>
@@ -224,20 +220,20 @@
       <a href="about.html">About</a>
       <a href="register.html">Join us</a>
     </div>
-    <p class="nx-disclaimer">
-      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
-      competitive statistics shown are not verified results.
-    </p>
   </div>
 </footer>
 
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
-    We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-    here before, plus local and session storage for your theme, filters and saved entries.
-    Nothing is sent anywhere — this site has no server.
+  <h3 class="nx-cookie__title">Cookies on this site</h3>
+  <p class="nx-cookie__text">
+    We use cookies and other tracking technologies to improve your browsing experience on our
+    website for the following purposes:
   </p>
+  <ul class="nx-cookie__list">
+    <li>Remember your settings &mdash; your theme, your filters and your member account</li>
+    <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
+    <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
+  </ul>
   <div class="nx-cookie__actions">
     <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
     <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
@@ -246,10 +242,10 @@
 
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/render.js"></script>
-<script src="js/main.js"></script>
-<script src="js/dashboard.js"></script>
+<script src="js/storage.js?v=2"></script>
+<script src="js/render.js?v=2"></script>
+<script src="js/main.js?v=1"></script>
+<script src="js/dashboard.js?v=2"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

@@ -252,7 +252,6 @@ $(function () {
     }).always(function () {
       prepareMvpWeeks();
       $('#playersLoading').attr('hidden', true);
-      $('#dataNote').text(data._source + ' MVP statistics are fictional prototype values using standard broadcast metrics.');
       renderMvpWeekPicker(); renderMvpTabs(); mvpIndex = firstPublishedMvpIndex(); renderMvp(mvpIndex);
       mvpAvailabilitySignature = availabilitySignature();
       window.setInterval(function () {

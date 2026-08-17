@@ -40,7 +40,7 @@
 .players-hero__copy h1 {
   max-width: 12ch;
   margin: 0 0 24px;
-  font-size: clamp(2.7rem, 6vw, 5.8rem);
+  font-size: clamp(1.85rem, 6vw, 5.8rem);
   line-height: 0.96;
   letter-spacing: -0.045em;
 }
@@ -83,7 +83,7 @@
 .players-hero__stats dt {
   color: var(--text);
   font-family: var(--font-display);
-  font-size: clamp(2.1rem, 4vw, 3.6rem);
+  font-size: clamp(1.6rem, 4vw, 3.6rem);
   font-weight: 800;
   line-height: 1;
 }
@@ -522,7 +522,7 @@
     radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.22), transparent 20%),
     linear-gradient(155deg, color-mix(in srgb, var(--team-color) 90%, #fff), color-mix(in srgb, var(--team-color) 42%, #09090d));
   font-family: var(--font-display);
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1.55rem, 5vw, 3.5rem);
   font-weight: 900;
 }
 
@@ -624,7 +624,7 @@
 .players-hero { padding-block: clamp(52px, 7vw, 92px); }
 .players-hero__inner { display: block; }
 .mvp-heading { position: relative; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; margin-bottom: 26px; }
-.mvp-heading h1 { margin: 0 0 10px; font-size: clamp(3rem, 6.6vw, 6.6rem); line-height: .86; letter-spacing: -.055em; text-transform: uppercase; }
+.mvp-heading h1 { margin: 0 0 10px; font-size: clamp(1.95rem, 6.6vw, 6.6rem); line-height: .86; letter-spacing: -.055em; text-transform: uppercase; }
 .mvp-heading p:not(.nx-eyebrow) { max-width: 62ch; margin: 0; color: var(--text-muted); }
 .mvp-controls { display: flex; align-items: center; gap: 8px; }
 .mvp-arrow { width: 42px; height: 42px; display: grid; place-items: center; color: var(--text); border: 1px solid var(--border-strong); border-radius: 50%; background: var(--surface); }
@@ -678,7 +678,7 @@
 .player-profile__game { margin:0 0 14px; color:var(--team-color); font-size:.72rem; font-weight:850; letter-spacing:.14em; text-transform:uppercase; }
 .player-profile__team { display:flex; align-items:center; gap:10px; color:#d6d6df; font-size:.78rem; font-weight:800; letter-spacing:.1em; }
 .player-profile__team img { width:42px; height:42px; object-fit:contain; }
-.player-profile__content h2 { margin:18px 0 4px; color:#fff; font-size:clamp(3.3rem,7vw,6.8rem); line-height:.82; letter-spacing:-.055em; text-transform:uppercase; }
+.player-profile__content h2 { margin:18px 0 4px; color:#fff; font-size:clamp(1.9rem,7vw,6.8rem); line-height:.82; letter-spacing:-.055em; text-transform:uppercase; }
 .player-profile__real-name { margin:0 0 28px; color:#d0d0d8; font-size:1rem; }
 .player-profile__facts { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin:0 0 24px; background:rgba(255,255,255,.15); }
 .player-profile__facts div { padding:15px; background:rgba(10,10,16,.84); }

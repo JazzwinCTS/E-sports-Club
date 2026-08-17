@@ -7,9 +7,9 @@
 <meta name="description" content="Practices, workshops, tryouts and socials at NextGen E-Sports, with a live venue forecast.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=2">
 <!-- Page-exclusive: this page's own event-row/calendar/weather design. -->
-<link rel="stylesheet" href="css/events.css">
+<link rel="stylesheet" href="css/events.css?v=1">
 <script>
 (function () {
   try {
@@ -58,7 +58,7 @@
         <p class="nx-eyebrow">What's on</p>
         <h1 class="nx-mb-0">Event schedule</h1>
         <p class="nx-muted" style="max-width:62ch;margin-top:14px">
-          Practices, workshops, tryouts and socials at the club. Competitions themselves are listed
+          Practices, workshops, tryouts and socials at the team. Competitions themselves are listed
           on <a href="tournaments.html">tournaments</a> — dated entries here link across to them.
         </p>
       </div>
@@ -90,7 +90,6 @@
         </aside>
       </div>
 
-      <p class="nx-muted" style="font-size:.78rem;margin-top:24px" id="dataNote"></p>
     </div>
   </section>
 </main>
@@ -132,8 +131,8 @@
         </div>
 
         <p class="nx-footer__tag">
-          A community esports club for Valorant, Counter-Strike and PUBG — open to amateur
-          players and students who just want to play.
+          A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
+          players of every level, and host of the 2026 NextGen Youth Championship.
         </p>
       </div>
     </div>
@@ -144,20 +143,20 @@
       <a href="about.html">About</a>
       <a href="register.html">Join us</a>
     </div>
-    <p class="nx-disclaimer">
-      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
-      competitive statistics shown are not verified results.
-    </p>
   </div>
 </footer>
 
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
-    We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-    here before, plus local and session storage for your theme, filters and saved entries.
-    Nothing is sent anywhere — this site has no server.
+  <h3 class="nx-cookie__title">Cookies on this site</h3>
+  <p class="nx-cookie__text">
+    We use cookies and other tracking technologies to improve your browsing experience on our
+    website for the following purposes:
   </p>
+  <ul class="nx-cookie__list">
+    <li>Remember your settings &mdash; your theme, your filters and your member account</li>
+    <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
+    <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
+  </ul>
   <div class="nx-cookie__actions">
     <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
     <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
@@ -166,10 +165,10 @@
 
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/render.js"></script>
-<script src="js/main.js"></script>
-<script src="js/events.js"></script>
+<script src="js/storage.js?v=2"></script>
+<script src="js/render.js?v=2"></script>
+<script src="js/main.js?v=1"></script>
+<script src="js/events.js?v=2"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

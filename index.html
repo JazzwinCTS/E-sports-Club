@@ -4,16 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NextGen E-Sports — Home</title>
-<meta name="description" content="NextGen E-Sports is a community esports club for Valorant, Counter-Strike and PUBG, open to amateur players and students.">
+<meta name="description" content="NextGen E-Sports is a community esports team for Valorant, Counter-Strike and PUBG, open to players of every level.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=2">
 <!-- Page-exclusive: index.css is this page's own design; rankings.css is
      linked too because the "Top of the table" preview below reuses
      rankings.html's leaderboard-row styling (same developer, see
      CLAUDE.md section 7). -->
-<link rel="stylesheet" href="css/rankings.css">
-<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="css/rankings.css?v=3">
+<link rel="stylesheet" href="css/index.css?v=1">
 <script>
 /* Read the saved theme before first paint so there is no flash of the wrong one. */
 (function () {
@@ -85,15 +85,12 @@
         <p class="nx-eyebrow nx-reveal">Established 2026 · Valorant · CS · PUBG</p>
         <h1 class="nx-hero__title nx-reveal">Your Next Match Starts Here</h1>
         <p class="nx-hero__lede nx-reveal">
-          A community club for Valorant, CS and PUBG — pull up for a casual match, stick around
-          for the squad. Competitive tryouts are there if you ever want more.
+          A community team for Valorant, CS and PUBG — pull up for a casual match, stick around
+          for the squad. Right now we are also hosting the 2026 Youth Championship.
         </p>
         <div class="nx-hero__cta nx-reveal">
           <a class="nx-btn nx-btn--primary" href="register.html">
-            <i class="bi bi-person-plus" aria-hidden="true"></i> Join the club
-          </a>
-          <a class="nx-btn nx-btn--ghost" href="tournaments.html">
-            <i class="bi bi-trophy" aria-hidden="true"></i> See tournaments
+            <i class="bi bi-person-plus" aria-hidden="true"></i> Join the team
           </a>
         </div>
         <p class="nx-sr" id="welcomeBack">
@@ -131,16 +128,20 @@
     <!-- ===================== TOURNAMENT PREVIEW ===================== -->
     <section class="nx-section">
       <div class="nx-shell">
-        <div class="nx-row nx-between nx-section-head">
+        <div class="nx-row nx-between nx-section-head hn-head">
           <div>
             <p class="nx-eyebrow">Happening now</p>
-            <h2 class="nx-mb-0">Live &amp; upcoming</h2>
+            <h2 class="nx-mb-0">One championship, three divisions</h2>
           </div>
           <a class="nx-btn nx-btn--ghost nx-btn--sm" href="tournaments.html">
-            All tournaments <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            To tournaments <i class="bi bi-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
-        <div id="homeTournaments" class="nx-grid nx-grid--3"></div>
+        <!-- Filled by js/index.js from data/youth-tournament.json: the running
+             championship's headline facts plus a live countdown to the next
+             match. Finished events are not previewed here — tournaments.html
+             owns those (CLAUDE.md section 4). -->
+        <div id="homeTournaments" aria-live="polite"></div>
       </div>
     </section>
 
@@ -149,7 +150,6 @@
       <div class="nx-shell">
         <div class="nx-row nx-between nx-section-head">
           <div>
-            <p class="nx-eyebrow">Club championship</p>
             <h2 class="nx-mb-0">Top of the table</h2>
           </div>
           <a class="nx-btn nx-btn--ghost nx-btn--sm" href="rankings.html">
@@ -165,7 +165,7 @@
       <div class="nx-shell">
         <div class="nx-section-head">
           <p class="nx-eyebrow">Broadcast</p>
-          <h2 class="nx-mb-0">Watch the club live</h2>
+          <h2 class="nx-mb-0">Watch us live</h2>
         </div>
         <div class="nx-card nx-card--flat" style="padding:0;overflow:hidden">
           <div id="streamMount" style="aspect-ratio:16/9;background:#000"></div>
@@ -221,8 +221,8 @@
         </div>
 
         <p class="nx-footer__tag">
-          A community esports club for Valorant, Counter-Strike and PUBG — open to amateur
-          players and students who just want to play.
+          A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
+          players of every level, and host of the 2026 NextGen Youth Championship.
         </p>
       </div>
     </div>
@@ -233,21 +233,21 @@
       <a href="about.html">About</a>
       <a href="register.html">Join us</a>
     </div>
-    <p class="nx-disclaimer">
-      Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
-      competitive statistics shown are not verified results.
-    </p>
   </div>
 </footer>
 
 <!-- ===================== COOKIE CONSENT BANNER ===================== -->
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
-  <p class="nx-muted nx-mb-0" style="font-size:.86rem">
-    We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-    here before, plus local and session storage for your theme, filters and saved entries.
-    Nothing is sent anywhere — this site has no server.
+  <h3 class="nx-cookie__title">Cookies on this site</h3>
+  <p class="nx-cookie__text">
+    We use cookies and other tracking technologies to improve your browsing experience on our
+    website for the following purposes:
   </p>
+  <ul class="nx-cookie__list">
+    <li>Remember your settings &mdash; your theme, your filters and your member account</li>
+    <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
+    <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
+  </ul>
   <div class="nx-cookie__actions">
     <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
     <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
@@ -256,10 +256,10 @@
 
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/render.js"></script>
-<script src="js/main.js"></script>
-<script src="js/index.js"></script>
+<script src="js/storage.js?v=2"></script>
+<script src="js/render.js?v=2"></script>
+<script src="js/main.js?v=1"></script>
+<script src="js/index.js?v=2"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
