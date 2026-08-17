@@ -1,20 +1,19 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Join Us — NextGen E-Sports</title>
-<meta name="description" content="Join NextGen E-Sports. Open to amateur players and students across Valorant, Counter-Strike and PUBG.">
+<title>Sign In & Dashboard — NextGen E-Sports</title>
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/register.css">
+<link rel="stylesheet" href="css/signin.css">
 <script>
 (function () {
   try {
     var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
     document.documentElement.setAttribute('data-theme', t);
-  } catch (e) { /* storage unavailable — dark stays */ }
+  } catch (e) { }
 })();
 </script>
 </head>
@@ -33,9 +32,9 @@
       <a class="nx-nav__link" href="players.html">Players</a>
       <a class="nx-nav__link" href="tournaments.html">Tournaments</a>
       <a class="nx-nav__link" href="events.html">Events</a>
-      <a class="nx-nav__link" href="dashboard.html">Dashboard</a>
+      <a class="nx-nav__link" href="tickets.html">Tickets</a>
       <a class="nx-nav__link" href="about.html">About</a>
-      <a class="nx-nav__link" href="register.html">Join</a>
+      <a class="nx-nav__link" href="signin.html">Join</a>
     </div>
     <div class="nx-nav__actions">
       <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
@@ -50,12 +49,73 @@
 </header>
 
 <main id="main" class="page-body">
-  <section class="nx-section">
+    <section class="nx-section">
     <div class="nx-shell">
-    -->
-      <!-- Sign-up state. js/register.js swaps this for #joinedPanel below once
-           an account exists in localStorage `registrations`. -->
-      <!--<div id="joinPanel">
+
+      <!-- =========================================================
+           1. SIGN IN PANEL (Shown by default)
+           js/signin.js will handle the login check here.
+           ========================================================= -->
+      <div id="loginPanel">
+        <div class="nx-section-head">
+          <p class="nx-eyebrow">Welcome Back</p>
+          <h1 class="nx-mb-0">Sign In</h1>
+          <p class="nx-muted" style="max-width:62ch;margin-top:14px">
+            Sign in to your NextGen account to manage your profile, view your tickets, and update your preferences.
+          </p>
+        </div>
+
+        <!-- MODIFIED: Removed the 2-column grid and added a max-width so they stack neatly -->
+        <div style="max-width: 500px; margin: 0 auto;">
+          <form class="nx-card nx-card--flat" id="loginForm" style="margin-bottom: 24px;" novalidate>
+            <p class="nx-eyebrow">Access your account</p>
+
+            <div class="nx-field">
+              <label class="nx-label" for="loginEmail">Email</label>
+              <div class="reg-control">
+                <input class="nx-input" id="loginEmail" name="loginEmail" type="email"
+                       autocomplete="email" required>
+                <span class="reg-mark" aria-hidden="true"></span>
+              </div>
+              <span class="nx-error" id="loginEmailError"></span>
+            </div>
+
+            <div class="nx-field">
+              <label class="nx-label" for="loginPassword">Password</label>
+              <div class="reg-control">
+                <input class="nx-input" id="loginPassword" name="loginPassword" type="password"
+                       autocomplete="current-password" required>
+                <span class="reg-mark" aria-hidden="true"></span>
+              </div>
+              <span class="nx-error" id="loginPasswordError"></span>
+            </div>
+
+            <div class="nx-row" style="gap:10px; flex-wrap: wrap;">
+              <button class="nx-btn nx-btn--primary" type="submit">
+                <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Sign In
+              </button>
+            </div>
+          </form>
+
+          <aside>
+            <div class="nx-card nx-card--flat">
+              <p class="nx-eyebrow">New to NextGen?</p>
+              <p class="nx-muted" style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                If you don't have an account yet, you can create one in seconds. Join the club to participate in tournaments, join scrims, and track your stats.
+              </p>
+              <button class="nx-btn nx-btn--ghost" type="button" id="showJoinBtnAside" style="width: 100%;">
+                Sign up now
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- =========================================================
+           2. SIGN UP PANEL (Hidden by default using the 'hidden' attribute)
+           js/signin.js swaps this when toggled.
+           ========================================================= -->
+      <div id="joinPanel" hidden>
         <div class="nx-section-head">
           <p class="nx-eyebrow">Membership</p>
           <h1 class="nx-mb-0">Join NextGen</h1>
@@ -65,6 +125,7 @@
             Every field is checked as you type: a green edge means it is good to go.
           </p>
         </div>
+
         <div class="nx-grid nx-grid--2" style="align-items:start">
 
           <form class="nx-card nx-card--flat" id="registerForm" novalidate>
@@ -153,18 +214,13 @@
                         placeholder="Availability, past teams, what you want out of the club…"></textarea>
             </div>
 
-            <div class="nx-row" style="gap:10px">
+            <div class="nx-row" style="gap:10px; flex-wrap: wrap;">
               <button class="nx-btn nx-btn--primary" type="submit">
                 <i class="bi bi-person-plus" aria-hidden="true"></i> Create my account
               </button>
+              <button class="nx-btn nx-btn--ghost" type="button" id="showLoginBtn">Sign in instead</button>
               <button class="nx-btn nx-btn--ghost" type="button" id="clearDraft">Clear form</button>
             </div>
-
-            <p class="nx-muted reg-note">
-              No server receives this. Your account lives in this browser only and shows up on
-              your <a href="dashboard.html">dashboard</a>. The password is never stored in
-              readable form — a real deployment would hash it server-side.
-            </p>
           </form>
 
           <aside>
@@ -180,31 +236,123 @@
             </div>
           </aside>
         </div>
-      </div>-->
+      </div>
 
-      <!-- Joined state. Filled and revealed by js/register.js. -->
-      <!--<div class="reg-joined" id="joinedPanel" hidden>
-        <div class="reg-joined__inner">
-          <p class="nx-eyebrow">Membership active</p>
-          <h1 class="reg-joined__title">Thank you for joining us</h1>
-          <p class="reg-joined__lead" id="joinedLead"></p>
+    </div>
+</section>
+  <section class="nx-section">
+    <div class="nx-shell">
 
-          <div class="reg-memcard" id="memberCard"></div>
-
-          <button class="nx-btn nx-btn--primary" id="signOut" type="button">
-            <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sign out
-          </button>
-
-          <p class="reg-joined__note">
-            Your details are stored in this browser only. Signing out deletes them and returns
-            you to the sign-up form.
-          </p>
+      <!-- Profile header. The avatar monogram, name and subtitle are filled by
+           js/dashboard.js from the account in localStorage `registrations`. -->
+      <div class="dash-head">
+        <div class="dash-head__id">
+          <div class="nx-avatar dash-avatar" id="profileAvatar" aria-hidden="true">?</div>
+          <div>
+            <p class="nx-eyebrow">Your account</p>
+            <h1 class="nx-mb-0">Profile</h1>
+            <p class="nx-muted dash-head__sub" id="profileSub">
+              Manage your details, your favourites, and everything this site remembers
+              about you — all in one place.
+            </p>
+          </div>
         </div>
+        <button class="nx-btn nx-btn--ghost nx-btn--sm dash-head__out" id="signOut"
+                type="button" hidden>
+          <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sign out
+        </button>
+      </div>
+
+      <!-- Dashboard Layout: Sidebar + Scrollable Content -->
+      <div class="dash-layout">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="dash-sidebar">
+          <nav class="dash-nav" aria-label="Dashboard sections">
+            <a href="#panel-personal" class="dash-nav__link is-active">
+              <i class="bi bi-person" aria-hidden="true"></i> Personal info
+            </a>
+            <a href="#panel-favourites" class="dash-nav__link">
+              <i class="bi bi-star" aria-hidden="true"></i> Favourites
+            </a>
+            <a href="#panel-tickets" class="dash-nav__link">
+              <i class="bi bi-ticket-perforated" aria-hidden="true"></i> Tickets
+            </a>
+            <a href="#panel-storage" class="dash-nav__link">
+              <i class="bi bi-hdd-fill" aria-hidden="true"></i> Storage Data
+            </a>
+          </nav>
+        </aside>
+
+        <!-- Right Main Content (Continuous Scroll) -->
+        <div class="dash-content">
+
+          <!-- Personal information -->
+          <div class="nx-card dash-panel" id="panel-personal">
+            <div class="nx-row nx-between" style="align-items: flex-start;">
+                <h2 class="dash-panel__title">Personal information</h2>
+                <p class="nx-muted dash-panel__lead">
+                  Your core details, exactly as they were entered when this account was created.
+                  Nothing here has ever left the browser.
+                </p>
+            </div>
+            <hr class="dash-rule">
+            <div id="personalFields"></div>
+          </div>
+
+          <!-- Favourites -->
+          <div class="nx-card dash-panel" id="panel-favourites">
+            <h2 class="dash-panel__title">Favourites</h2>
+            <p class="nx-muted dash-panel__lead">
+              What you follow across the site. Each one is set on the page that owns it —
+              this page only reads them back.
+            </p>
+            <hr class="dash-rule">
+            <div class="dash-favs" id="favFields"></div>
+          </div>
+
+          <!-- Tickets (Placeholder) -->
+          <div class="nx-card dash-panel" id="panel-tickets">
+            <h2 class="dash-panel__title">Tickets</h2>
+            <p class="nx-muted dash-panel__lead">
+              Your registered events and purchased tickets will appear here.
+            </p>
+            <hr class="dash-rule">
+            <div style="text-align: center; padding: 40px 0; opacity: 0.6;">
+              <i class="bi bi-ticket-detailed" style="font-size: 2.5rem; margin-bottom: 10px; display: block;" aria-hidden="true"></i>
+              <p>You have no tickets right now.</p>
+            </div>
+          </div>
+
+          <!-- Storage & Data -->
+            <div class="nx-card dash-panel" id="panel-storage">
+              <div class="dash-panel__head">
+                <h2 class="nx-h3 nx-mb-0">Storage & Data</h2>
+                <p class="nx-muted">How your browser remembers your preferences.</p>
+              </div>
+
+              <!-- Headline Stat Cards -->
+              <div class="dash-stats">
+                <div id="favTeam" class="dash-stat"></div>
+                <div id="appCount" class="dash-stat"></div>
+                <div id="visitorState" class="dash-stat"></div>
+              </div>
+
+              <!-- Local Storage Table -->
+              <h3 class="nx-h5 nx-mt-4 nx-mb-2">Local Storage (Permanent)</h3>
+              <div id="localTable" class="nx-card dash-panel"></div>
+
+              <!-- Session Storage Table -->
+              <br><h3 class="nx-h5 nx-mt-4 nx-mb-2">Session Storage (Temporary)</h3>
+              <div id="sessionTable" class="nx-card dash-panel"></div>
+            </div>
+        </div>  
       </div>
     </div>
   </section>
 </main>
 
+<!-- ================= FOOTER (identical on all 8 pages) ================= -->
 <footer class="nx-footer">
   <div class="nx-shell">
     <div class="nx-footer__top">
@@ -216,11 +364,13 @@
           </a>
 
           <div class="nx-social">
+            <!-- X: official follow button widget -->
             <div class="nx-social__widget">
               <img src="socials/x.png" alt="" class="nx-social__icon">
               <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
                  data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
             </div>
+            <!-- Facebook: official page plugin -->
             <div class="nx-social__widget">
               <img src="socials/facebook.png" alt="" class="nx-social__icon">
               <iframe title="NextGen E-Sports on Facebook"
@@ -229,12 +379,14 @@
                 frameborder="0" allowfullscreen="true"
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
             </div>
+            <!-- Discord: live member count via a real jQuery REST call -->
             <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/theesportsclub"
                target="_blank" rel="noopener">
               <img src="socials/discord.png" alt="" class="nx-social__icon">
               <span>Discord</span>
               <span class="nx-discord__count">…</span>
             </a>
+            <!-- Instagram: anchors to the real post embed on the About page -->
             <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
               <img src="socials/instagram.png" alt="" class="nx-social__icon">
             </a>
@@ -252,7 +404,7 @@
       <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
       <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
       <a href="about.html">About</a>
-      <a href="register.html">Join us</a>
+      <a href="signin.html">Join us</a>
     </div>
     <p class="nx-disclaimer">
       Coursework prototype. NextGen E-Sports is a fictional club; imagery is illustrative and
@@ -261,6 +413,7 @@
   </div>
 </footer>
 
+<!-- ===================== COOKIE CONSENT BANNER ===================== -->
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
   <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
   <p class="nx-muted nx-mb-0" style="font-size:.86rem">
@@ -279,7 +432,6 @@
 <script src="js/storage.js"></script>
 <script src="js/render.js"></script>
 <script src="js/main.js"></script>
-<script src="js/register.js"></script>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script src="js/signin.js"></script>
 </body>
-</html> -->
+</html>

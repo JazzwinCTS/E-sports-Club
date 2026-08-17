@@ -10,7 +10,7 @@
 /* --- Profile header --------------------------------------------------------
    Identity on the left, sign out on the right — the same shape as
    design-refs/profile.png, in this site's own palette and type. */
-.dash-head {
+/*.dash-head {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -24,7 +24,7 @@
   gap: calc(var(--space) * 2.5);
 }
 /* Reuses the shared hexagon .nx-avatar, minus its centred card margins. */
-.dash-avatar {
+/*.dash-avatar {
   width: 84px; height: 84px;
   margin: 0;
   font-size: 1.7rem;
@@ -32,7 +32,7 @@
 }
 /* A person's name is not a page title — the site-wide h1 clamp goes up to
    4rem, which shouts at this size. */
-#profileName { font-size: clamp(1.5rem, 3vw, 2.2rem); }
+/*#profileName { font-size: clamp(1.5rem, 3vw, 2.2rem); }
 .dash-head__sub {
   margin: 10px 0 0;
   max-width: 52ch;
@@ -44,7 +44,7 @@
 /* --- Mini nav --------------------------------------------------------------
    A segmented pill. On mobile it scrolls sideways rather than wrapping, so
    the control stays one row and keeps reading as a switch. */
-.dash-tabs {
+/*.dash-tabs {
   display: flex;
   gap: 4px;
   padding: 5px;
@@ -86,7 +86,7 @@
 .dash-tab i { font-size: 0.95rem; }
 
 /* --- Panels ----------------------------------------------------------------- */
-.dash-panel { animation: dash-panel-in 260ms var(--ease) both; }
+/*.dash-panel { animation: dash-panel-in 260ms var(--ease) both; }
 .dash-panel__title { font-size: 1.3rem; margin-bottom: 8px; }
 .dash-panel__lead { font-size: 0.9rem; max-width: 64ch; margin-bottom: 0; }
 .dash-panel__foot { font-size: 0.78rem; margin: calc(var(--space) * 3) 0 0; }
@@ -109,7 +109,7 @@
    presenting them as editable fields would be a lie. */
 /* Two columns, not auto-fit: at full shell width auto-fit gives four narrow
    columns and an email address then wraps mid-address. */
-.dash-fields {
+/*.dash-fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: calc(var(--space) * 2.5);
@@ -141,7 +141,7 @@
    its full shape. */
 /* Four tiles, so two columns — auto-fit lands three across and leaves the
    fourth stranded on its own row. */
-.dash-favs {
+/*.dash-favs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: calc(var(--space) * 2);
@@ -205,7 +205,7 @@
 
 /* --- Headline stat cards ---------------------------------------------------
    The three "favourite club / applications / visitor status" tiles. */
-.dash-stat__value {
+/*.dash-stat__value {
   font-family: var(--font-heading);
   font-size: 1.6rem;
   font-weight: 800;
@@ -216,11 +216,11 @@
 /* --- Storage table rows ----------------------------------------------------
    Reuses the shared .nx-trow layout (css/style.css) — only the bits unique
    to how dashboard.html annotates each key get their own class here. */
-.dash-row__meaning { font-size: 0.74rem; opacity: 0.75; }
+/*.dash-row__meaning { font-size: 0.74rem; opacity: 0.75; }
 .dash-row__value { max-width: 50%; text-align: right; word-break: break-word; }
 
 /* --- Submitted applications list -------------------------------------------
    Also built on .nx-trow; just the name/meta styling is page-specific. */
-.dash-app__name { color: var(--text); }
+/*.dash-app__name { color: var(--text); }
 .dash-app__meta { font-size: 0.74rem; opacity: 0.75; }
 .dash-app__id { font-size: 0.76rem; }

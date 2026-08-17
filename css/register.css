@@ -1,4 +1,4 @@
-/* ==========================================================================
+ /* ==========================================================================
    register.css — exclusive to register.html (CLAUDE.md section 7).
 
    The whole form-control block used to sit in css/style.css, but register.html
@@ -17,7 +17,7 @@
    ========================================================================== */
 
 /* --- Form controls --------------------------------------------------------- */
-.nx-field { margin-bottom: calc(var(--space) * 2.5); }
+/*.nx-field { margin-bottom: calc(var(--space) * 2.5); }
 .nx-label {
   display: block;
   font-size: 0.68rem;
@@ -51,7 +51,7 @@
    as a soft ring instead — a red border while someone is still typing reads as
    "you got it wrong", which is what the green/red validity states below are
    for. */
-.nx-input:focus, .nx-select:focus, .nx-textarea:focus {
+/*.nx-input:focus, .nx-select:focus, .nx-textarea:focus {
   outline: none;
   border-color: var(--border-strong);
   background: rgba(255, 255, 255, 0.06);
@@ -65,7 +65,7 @@
    js/register.js puts .is-valid / .has-error on the .nx-field wrapper as the
    visitor types. Both selectors are repeated with :focus so the state survives
    while the field still has the caret in it. */
-.nx-field.is-valid .nx-input,
+/*.nx-field.is-valid .nx-input,
 .nx-field.is-valid .nx-select,
 .nx-field.is-valid .nx-textarea,
 .nx-field.is-valid .nx-input:focus,
@@ -96,10 +96,10 @@
    Drawn with two borders rather than an icon font so it inherits --ok and
    needs no extra glyph. Only text inputs get one; selects already have a
    native arrow parked in that corner. */
-.reg-control { position: relative; }
+/*.reg-control { position: relative; }
 .reg-control .nx-input { padding-right: 42px; }
 /* Edge parks its own reveal-password button in exactly this corner. */
-.nx-input::-ms-reveal, .nx-input::-ms-clear { display: none; }
+/*.nx-input::-ms-reveal, .nx-input::-ms-clear { display: none; }
 .reg-mark {
   position: absolute;
   top: 0; right: 15px;
@@ -126,7 +126,7 @@
 /* --- Password rule checklist ------------------------------------------------
    Live requirements, so the rules are visible before they are broken rather
    than only in an error message afterwards. */
-.reg-rules {
+/*.reg-rules {
   list-style: none;
   margin: 10px 0 0;
   padding: 0;
@@ -153,10 +153,10 @@
 .reg-rule.is-met::before { background: var(--ok); transform: scale(1.3); }
 
 /* --- Footnote under the form ------------------------------------------------ */
-.reg-note { font-size: 0.76rem; margin-top: 16px; margin-bottom: 0; }
+/*.reg-note { font-size: 0.76rem; margin-top: 16px; margin-bottom: 0; }
 
 /* --- "What happens next" list ----------------------------------------------- */
-.reg-steps {
+/*.reg-steps {
   font-size: 0.88rem;
   padding-left: 20px;
   margin-bottom: 0;
@@ -168,7 +168,7 @@
    Shown in place of the form once an account exists in localStorage. The
    artwork sits behind a scrim in both themes: it is a dark, saturated image,
    so light-theme text on top of it still has to be white. */
-.reg-joined {
+/*.reg-joined {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius);
@@ -210,7 +210,7 @@
 
 /* Membership summary — reuses the shared .nx-trow rows, recoloured for the
    photographic background rather than a --surface card. */
-.reg-memcard {
+/*.reg-memcard {
   background: rgba(11, 11, 14, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-sm);
@@ -235,4 +235,4 @@
     background: linear-gradient(to top, rgba(11, 11, 14, 0.95) 20%, rgba(11, 11, 14, 0.72) 100%);
   }
   .reg-rules { gap: 6px 12px; }
-}
+} */
