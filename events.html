@@ -1,183 +1,208 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Event Schedule — NextGen E-Sports</title>
-<meta name="description" content="Practices, workshops, tryouts and socials at NextGen E-Sports, with a live venue forecast.">
-<link rel="stylesheet" href="vendor/bootstrap.min.css">
-<link rel="stylesheet" href="vendor/bootstrap-icons.css">
-<link rel="stylesheet" href="css/style.css?v=5">
-<!-- Page-exclusive: this page's own event-row/calendar/weather design. -->
-<link rel="stylesheet" href="css/events.css?v=2">
-<script>
-(function () {
-  try {
-    var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
-    document.documentElement.setAttribute('data-theme', t);
-  } catch (e) { /* storage unavailable — dark stays */ }
-})();
-</script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Event Schedule — NextGen E-Sports</title>
+    <meta name="description"
+        content="Practices, workshops, tryouts and socials at NextGen E-Sports, with a live venue forecast.">
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css?v=5">
+    <link rel="stylesheet" href="css/events.css?v=2">
+    <script>
+        (function () {
+            try {
+                var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
+                document.documentElement.setAttribute('data-theme', t);
+            } catch (e) { /* storage unavailable — dark stays */ }
+        })();
+    </script>
 </head>
+
 <body>
-<a class="nx-skip" href="#main">Skip to content</a>
+    <a class="nx-skip" href="#main">Skip to content</a>
 
-<header class="nx-nav navbar navbar-expand-lg p-0">
-  <nav class="nx-nav__inner container-fluid" aria-label="Primary">
-    <a class="nx-wordmark navbar-brand" href="index.html">
-      <span class="nx-wordmark__mark">N</span>
-      <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>
-    </a>
-
-    <div class="nx-nav__actions d-flex align-items-center gap-2 ms-auto order-lg-last">
-      <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
-        <i class="bi bi-sun" aria-hidden="true"></i>
-      </button>
-      <button class="nx-icon-btn navbar-toggler" id="navToggle" type="button"
-              data-bs-toggle="collapse" data-bs-target="#navLinks"
-              aria-controls="navLinks" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="bi bi-list" aria-hidden="true"></i>
-      </button>
-    </div>
-
-    <div class="collapse navbar-collapse" id="navLinks">
-      <ul class="navbar-nav nx-nav__links ms-lg-auto">
-        <li class="nav-item"><a class="nx-nav__link nav-link" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nx-nav__link nav-link" href="rankings.html">Rankings</a></li>
-        <li class="nav-item"><a class="nx-nav__link nav-link" href="players.html">Players</a></li>
-        <li class="nav-item"><a class="nx-nav__link nav-link" href="tournaments.html">Tournaments</a></li>
-        <li class="nav-item"><a class="nx-nav__link nav-link" href="events.html">Events</a></li>
-        <li class="nav-item"><a class="nx-nav__link nav-link" href="tickets.html">Tickets</a></li>
-        <li class="nav-item"><a class="nx-nav__link nav-link" href="about.html">About</a></li>
-        <li class="nav-item"><a class="nx-nav__link nav-link" href="signin.html">Join</a></li>
-      </ul>
-    </div>
-  </nav>
-</header>
-
-<main id="main" class="page-body">
-  <section class="nx-section">
-    <div class="nx-shell container-fluid">
-
-      <div class="nx-section-head">
-        <p class="nx-eyebrow">What's on</p>
-        <h1 class="nx-mb-0">Event schedule</h1>
-        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
-          Practices, workshops, tryouts and socials at the team. Competitions themselves are listed
-          on <a href="tournaments.html">tournaments</a> — dated entries here link across to them.
-        </p>
-      </div>
-
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
-        <div class="nx-tabs" id="viewTabs" style="margin-bottom:0;border-bottom:0" role="tablist">
-          <button class="nx-tab is-active" data-view="list" role="tab" aria-selected="true">
-            <i class="bi bi-list-ul" aria-hidden="true"></i> List
-          </button>
-          <button class="nx-tab" data-view="calendar" role="tab" aria-selected="false">
-            <i class="bi bi-calendar3" aria-hidden="true"></i> Calendar
-          </button>
-        </div>
-      </div>
-
-      <!-- The list takes two thirds of the row from lg up; both stack full-width
-           below that. Bootstrap's column classes carry the breakpoint. -->
-      <div class="row g-4 align-items-start">
-        <div class="col-12 col-lg-8">
-          <div id="eventList" aria-live="polite"></div>
-        </div>
-
-        <!-- Live weather for the venue: a real keyless, CORS-open REST call -->
-        <div class="col-12 col-lg-4">
-          <aside class="nx-card nx-card--flat" id="weatherPanel">
-            <p class="nx-eyebrow">Venue forecast</p>
-            <h3 style="font-size:1rem" id="venueName">NextGen Arena</h3>
-            <div id="weather"></div>
-            <p class="nx-muted nx-mb-0" style="font-size:.74rem;margin-top:14px">
-              Live data from the Open-Meteo API, requested with jQuery on page load.
-            </p>
-          </aside>
-        </div>
-      </div>
-
-    </div>
-  </section>
-</main>
-
-<footer class="nx-footer">
-  <div class="nx-shell container-fluid">
-    <div class="nx-footer__top">
-      <div class="nx-footer__brand">
-        <div class="nx-footer__namerow d-flex flex-wrap align-items-center justify-content-between">
-          <a class="nx-wordmark" href="index.html">
-            <span class="nx-wordmark__mark">N</span>
-            <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
-          </a>
-
-          <div class="nx-social d-flex flex-wrap align-items-center">
-            <div class="nx-social__widget d-flex align-items-center">
-              <img src="socials/x.png" alt="" class="nx-social__icon">
-              <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
-                 data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
-            </div>
-            <div class="nx-social__widget d-flex align-items-center">
-              <img src="socials/facebook.png" alt="" class="nx-social__icon">
-              <iframe title="NextGen E-Sports on Facebook"
-                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fapuesportsclub%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
-                width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
-                frameborder="0" allowfullscreen="true"
-                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-            </div>
-            <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/theesportsclub"
-               target="_blank" rel="noopener">
-              <img src="socials/discord.png" alt="" class="nx-social__icon">
-              <span>Discord</span>
-              <span class="nx-discord__count">…</span>
+    <header class="nx-nav navbar navbar-expand-lg p-0">
+        <nav class="nx-nav__inner container-fluid" aria-label="Primary">
+            <a class="nx-wordmark navbar-brand" href="index.html">
+                <span class="nx-wordmark__mark">N</span>
+                <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>
             </a>
-            <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
-              <img src="socials/instagram.png" alt="" class="nx-social__icon">
-            </a>
-          </div>
+
+            <div class="nx-nav__actions d-flex align-items-center gap-2 ms-auto order-lg-last">
+                <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
+                    <i class="bi bi-sun" aria-hidden="true"></i>
+                </button>
+                <button class="nx-icon-btn navbar-toggler" id="navToggle" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navLinks" aria-controls="navLinks" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="bi bi-list" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navLinks">
+                <ul class="navbar-nav nx-nav__links ms-lg-auto">
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="rankings.html">Rankings</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="players.html">Players</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="tournaments.html">Tournaments</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link is-active" href="events.html">Events</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="tickets.html">Tickets</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="signin.html">Join</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main" class="page-body">
+        <section class="nx-section">
+            <div class="nx-shell container-fluid">
+
+                <div class="nx-section-head">
+                    <p class="nx-eyebrow">What's on</p>
+                    <h1 class="nx-mb-0">Event schedule</h1>
+                    <p class="nx-muted events-intro">
+                        Practices, workshops, tryouts and socials at the team.
+                        Competitions themselves are listed on
+                        <a href="tournaments.html">tournaments</a>.
+                    </p>
+                </div>
+
+                <div class="events-viewbar d-flex flex-wrap align-items-center justify-content-between gap-3">
+                    <div class="nx-tabs" id="viewTabs" role="tablist">
+                        <button class="nx-tab is-active" data-view="list" role="tab" aria-selected="true">
+                            <i class="bi bi-list-ul" aria-hidden="true"></i> List
+                        </button>
+                        <button class="nx-tab" data-view="calendar" role="tab" aria-selected="false">
+                            <i class="bi bi-calendar3" aria-hidden="true"></i> Calendar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row g-4 align-items-start">
+                    <div class="col-12 col-lg-8">
+                        <div id="eventList" aria-live="polite">
+                            <!-- Events will be rendered here by JavaScript -->
+                            <div class="nx-spinner" id="eventLoader">
+                                <div class="nx-spinner__ring"></div>
+                                <p>Loading events...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        <aside class="nx-card nx-card--flat" id="weatherPanel">
+                            <p class="nx-eyebrow">Venue forecast</p>
+                            <h3 class="ev-weather__title" id="venueName">NextGen Arena</h3>
+                            <div id="weather">
+                                <div class="nx-spinner">
+                                    <div class="nx-spinner__ring"></div>
+                                    Loading weather...
+                                </div>
+                            </div>
+                            <p class="nx-muted nx-mb-0 ev-weather__note">
+                                Live data from the Open-Meteo API, requested with jQuery on page load.
+                            </p>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==============================================================
+     FOOTER
+     ============================================================== -->
+
+    <footer class="nx-footer">
+        <div class="nx-shell container-fluid">
+            <div class="nx-footer__top">
+                <div class="nx-footer__brand">
+                    <div class="nx-footer__namerow d-flex flex-wrap align-items-center justify-content-between">
+                        <a class="nx-wordmark" href="index.html">
+                            <span class="nx-wordmark__mark">N</span>
+                            <span class="nx-wordmark__text">ext<span
+                                    class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
+                        </a>
+                    
+                        <div class="nx-social d-flex flex-wrap align-items-center">
+                            <div class="nx-social__widget d-flex align-items-center">
+                                <img src="socials/x.png" alt="" class="nx-social__icon">
+                                <a href="https://x.com/NextGenEsports" class="twitter-follow-button"
+                                    data-show-count="false" data-size="large" data-dnt="true">
+                                    Follow @NextGenEsports
+                                </a>
+                            </div>
+
+                            <div class="nx-social__widget d-flex align-items-center">
+                                <img src="socials/facebook.png" alt="" class="nx-social__icon">
+                                <iframe title="NextGen E-Sports on Facebook"
+                                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FNextGenEsports&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+                                    width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
+                                    frameborder="0" allowfullscreen="true"
+                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+                                </iframe>
+                            </div>
+
+                            <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/nextgen"
+                                target="_blank" rel="noopener">
+                                <img src="socials/discord.png" alt="" class="nx-social__icon">
+                                <span>Discord</span>
+                                <span class="nx-discord__count">…</span>
+                            </a>
+
+                            <a class="nx-icon-btn" href="https://www.instagram.com/nextgenesports" target="_blank"
+                                rel="noopener noreferrer" aria-label="NextGen E-Sports on Instagram">
+                                <img src="socials/instagram.png" alt="" class="nx-social__icon">
+                            </a>
+                        </div>
+                    </div>
+
+                    <p class="nx-footer__tag">
+                        A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
+                        players of every level, and host of the 2026 NextGen Youth Championship.
+                    </p>
+                </div>
+            </div>
+
+            <div class="nx-footer__bottom d-flex flex-wrap align-items-center">
+                <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
+                <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
+                <a href="about.html">About</a>
+                <a href="signin.html">Join us</a>
+            </div>
         </div>
+    </footer>
 
-        <p class="nx-footer__tag">
-          A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
-          players of every level, and host of the 2026 NextGen Youth Championship.
+    <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+        <h3 class="nx-cookie__title">Cookies on this site</h3>
+        <p class="nx-cookie__text">
+            We use cookies and other tracking technologies to improve your browsing experience on our
+            website for the following purposes:
         </p>
-      </div>
+        <ul class="nx-cookie__list">
+            <li>Remember your settings — your theme, your filters and your member account</li>
+            <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
+            <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
+        </ul>
+        <div class="nx-cookie__actions">
+            <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
+            <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp;
+                clear</button>
+        </div>
     </div>
 
-    <div class="nx-footer__bottom d-flex flex-wrap align-items-center">
-      <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
-      <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
-      <a href="about.html">About</a>
-      <a href="signin.html">Join us</a>
-    </div>
-  </div>
-</footer>
-
-<div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 class="nx-cookie__title">Cookies on this site</h3>
-  <p class="nx-cookie__text">
-    We use cookies and other tracking technologies to improve your browsing experience on our
-    website for the following purposes:
-  </p>
-  <ul class="nx-cookie__list">
-    <li>Remember your settings &mdash; your theme, your filters and your member account</li>
-    <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
-    <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
-  </ul>
-  <div class="nx-cookie__actions">
-    <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
-    <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
-  </div>
-</div>
-
-<script src="vendor/jquery-3.7.1.min.js"></script>
-<script src="vendor/bootstrap.bundle.min.js"></script>
-<script src="js/storage.js?v=3"></script>
-<script src="js/render.js?v=4"></script>
-<script src="js/main.js?v=3"></script>
-<script src="js/events.js?v=3"></script>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <!-- JavaScript - Load in correct order -->
+    <script src="vendor/jquery-3.7.1.min.js"></script>
+    <script src="vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/storage.js?v=3"></script>
+    <script src="js/render.js?v=4"></script>
+    <script src="js/main.js?v=3"></script>
+    <script src="js/events.js?v=3"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
+
 </html>
