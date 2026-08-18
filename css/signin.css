@@ -1,19 +1,11 @@
 /* ==========================================================================
-   signin.css — exclusive to signin.html (CLAUDE.md section 7).
+   signin.css — exclusive to signin.html & profile dashboard.
 
-   The whole form-control block used to sit in css/style.css, but signin.html
-   is the only page in the site that renders a form — grep `nx-input`,
-   `nx-select`, `nx-textarea` and `nx-field` across *.html and js/*.js and this
-   page is the only hit. It lives here so the join page's design can change
-   without touching the shared shell.
-
-   The classes keep their `nx-` prefix: that prefix marks the design system,
-   not the file. `reg-` is used for things only this page could ever want
-   (validation marks, the joined/thank-you panel).
-
-   If a second page ever grows a form, move the four base control rules
-   (.nx-field/.nx-label/.nx-input group/.nx-error) back into style.css and
-   leave only the `reg-` classes here.
+   Handles:
+     1. Form controls & live validation states
+     2. Sign In / Sign Up panel swapping animations
+     3. Profile Dashboard layout & sidebar navigation
+     4. Ticket cards, status filters & full-screen pass modal
    ========================================================================== */
 
 /* --- Form controls --------------------------------------------------------- */
@@ -47,10 +39,7 @@
 .nx-textarea { min-height: 110px; resize: vertical; }
 .nx-select option { background: var(--surface); color: var(--text); }
 
-/* Focus, undecided state. The border stays neutral and the brand accent shows
-   as a soft ring instead — a red border while someone is still typing reads as
-   "you got it wrong", which is what the green/red validity states below are
-   for. */
+/* Focus state */
 .nx-input:focus, .nx-select:focus, .nx-textarea:focus {
   outline: none;
   border-color: var(--border-strong);
@@ -61,10 +50,7 @@
 [data-theme="light"] .nx-select:focus,
 [data-theme="light"] .nx-textarea:focus { background: rgba(11, 11, 14, 0.05); }
 
-/* --- Live validity states ---------------------------------------------------
-   js/signin.js puts .is-valid / .has-error on the .nx-field wrapper as the
-   visitor types. Both selectors are repeated with :focus so the state survives
-   while the field still has the caret in it. */
+/* --- Live validity states --------------------------------------------------- */
 .nx-field.is-valid .nx-input,
 .nx-field.is-valid .nx-select,
 .nx-field.is-valid .nx-textarea,
@@ -92,13 +78,9 @@
 }
 .nx-field.has-error .nx-error { display: block; }
 
-/* --- Tick mark --------------------------------------------------------------
-   Drawn with two borders rather than an icon font so it inherits --ok and
-   needs no extra glyph. Only text inputs get one; selects already have a
-   native arrow parked in that corner. */
+/* --- Tick mark -------------------------------------------------------------- */
 .reg-control { position: relative; }
 .reg-control .nx-input { padding-right: 42px; }
-/* Edge parks its own reveal-password button in exactly this corner. */
 .nx-input::-ms-reveal, .nx-input::-ms-clear { display: none; }
 .reg-mark {
   position: absolute;
@@ -123,9 +105,7 @@
   transform: rotate(42deg);
 }
 
-/* --- Password rule checklist ------------------------------------------------
-   Live requirements, so the rules are visible before they are broken rather
-   than only in an error message afterwards. */
+/* --- Password rule checklist ------------------------------------------------ */
 .reg-rules {
   list-style: none;
   margin: 10px 0 0;
@@ -152,10 +132,8 @@
 .reg-rule.is-met { color: var(--ok); }
 .reg-rule.is-met::before { background: var(--ok); transform: scale(1.3); }
 
-/* --- Footnote under the form ------------------------------------------------ */
+/* --- Footnotes & Steps ------------------------------------------------------ */
 .reg-note { font-size: 0.76rem; margin-top: 16px; margin-bottom: 0; }
-
-/* --- "What happens next" list ----------------------------------------------- */
 .reg-steps {
   font-size: 0.88rem;
   padding-left: 20px;
@@ -164,10 +142,7 @@
 .reg-steps li { margin-bottom: 8px; }
 .reg-steps li:last-child { margin-bottom: 0; }
 
-/* --- Joined / thank-you panel -----------------------------------------------
-   Shown in place of the form once an account exists in localStorage. The
-   artwork sits behind a scrim in both themes: it is a dark, saturated image,
-   so light-theme text on top of it still has to be white. */
+/* --- Joined / thank-you panel ----------------------------------------------- */
 .reg-joined {
   position: relative;
   overflow: hidden;
@@ -208,8 +183,6 @@
   max-width: 46ch;
 }
 
-/* Membership summary — reuses the shared .nx-trow rows, recoloured for the
-   photographic background rather than a --surface card. */
 .reg-memcard {
   background: rgba(11, 11, 14, 0.55);
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -237,25 +210,16 @@
   .reg-rules { gap: 6px 12px; }
 }
 
-/* ==========================================================================
-   NEW: Panel Swapping Animation (Sign In / Sign Up toggling)
-   Reuses your beautiful 'reg-joined-in' slide animation so the panels fade in!
-   ========================================================================== */
+/* --- Panel Swapping Animation ----------------------------------------------- */
 .panel-active {
   animation: reg-joined-in 420ms var(--ease) both;
 }
-/* ==========================================================================
-   dashboard.css — exclusive to dashboard.html. Owner: the same developer as
-   events.css (CLAUDE.md section 7 "Events + Dashboard" pairing).
 
-   Nothing in here is referenced by any other page. js/dashboard.js renders
-   these classes instead of inline `style="..."` attributes, same reasoning
-   as events.css.
+/* ==========================================================================
+   Dashboard Styling
    ========================================================================== */
 
-/* --- Profile header --------------------------------------------------------
-   Identity on the left, sign out on the right — the same shape as
-   design-refs/profile.png, in this site's own palette and type. */
+/* --- Profile header -------------------------------------------------------- */
 .dash-head {
   display: flex;
   flex-wrap: wrap;
@@ -269,16 +233,12 @@
   align-items: center;
   gap: calc(var(--space) * 2.5);
 }
-/* Reuses the shared hexagon .nx-avatar, minus its centred card margins. */
 .dash-avatar {
   width: 84px; height: 84px;
   margin: 0;
   font-size: 1.7rem;
   flex-shrink: 0;
 }
-/* A person's name is not a page title — the site-wide h1 clamp goes up to
-   4rem, which shouts at this size. */
-
 .dash-head__sub {
   margin: 10px 0 0;
   max-width: 52ch;
@@ -287,67 +247,19 @@
 }
 .dash-head__out { flex-shrink: 0; }
 
-/* --- Mini nav --------------------------------------------------------------
-   A segmented pill. On mobile it scrolls sideways rather than wrapping, so
-   the control stays one row and keeps reading as a switch. */
-/*.dash-tabs {
-  display: flex;
-  gap: 4px;
-  padding: 5px;
-  margin-bottom: calc(var(--space) * 3);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  width: fit-content;
-  max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.dash-tabs::-webkit-scrollbar { display: none; }
-[data-theme="light"] .dash-tabs { background: rgba(11, 11, 14, 0.04); }
-
-.dash-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 22px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text-muted);
-  font-family: var(--font-heading);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-.dash-tab:hover { color: var(--text); }
-.dash-tab.is-active {
-  background: var(--accent);
-  color: #fff;
-}
-.dash-tab i { font-size: 0.95rem; } */
-
-/* --- Dashboard Layout (Sidebar & Content) ----------------------------------
-   Creates a two-column layout where the sidebar stays pinned to the screen
-   while the user scrolls through their content panels on the right. */
+/* --- Dashboard Layout (Sidebar & Content) ---------------------------------- */
 .dash-layout {
   display: flex;
   gap: calc(var(--space) * 4);
   align-items: flex-start;
 }
 
-/* Sidebar is fixed width and sticky */
 .dash-sidebar {
   flex: 0 0 240px;
   position: sticky;
-  top: 100px; /* Keeps it visible below the fixed header when scrolling */
+  top: 100px;
 }
 
-/* Content takes remaining space and stacks vertically */
 .dash-content {
   flex: 1;
   display: flex;
@@ -392,7 +304,7 @@
 }
 .dash-nav__link i { font-size: 1.1rem; }
 
-/* Mobile fallback: Turn sidebar into a horizontal scrolling row */
+/* Mobile fallback: Horizontal scrolling sidebar */
 @media (max-width: 768px) {
   .dash-layout { flex-direction: column; }
   .dash-sidebar {
@@ -429,11 +341,7 @@
   .dash-panel { animation: none; }
 }
 
-/* --- Read-only detail fields -----------------------------------------------
-   Boxed values rather than inputs: there is no server to save an edit to, so
-   presenting them as editable fields would be a lie. */
-/* Two columns, not auto-fit: at full shell width auto-fit gives four narrow
-   columns and an email address then wraps mid-address. */
+/* --- Read-only Detail Fields ----------------------------------------------- */
 .dash-fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -460,12 +368,7 @@
 [data-theme="light"] .dash-field__value { background: rgba(11, 11, 14, 0.03); }
 .dash-field__value.is-empty { color: var(--text-muted); font-style: italic; }
 
-/* --- Favourite tiles --------------------------------------------------------
-   Two of the four are placeholders until players.html and events.html grow a
-   star of their own — they are dimmed rather than hidden so the section shows
-   its full shape. */
-/* Four tiles, so two columns — auto-fit lands three across and leaves the
-   fourth stranded on its own row. */
+/* --- Favourite Tiles -------------------------------------------------------- */
 .dash-favs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -521,7 +424,7 @@
 .dash-fav__link { font-size: 0.76rem; font-weight: 600; }
 .dash-fav__link i { font-size: 0.7rem; }
 
-/* --- Headline stat cards (Restored) --- */
+/* --- Headline Stat Cards --------------------------------------------------- */
 .dash-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -557,31 +460,372 @@
   color: var(--text-muted);
 }
 
-/* @media (max-width: 720px) {
-  .dash-head__id { gap: calc(var(--space) * 2); }
-  .dash-avatar { width: 64px; height: 64px; font-size: 1.3rem; }
-  .dash-tab { padding: 10px 16px; }
-  .dash-fields, .dash-favs { grid-template-columns: 1fr; }
-} */
+/* ==========================================================================
+   Ticket Management System (#panel-tickets)
+   ========================================================================== */
 
-/* --- Headline stat cards ---------------------------------------------------
-   The three "favourite club / applications / visitor status" tiles. */
-/* .dash-stat__value {
-  font-family: var(--font-heading);
-  font-size: 1.6rem;
-  font-weight: 800;
-  line-height: 1.1;
+/* Sub-tabs / Status Filters */
+.ticket-status-filter {
+  display: flex;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
 }
-.dash-stat__caption { font-size: 0.84rem; margin-top: 6px; }*/
+[data-theme="light"] .ticket-status-filter {
+  background: rgba(11, 11, 14, 0.04);
+}
 
-/* --- Storage table rows ----------------------------------------------------
-   Reuses the shared .nx-trow layout (css/style.css) — only the bits unique
-   to how dashboard.html annotates each key get their own class here. */
-/*.dash-row__meaning { font-size: 0.74rem; opacity: 0.75; }
-.dash-row__value { max-width: 50%; text-align: right; word-break: break-word; }
-*/
-/* --- Submitted applications list -------------------------------------------
-   Also built on .nx-trow; just the name/meta styling is page-specific. */
-/*.dash-app__name { color: var(--text); }
-.dash-app__meta { font-size: 0.74rem; opacity: 0.75; }
-.dash-app__id { font-size: 0.76rem; }*/
+.ticket-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border: 0;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+}
+.ticket-tab-btn:hover {
+  color: var(--text);
+}
+.ticket-tab-btn.is-active {
+  background: var(--accent);
+  color: #ffffff;
+}
+.ticket-tab-btn .badge {
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: currentColor;
+}
+.ticket-tab-btn.is-active .badge {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Scrollable Container for Tickets */
+.dash-tickets-scroll {
+  max-height: 540px;
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+.dash-tickets-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.dash-tickets-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+/* Grid Layout for Ticket Cards */
+.dash-tickets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: calc(var(--space) * 2.5);
+  padding: 4px 0;
+}
+
+/* Ticket Card */
+.ticket-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.ticket-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-strong);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Header & Poster Background */
+.ticket-card__header {
+  position: relative;
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-end;
+  padding: 12px;
+}
+.ticket-card__header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(11, 11, 14, 0.92) 0%, rgba(11, 11, 14, 0.2) 70%, transparent 100%);
+}
+
+.ticket-card__badge {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Card Body & Details */
+.ticket-card__body {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.ticket-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.ticket-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.ticket-card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ticket-card__meta-item i {
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+/* Card Footer & Action Button */
+.ticket-card__footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+}
+.ticket-card__btn {
+  width: 100%;
+}
+.ticket-card__btn:disabled,
+.ticket-card__btn.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border);
+  color: var(--text-muted);
+  box-shadow: none;
+}
+
+/* Empty State */
+.ticket-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+}
+.ticket-empty i {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  opacity: 0.5;
+  display: block;
+}
+
+/* Ticket Pass Popup Modal */
+.ticket-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(6px);
+  padding: 16px;
+}
+
+.ticket-modal-backdrop[hidden] {
+  display: none !important;
+}
+
+.ticket-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+}
+
+.ticket-modal-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.ticket-modal-close:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+/* Glassmorphism Pass Structure */
+.pass-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 24px 20px;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+  background-size: cover;
+  background-position: center;
+  min-height: 490px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.8) 100%);
+  z-index: 1;
+}
+
+.pass-card__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+}
+
+.pass-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.pass-card__badge {
+  background: #ef4444;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pass-card__id {
+  font-size: 0.95rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.pass-card__title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1.05;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pass-card__subtitle {
+  color: #f87171;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
+/* Frosted Details Box */
+.pass-card__info-box {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.pass-card__info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+.pass-card__info-row i {
+  color: #f87171;
+  font-size: 1.1rem;
+}
+
+/* QR Code Section */
+.pass-card__qr-section {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pass-card__qr-box {
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.pass-card__qr-box img {
+  display: block;
+  width: 140px;
+  height: 140px;
+}
+
+.pass-card__footer-text {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}

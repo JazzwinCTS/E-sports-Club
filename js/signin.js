@@ -1,38 +1,17 @@
 /* ==========================================================================
    signin.js
 
-   Two states on one page:
-     no account  -> #joinPanel / #loginPanel (Sign In / Sign Up forms)
-     account     -> Dashboard layout takes over (handled by dashboard JS)
-
-   Storage (CLAUDE.md section 5, unchanged keys):
-     sessionStorage `registerDraft`  half-finished form, dies with the tab
-     localStorage   `registrations`  the member account, survives the browser
-
-   `registrations` stays an array so dashboard.html keeps reading it the same
-   way; this page just treats the most recent entry as "the account signed in
-   on this browser".
+   Handles:
+     1. Authentication (Sign In / Sign Up form switching & validation)
+     2. Profile Dashboard, Favourites Switcher & Stored Ticket Display
    ========================================================================== */
 
 $(function () {
   'use strict';
 
   var $form = $('#registerForm');
-
-  /* Draft fields only — the password is deliberately absent. A half-typed
-     password has no business sitting in sessionStorage, and dashboard.js
-     counts exactly these six when it reports draft progress. */
   var DRAFT_FIELDS = ['fullName', 'email', 'ign', 'game', 'level', 'notes'];
 
-  var LEVEL_LABELS = {
-    casual: 'Casual — just here to play',
-    improving: 'Improving — wants structured practice',
-    competitive: 'Competitive — after a roster spot'
-  };
-
-  /* ---- Validation rules ---------------------------------------------------
-     Each returns null when the value is acceptable, or the message to show.
-     Everything here runs in the browser; there is no server to check against. */
   var PASSWORD_RULES = {
     length: function (v) { return v.length >= 8; },
     letter: function (v) { return /[A-Za-z]/.test(v); },
@@ -81,11 +60,6 @@ $(function () {
   };
 
   var FIELD_IDS = Object.keys(VALIDATORS);
-
-  /* ---- Field state --------------------------------------------------------
-     Green appears the moment a value becomes valid. Red is held back until the
-     visitor has left the field once (or pressed submit) — flagging an email as
-     wrong after the first keystroke is just noise. */
   var touched = {};
 
   function markState(id, message, showError) {
@@ -124,13 +98,12 @@ $(function () {
   $form.on('input change', '.nx-input, .nx-select', function (e) {
     var id = this.id;
     if (e.type === 'change' && this.tagName === 'SELECT') { touched[id] = true; }
-    
+
     if (id === 'password') {
       paintPasswordRules();
       if ($('#confirm').val()) { checkField('confirm'); }
     }
 
-    /* FIX: If the user clears the field, remove the red error until they hit submit */
     if ($.trim($(this).val()) === '') {
       $(this).closest('.nx-field').removeClass('has-error is-valid');
       return;
@@ -141,18 +114,17 @@ $(function () {
 
   $form.on('blur', '.nx-input, .nx-select', function () {
     if (!VALIDATORS[this.id]) { return; }
-    
-    /* FIX: Don't show red errors if they just click in and out of a blank box */
+
     if ($.trim($(this).val()) === '') {
       $(this).closest('.nx-field').removeClass('has-error is-valid');
-      return; 
+      return;
     }
 
     touched[this.id] = true;
     checkField(this.id);
   });
 
-  /* ---- Draft (session) ---------------------------------------------------- */
+  /* Session Draft Handlers */
   function saveDraft() {
     var current = {};
     DRAFT_FIELDS.forEach(function (name) { current[name] = $('#' + name).val(); });
@@ -187,7 +159,6 @@ $(function () {
     resetForm();
   });
 
-  /* ---- Prefill from ?event= ----------------------------------------------- */
   function applyEventParam() {
     var match = window.location.search.match(/[?&]event=([^&]+)/);
     if (!match) { return; }
@@ -200,7 +171,6 @@ $(function () {
     $('#notes').attr('placeholder', 'Interested in ' + slug + '…');
   }
 
-  /* ---- Security Digest ---------------------------------------------------- */
   function digest(text) {
     var h = 5381;
     for (var i = 0; i < text.length; i++) {
@@ -214,7 +184,7 @@ $(function () {
     return all.length ? all[all.length - 1] : null;
   }
 
-  /* ---- NEW: Panel Toggling (Sign In <-> Sign Up) -------------------------- */
+  /* Panel Toggling */
   $('#showJoinBtn, #showJoinBtnAside').on('click', function () {
     $('#loginPanel').attr('hidden', true).removeClass('panel-active');
     $('#joinPanel').removeAttr('hidden').addClass('panel-active');
@@ -227,18 +197,17 @@ $(function () {
     $('#loginPanel').removeAttr('hidden').addClass('panel-active');
   });
 
-  /* ---- NEW: Login Form Submission ----------------------------------------- */
+  /* Login Form Submission */
   $('#loginForm').on('submit', function (e) {
     e.preventDefault();
 
-    var email = $.trim($('#loginEmail').val());
+    var email = $.trim($('#loginEmail').val()).toLowerCase();
     var pass = $('#loginPassword').val();
     var hashedPass = digest(pass);
 
     var $emailField = $('#loginEmail').closest('.nx-field');
     var $passField = $('#loginPassword').closest('.nx-field');
 
-    /* Reset previous errors */
     $emailField.removeClass('has-error');
     $passField.removeClass('has-error');
 
@@ -246,9 +215,8 @@ $(function () {
     var matchIndex = -1;
     var match = null;
 
-    /* Search for the account by email */
     for (var i = all.length - 1; i >= 0; i--) {
-      if (all[i].email === email) {
+      if ((all[i].email || '').toLowerCase() === email) {
         match = all[i];
         matchIndex = i;
         break;
@@ -267,21 +235,17 @@ $(function () {
       return;
     }
 
-    /* Success! Move this account to the end of the array so dashboard sees it as active */
     all.splice(matchIndex, 1);
     all.push(match);
     NXStore.local.set('registrations', all);
-    
-    /* NEW: Set active session flag */
     NXStore.session.set('isLoggedIn', true);
 
-    /* Hide the forms and trigger the dashboard */
     $('#loginPanel, #joinPanel').css('display', 'none');
     $(window).trigger('accountChanged');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ---- Register Form Submission ------------------------------------------- */
+  /* Register Form Submission (With Existing Email Check) */
   $form.on('submit', function (e) {
     e.preventDefault();
 
@@ -296,154 +260,170 @@ $(function () {
       return;
     }
 
+    var inputEmail = $.trim($('#email').val()).toLowerCase();
+    var all = NXStore.local.get('registrations', []) || [];
+    
+    var emailExists = all.some(function (acc) {
+      return (acc.email || '').toLowerCase() === inputEmail;
+    });
+
+    if (emailExists) {
+      markState('email', 'An account with this email address already exists.', true);
+      $('#email').trigger('focus');
+      return;
+    }
+
     var account = { id: 'REG-' + Date.now().toString(36).toUpperCase() };
     DRAFT_FIELDS.forEach(function (name) { account[name] = $.trim($('#' + name).val()); });
     account.passwordHash = digest($('#password').val());
     account.submittedAt = new Date().toISOString();
 
-    var all = NXStore.local.get('registrations', []) || [];
     all.push(account);
     NXStore.local.set('registrations', all);
 
-    var registeredEmail = account.email; /* Save this for the auto-fill before resetting */
-
+    var registeredEmail = account.email;
     NXStore.session.remove('registerDraft');
     resetForm();
-    
-    /* NEW: Auto-fill email, switch back to Sign In, DO NOT trigger dashboard */
+
     $('#loginEmail').val(registeredEmail);
     $('#joinPanel').attr('hidden', true).removeClass('panel-active');
     $('#loginPanel').removeAttr('hidden').addClass('panel-active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ---- Boot --------------------------------------------------------------- */
+  /* Auth Boot Checks */
   var existing = getAccount();
   var isLoggedIn = NXStore.session.get('isLoggedIn');
-  
-  /* NEW: Requires BOTH an account and an active session flag to bypass login */
+
   if (existing && isLoggedIn) {
-    /* User is already signed in! Hide forms so the Dashboard JS takes over cleanly */
     $('#loginPanel, #joinPanel').css('display', 'none');
   } else {
-    /* No active session. Setup the Sign In/Sign Up forms */
     restoreDraft();
     applyEventParam();
     paintPasswordRules();
   }
-
 });
-/* ==========================================================================
-   dashboard.js — dashboard.html only.
 
-   The page is a profile: a mini nav across Personal info / Favourites /
-   Storage. It reads all three storage technologies and never writes a
-   preference of its own; each value is owned by the page that sets it
-   (CLAUDE.md section 4). The one thing it does write is a deletion — signing
-   out, which clears the account the same way signin.html does.
+/* ==========================================================================
+   Dashboard & Profile Display Logic
    ========================================================================== */
 
 $(function () {
   'use strict';
 
-  function card(value, caption, link) {
-    return '<div class="dash-stat__value">' +
-             NXRender.esc(value) +
-           '</div>' +
-           '<p class="nx-muted nx-mb-0 dash-stat__caption">' +
-             NXRender.esc(caption) +
-             (link ? ' <a href="' + link.href + '">' + link.text + '</a>' : '') +
-           '</p>';
-  }
-
-  /* ---- Human-readable formatting -----------------------------------------
-     Raw storage values are JSON — a plain object like {"game":"cs2","role":
-     "Duelist"} means nothing to a visitor at a glance. Each key gets its own
-     small formatter instead of a blind JSON.stringify() dump. */
-  var SORT_LABELS = { date: 'Start date', prize: 'Prize pool', teams: 'Team count' };
-
-  function gameLabel(key) {
-    if (!key || key === 'all') { return 'All games'; }
-    return NXRender.gameLabels[key] || key;
-  }
-
-  function titleCase(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }
-
-  function formatValue(key, value) {
-    if (value === null || value === undefined || value === '') {
-      return '— not set —';
-    }
-
-    if (key === 'theme') {
-      return value === 'light' ? 'Light' : 'Dark';
-    }
-    if (key === 'playerFilter') {
-      return 'Game: ' + gameLabel(value.game) +
-             ' · Role: ' + (value.role && value.role !== 'all' ? value.role : 'All roles');
-    }
-    if (key === 'tournamentFilter') {
-      var status = value.status && value.status !== 'all' ? titleCase(value.status) : 'All statuses';
-      return status + ' · ' + gameLabel(value.game) + ' · Sort: ' + (SORT_LABELS[value.sort] || 'Start date');
-    }
-    if (key === 'registerDraft') {
-      var fields = ['fullName', 'email', 'ign', 'game', 'level', 'notes'];
-      var filled = fields.filter(function (f) { return value[f]; });
-      return filled.length
-        ? filled.length + ' of ' + fields.length + ' fields filled'
-        : 'Started, nothing typed yet';
-    }
-    if (key === 'eventView') {
-      return value === 'calendar' ? 'Calendar view' : 'List view';
-    }
-    if (key === 'returningVisitor') {
-      return value ? 'Yes' : 'No';
-    }
-
-    /* theme, favouriteTeam, registrations count — already plain, human text */
-    return String(value);
-  }
-
-  function row(key, value, meaning) {
-    return '<div class="nx-trow">' +
-             '<span class="nx-trow__k"><code>' + NXRender.esc(key) + '</code><br>' +
-               '<span class="dash-row__meaning">' + NXRender.esc(meaning) + '</span>' +
-             '</span>' +
-             '<span class="nx-trow__v dash-row__value">' +
-               NXRender.esc(formatValue(key, value)) +
-             '</span>' +
-           '</div>';
-  }
-
-
-/* ======================================================================
-     Profile
-     ====================================================================== */
-  /* ---- Submitted applications ------------------------------------------- */
   var LEVEL_LABELS = {
     casual: 'Casual',
     improving: 'Improving',
     competitive: 'Competitive'
   };
 
+  function gameLabel(key) {
+    if (!key || key === 'all') { return 'All games'; }
+    return NXRender.gameLabels[key] || key;
+  }
+
+  /* Fine-tuned Ticket HTML Card Builder */
+  function buildTicketCardHTML(t, isExpired) {
+    var posterStyle = t.poster
+      ? 'background-image: url(\'' + NXRender.esc(t.poster) + '\'); background-size: cover; background-position: center;'
+      : 'background: linear-gradient(135deg, #1f2937 0%, #111827 100%); display: flex; align-items: center; justify-content: center;';
+
+    var posterInner = t.poster
+      ? ''
+      : '<i class="bi bi-ticket-perforated" style="font-size: 2.5rem; opacity: 0.3;"></i>';
+
+    return `
+      <div class="nx-card ticket-card" data-ticket-id="${NXRender.esc(t.id)}">
+        <div class="ticket-card__header" style="${posterStyle} height: 140px; position: relative;">
+          ${posterInner}
+          <span class="ticket-card__badge" style="position: absolute; top: 10px; right: 10px;">${NXRender.esc(t.type || 'Standard Pass')}</span>
+        </div>
+        <div class="ticket-card__body" style="padding: 16px;">
+          <h4 class="ticket-card__title" style="margin-bottom: 8px;">${NXRender.esc(t.title || 'Event Pass')}</h4>
+          <div class="ticket-card__meta" style="display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem;">
+            <div class="ticket-card__meta-item"><i class="bi bi-calendar-event"></i> ${NXRender.esc(t.date || 'TBA')}</div>
+            <div class="ticket-card__meta-item"><i class="bi bi-geo-alt"></i> ${NXRender.esc(t.venue || 'Online / TBD')}</div>
+            <div class="ticket-card__meta-item"><i class="bi bi-ticket-perforated"></i> Ticket ID: <strong>${NXRender.esc(t.id || 'N/A')}</strong></div>
+          </div>
+          <div class="ticket-card__footer" style="margin-top: 14px;">
+            <button type="button" 
+                    class="nx-btn nx-btn--block ${isExpired ? 'nx-btn--ghost is-disabled' : 'nx-btn--outline view-pass-btn'}" 
+                    ${isExpired ? 'disabled' : ''} 
+                    data-ticket-id="${NXRender.esc(t.id)}">
+              ${isExpired ? 'Pass Expired' : '<i class="bi bi-qr-code-scan"></i> View Pass'}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  /* Fine-tuned User Ticket Rendering Function */
+  function renderUserTickets(userEmail) {
+    var $validGrid = $('#validTicketsGrid');
+    var $expireGrid = $('#expireTicketsGrid');
+
+    if (!$validGrid.length || !$expireGrid.length) return;
+
+    var allTickets = NXStore.local.get('userTickets', []) || [];
+    var normalizedEmail = (userEmail || '').trim().toLowerCase();
+
+    var myTickets = allTickets.filter(function (t) {
+      return t && t.userEmail && t.userEmail.trim().toLowerCase() === normalizedEmail;
+    });
+
+    var validTickets = myTickets.filter(function (t) {
+      var status = (t.status || 'valid').toLowerCase();
+      return status === 'valid' || status === 'active';
+    });
+
+    var expireTickets = myTickets.filter(function (t) {
+      var status = (t.status || '').toLowerCase();
+      return status === 'expired' || status === 'expire' || status === 'used';
+    });
+
+    $('#validTicketCount').text(validTickets.length);
+    $('#expireTicketCount').text(expireTickets.length);
+
+    if (validTickets.length === 0) {
+      $validGrid.html(`
+        <div class="ticket-empty" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+          <i class="bi bi-ticket-perforated" style="font-size: 2.5rem; opacity: 0.4;"></i>
+          <p class="nx-muted" style="margin-top: 12px; margin-bottom: 0;">No active tickets found. Book a match from the Tickets page!</p>
+        </div>
+      `);
+    } else {
+      $validGrid.html(validTickets.map(function (t) {
+        return buildTicketCardHTML(t, false);
+      }).join(''));
+    }
+
+    if (expireTickets.length === 0) {
+      $expireGrid.html(`
+        <div class="ticket-empty" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px;">
+          <i class="bi bi-ticket-detailed" style="font-size: 2.5rem; opacity: 0.4;"></i>
+          <p class="nx-muted" style="margin-top: 12px; margin-bottom: 0;">No past or expired tickets recorded.</p>
+        </div>
+      `);
+    } else {
+      $expireGrid.html(expireTickets.map(function (t) {
+        return buildTicketCardHTML(t, true);
+      }).join(''));
+    }
+  }
+
   function renderProfile() {
     var regs = NXStore.local.get('registrations', []) || [];
     var account = regs.length ? regs[regs.length - 1] : null;
     var isLoggedIn = NXStore.session.get('isLoggedIn');
 
-    /* 1. Hide the entire dashboard layout AND header if nobody is signed in */
-    /* NEW: Now requires both account and active session */
     if (!account || !isLoggedIn) {
-      /* Targets both the header wrapper and the bottom layout wrapper */
       $('.dash-head, .dash-layout').css('display', 'none');
       return;
     }
-    
-    /* 2. Show everything if an account exists and is logged in */
+
     $('.dash-head, .dash-layout').css('display', '');
 
-    /* ---- Header ------------------------------------------------------------ */
     function initials(name) {
       var parts = $.trim(name || '').split(/\s+/).filter(Boolean);
       if (!parts.length) { return '?'; }
@@ -456,143 +436,180 @@ $(function () {
     $('#profileSub').text(account.email || '');
     $('#signOut').removeAttr('hidden');
 
-    /* ---- Personal information ---------------------------------------------- */
     function field(label, value) {
       var empty = !value;
       return '<div class="dash-field">' +
-               '<p class="dash-field__label">' + NXRender.esc(label) + '</p>' +
-               '<p class="dash-field__value' + (empty ? ' is-empty' : '') + '">' +
-                 NXRender.esc(empty ? 'Not set' : value) +
-               '</p>' +
-             '</div>';
+        '<p class="dash-field__label">' + NXRender.esc(label) + '</p>' +
+        '<p class="dash-field__value' + (empty ? ' is-empty' : '') + '">' +
+        NXRender.esc(empty ? 'Not set' : value) +
+        '</p>' +
+        '</div>';
     }
 
     $('#personalFields').html(
       '<div class="dash-fields">' +
-        field('Full name', account.fullName) +
-        field('Email address', account.email) +
-        field('In-game name', account.ign) +
-        field('Member ID', account.id) +
-        field('Primary title', gameLabel(account.game)) +
-        field('Experience', LEVEL_LABELS[account.level] || account.level) +
+      field('Full name', account.fullName) +
+      field('Email address', account.email) +
+      field('In-game name', account.ign) +
+      field('Member ID', account.id) +
+      field('Primary title', gameLabel(account.game)) +
+      field('Experience', LEVEL_LABELS[account.level] || account.level) +
       '</div>' +
       (account.notes
         ? '<div class="dash-field dash-field--wide">' +
-            '<p class="dash-field__label">Anything else</p>' +
-            '<p class="dash-field__value">' + NXRender.esc(account.notes) + '</p>' +
-          '</div>'
+        '<p class="dash-field__label">Anything else</p>' +
+        '<p class="dash-field__value">' + NXRender.esc(account.notes) + '</p>' +
+        '</div>'
         : '')
     );
 
-    /* ---- Favourites --------------------------------------------------------- */
-    function favTile(opts) {
-      return '<div class="dash-fav' + (opts.value ? '' : ' is-empty') + '">' +
-               '<div class="dash-fav__icon">' + opts.icon + '</div>' +
-               '<div class="dash-fav__body">' +
-                 '<p class="dash-fav__label">' + NXRender.esc(opts.label) + '</p>' +
-                 '<p class="dash-fav__value">' +
-                   NXRender.esc(opts.value || opts.placeholder) +
-                 '</p>' +
-                 '<a class="dash-fav__link" href="' + opts.href + '">' +
-                   NXRender.esc(opts.action) +
-                   ' <i class="bi bi-arrow-right" aria-hidden="true"></i>' +
-                 '</a>' +
-               '</div>' +
-             '</div>';
-    }
+    /* Render Favourites & Game Switcher into #favFields */
+    var favTeam = NXStore.local.get('favouriteTeam');
+    var favHTML = `
+      <div class="dash-field" style="margin-bottom: 20px;">
+        <label class="dash-field__label" for="profileGameSelect" style="display: block; margin-bottom: 8px;">Primary Title</label>
+        <select class="nx-select" id="profileGameSelect" style="max-width: 320px;">
+          <option value="valorant" ${account.game === 'valorant' ? 'selected' : ''}>Valorant</option>
+          <option value="cs2" ${account.game === 'cs2' ? 'selected' : ''}>Counter-Strike 2</option>
+          <option value="pubg" ${account.game === 'pubg' ? 'selected' : ''}>PUBG</option>
+        </select>
+        <span class="nx-muted" style="font-size: 0.85rem; margin-top: 6px; display: block;">
+          Select your primary competitive title.
+        </span>
+      </div>
 
-    var gameIcon = NXRender.gameLogos[account.game]
-      ? '<img src="' + NXRender.gameLogos[account.game] + '" alt="">'
-      : '<i class="bi bi-controller" aria-hidden="true"></i>';
+      <div class="dash-field">
+        <p class="dash-field__label">Starred Team</p>
+        ${favTeam ? `
+          <div class="nx-row nx-between" style="align-items: center; margin-top: 8px;">
+            <div>
+              <strong style="font-size: 1.1rem;">${NXRender.esc(favTeam)}</strong>
+              <p class="nx-muted" style="margin: 4px 0 0 0; font-size: 0.875rem;">Starred team highlighted on standings.</p>
+            </div>
+            <a href="rankings.html" class="nx-btn nx-btn--ghost nx-btn--sm">View Rankings</a>
+          </div>
+        ` : `
+          <p class="dash-field__value is-empty" style="margin-top: 4px;">No team starred yet. Star a club on the <a href="rankings.html">rankings page</a>.</p>
+        `}
+      </div>
+    `;
 
-    function favList(key) {
-      var saved = NXStore.local.get(key, []) || [];
-      return Array.isArray(saved) && saved.length ? saved.join(' · ') : null;
-    }
-    
-    var fav = NXStore.local.get('favouriteTeam');
+    $('#favFields').html(favHTML);
 
-    $('#favFields').html(
-      favTile({
-        label: 'Primary title',
-        value: gameLabel(account.game),
-        placeholder: 'Set when you join',
-        icon: gameIcon,
-        href: 'players.html',
-        action: 'Browse this title'
-      }) +
-      favTile({
-        label: 'Favourite club',
-        value: fav,
-        placeholder: 'No club starred yet',
-        icon: '<i class="bi bi-shield-fill" aria-hidden="true"></i>',
-        href: 'rankings.html',
-        action: fav ? 'See the standings' : 'Star a club'
-      }) +
-      favTile({
-        label: 'Favourite players',
-        value: favList('favouritePlayers'),
-        placeholder: 'Coming soon — the players page has no star yet',
-        icon: '<i class="bi bi-person-badge" aria-hidden="true"></i>',
-        href: 'players.html',
-        action: 'Browse players'
-      }) +
-      favTile({
-        label: 'Favourite events',
-        value: favList('favouriteEvents'),
-        placeholder: 'Coming soon — the events page has no star yet',
-        icon: '<i class="bi bi-calendar-heart" aria-hidden="true"></i>',
-        href: 'events.html',
-        action: 'Browse events'
-      })
-    );
-
-    /* ---- Headline cards (Now Dynamic!) ------------------------------------ */
-    /* Note: 'fav' and 'regs' are already defined higher up in this function */
-    $('#favTeam').html(fav
-      ? card(fav, 'Highlighted on', { href: 'rankings.html', text: 'the standings' })
-      : card('None', 'Star a club on', { href: 'rankings.html', text: 'rankings' }));
-
-    $('#appCount').html(regs.length
-      ? card('Active', 'Member account stored on this browser.')
-      : card('None', 'Create one on the', { href: 'signin.html', text: 'join page' }));
-
-    var returning = NXStore.cookie.get('returningVisitor');
-    $('#visitorState').html(returning
-      ? card('Returning', 'Cookie set — expires 30 days after your last accept.')
-      : card('New', 'No returningVisitor cookie is set on this browser.'));
-
-    /* ---- Storage tables (Now Dynamic!) ------------------------------------ */
-    $('#localTable').html(
-      row('theme', NXStore.local.get('theme'), 'Colour scheme, site-wide') +
-      row('favouriteTeam', NXStore.local.get('favouriteTeam'), 'Highlighted club on rankings') +
-      row('playerFilter', NXStore.local.get('playerFilter'), 'Last-used filter on players') +
-      row('registrations', regs.length
-        ? (regs.length === 1 ? '1 account' : regs.length + ' entries')
-        : null, 'Your member account')
-    );
-
-    $('#sessionTable').html(
-      row('registerDraft', NXStore.session.get('registerDraft'), 'Half-finished join form') +
-      row('tournamentFilter', NXStore.session.get('tournamentFilter'), 'Active tournament filter') +
-      row('eventView', NXStore.session.get('eventView'), 'List or calendar on events') +
-      row('returningVisitor', returning, 'Cookie · 30 day expiry')
-    );
+    // Render tickets for logged in account
+    renderUserTickets(account.email);
   }
 
-  /* Run immediately when the page loads (handles returning visitors) */
-  renderProfile();
+  /* Handle dynamic Primary Title changes from Profile Favourites tab */
+  $(document).on('change', '#profileGameSelect', function () {
+    var newGame = $(this).val();
+    var all = NXStore.local.get('registrations', []) || [];
+    if (!all.length) return;
 
-  /* Re-run anytime the form announces a new sign-in to populate data without a reload! */
-  $(window).on('accountChanged', function () {
-    renderProfile();
+    all[all.length - 1].game = newGame;
+    NXStore.local.set('registrations', all);
+    $(window).trigger('accountChanged');
   });
 
-/* ---- Sidebar Navigation (Smooth Scroll) --------------------------------
-     Replaces the old tab logic. Now it scrolls the page to the stacked
-     panels and updates the active sidebar link as the visitor scrolls. */
+  /* Ticket Tab Switching */
+  $(document).on('click', '#tabValidTickets', function () {
+    $('.ticket-tab-btn').removeClass('is-active');
+    $(this).addClass('is-active');
+    $('#expireTicketsGrid').hide();
+    $('#validTicketsGrid').fadeIn(150);
+  });
+
+  $(document).on('click', '#tabExpireTickets', function () {
+    $('.ticket-tab-btn').removeClass('is-active');
+    $(this).addClass('is-active');
+    $('#validTicketsGrid').hide();
+    $('#expireTicketsGrid').fadeIn(150);
+  });
+
+  /* Full-Screen Page Centered Ticket Modal */
+  function renderPassModal(ticketId) {
+    var allTickets = NXStore.local.get('userTickets', []) || [];
+    var ticket = allTickets.find(function (t) {
+      return t && String(t.id) === String(ticketId);
+    });
+
+    if (!ticket) return;
+
+    var categoryQrMap = {
+      'valorant': 'TicketsQR/valorant-qr.jpg',
+      'cs2': 'TicketsQR/cs2-qr.jpg',
+      'pubg': 'TicketsQR/pubg-qr.jpg'
+    };
+
+    var gameCategory = (ticket.game || ticket.category || 'valorant').toLowerCase();
+    var fallbackQr = categoryQrMap[gameCategory] || 'TicketsQR/valorant-qr.jpg';
+    var qrUrl = ticket.qrImage || ('TicketsQR/' + ticket.id + '.jpg');
+
+    var posterBg = ticket.poster
+      ? 'background-image: url(\'' + NXRender.esc(ticket.poster) + '\');'
+      : 'background: linear-gradient(135deg, #111827 0%, #1f2937 100%);';
+
+    var modalHTML = `
+    <div id="ticketPassModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+      <div style="position: relative; max-width: 420px; width: 100%; max-height: 90vh; overflow-y: auto;">
+        <button type="button" id="closePassModal" style="position: absolute; top: 12px; right: 12px; background: rgba(239, 68, 68, 0.9); color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; z-index: 10; font-weight: bold; font-size: 18px; line-height: 1; display: flex; align-items: center; justify-content: center;">&times;</button>
+        <div class="pass-card" style="${posterBg} background-size: cover; background-position: center; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);">
+          <div class="pass-card__inner" style="background: rgba(15, 23, 42, 0.94); padding: 24px; color: #fff;">
+            
+            <div class="pass-card__top" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-right: 32px;">
+              <span class="pass-card__badge" style="background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; letter-spacing: 1px; text-transform: uppercase;">${NXRender.esc(ticket.type || 'ENTRY PASS')}</span>
+              <span class="pass-card__id" style="font-family: monospace; opacity: 0.8;">#${NXRender.esc(ticket.id)}</span>
+            </div>
+
+            <h3 class="pass-card__title" style="margin: 0 0 4px 0; font-size: 1.25rem;">${NXRender.esc(ticket.title || 'Esports Match')}</h3>
+            <div class="pass-card__subtitle" style="opacity: 0.7; font-size: 0.875rem; margin-bottom: 16px;">${NXRender.esc(ticket.subtitle || ticket.stage || 'Match Event Pass')}</div>
+
+            <div class="pass-card__info-box" style="background: rgba(255,255,255,0.05); border-radius: 10px; padding: 12px; margin-bottom: 20px; font-size: 0.875rem;">
+              <div class="pass-card__info-row" style="margin-bottom: 6px;"><i class="bi bi-calendar-event"></i> <strong>Date:</strong> ${NXRender.esc(ticket.date || 'TBA')}</div>
+              <div class="pass-card__info-row" style="margin-bottom: 6px;"><i class="bi bi-clock"></i> <strong>Time:</strong> ${NXRender.esc(ticket.time || '20:00 MYT')}</div>
+              <div class="pass-card__info-row" style="margin-bottom: 6px;"><i class="bi bi-geo-alt"></i> <strong>Venue:</strong> ${NXRender.esc(ticket.venue || 'Online / TBD')}</div>
+              <div class="pass-card__info-row"><i class="bi bi-people"></i> <strong>Quantity:</strong> ${NXRender.esc(ticket.quantity || '1')} Pax</div>
+            </div>
+
+            <div class="pass-card__qr-section" style="text-align: center;">
+              <div class="pass-card__qr-box" style="background: #fff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 8px;">
+                <img src="${NXRender.esc(qrUrl)}" onerror="this.onerror=null;this.src='${fallbackQr}';" alt="Ticket QR Code" style="width: 160px; height: 160px; object-fit: contain; display: block;">
+              </div>
+              <div class="pass-card__footer-text" style="display: block; font-size: 0.75rem; opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;">Scan at Venue Counter</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+    $('#ticketPassModal').remove();
+    $('body').append(modalHTML).css('overflow', 'hidden');
+  }
+
+  /* Event listeners for closing centered modal */
+  $(document).on('click', '#closePassModal', function () {
+    $('#ticketPassModal').fadeOut(150, function () { $(this).remove(); });
+    $('body').css('overflow', '');
+  });
+
+  $(document).on('click', '#ticketPassModal', function (e) {
+    if (e.target === this) {
+      $('#ticketPassModal').fadeOut(150, function () { $(this).remove(); });
+      $('body').css('overflow', '');
+    }
+  });
+
+  /* Ticket Pass Modal Click Listeners */
+  $(document).on('click', '.view-pass-btn', function () {
+    var ticketId = $(this).data('ticket-id');
+    renderPassModal(ticketId);
+  });
+
+  /* Sidebar Navigation & ScrollSpy */
   var $navLinks = $('.dash-nav__link');
-  var headerOffset = 120; /* Adjust this if your fixed header hides the top of panels */
+  var headerOffset = 120;
 
   $navLinks.on('click', function (e) {
     e.preventDefault();
@@ -611,7 +628,6 @@ $(function () {
     }
   });
 
-  /* ScrollSpy: Highlight the active section while scrolling */
   $(window).on('scroll', function () {
     var scrollPos = $(window).scrollTop() + headerOffset + 50;
 
@@ -631,38 +647,16 @@ $(function () {
     });
   });
 
-  /* Initial load: Jump to hash if present, or trigger scroll to set first active link */
-  if (window.location.hash) {
-    var $initial = $(window.location.hash);
-    if ($initial.length) {
-      setTimeout(function () {
-        window.scrollTo({
-          top: $initial.offset().top - headerOffset,
-          behavior: 'smooth'
-        });
-      }, 100);
-    }
-  } else {
-    $(window).trigger('scroll');
-  }
-
-  /* ---- Sign out ------------------------------------------------------------ */
+  /* Sign Out Action */
   $('#signOut').on('click', function () {
-    var ok = window.confirm(
-      'Sign out of NextGen E-Sports?\n\n' +
-      'You will be securely logged out. You can sign back in at any time.'
-    );
-    if (!ok) { return; }
-
-    /* NEW: We now only wipe the session flag instead of deleting the whole account! */
-    NXStore.session.remove('isLoggedIn');
-    window.location.reload();
+    if (window.confirm('Sign out of NextGen E-Sports?')) {
+      NXStore.session.remove('isLoggedIn');
+      window.location.reload();
+    }
   });
 
-    /* ---- Wipe everything -------------------------------------------------- */
-  $('#wipeAll').on('click', function () {
-    NXStore.clearAll();
-    window.location.reload();
-  });
+  $(window).on('accountChanged', renderProfile);
 
+  /* Boot Execution */
+  renderProfile();
 });
