@@ -313,11 +313,11 @@
 /* This section's heading is long enough to push the button onto its own line,
    which left it sitting under the heading instead of opposite it like the
    "Full standings" button below. Keeping the row on one line lets the heading
-   wrap internally and the button stay where the other one is. */
-.hn-head { flex-wrap: nowrap; align-items: flex-end; gap: 24px; }
+   wrap internally and the button stay where the other one is.
+
+   The breakpoint itself now lives in the markup as Bootstrap utilities
+   (flex-wrap flex-md-nowrap align-items-start align-items-md-end), so the
+   media query that used to be here is gone. Only the two rules Bootstrap has
+   no utility for remain. */
 .hn-head > div { min-width: 0; }
 .hn-head .nx-btn { flex-shrink: 0; }
-
-@media (max-width: 700px) {
-  .hn-head { flex-wrap: wrap; align-items: flex-start; }
-}

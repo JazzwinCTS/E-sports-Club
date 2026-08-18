@@ -35,9 +35,13 @@ the deliverable, and it does not license inventing *real-world* claims — no re
 orgs, or real results anywhere.
 
 **Terminology: the site says "team", never "club".** Renamed by request across all 8 pages,
-including the leaderboard heading and every count ("8 of 8 teams"). The favourite-a-team
-feature and its `favouriteTeam` key were removed at the same time — the standings are
-read-only now, with no star column.
+including the leaderboard heading and every count ("8 of 8 teams").
+
+**Do not remove the favourite-a-team star on `rankings.html`.** It was briefly deleted and put
+straight back: `favouriteTeam` is the *only* thing that page stores, so without it `rankings.html`
+has no web-storage feature at all, and §3 grades all three storage technologies with each needing
+a defensible purpose. If the star ever has to go, that page needs a different localStorage value
+first.
 
 **Scope: three titles only — Valorant, Counter-Strike, PUBG.** Every page, filter, and dataset is
 scoped to these three. Don't add League of Legends / Dota 2 / EA SPORTS FC content back in without
@@ -92,7 +96,7 @@ duplicating content. This rule exists to prevent overlap — please preserve it.
 |---|---|---|---|---|---|
 | 1 | `index.html` | Home | Hero, carousel, aggregated previews, stream embed | Cookie `returningVisitor` | Stream iframe |
 | 2 | `dashboard.html` | Dashboard / Profile | Profile: mini nav across Personal info / Favourites / Storage | All three, read-only (plus sign out, which deletes) | — |
-| 3 | `rankings.html` | Team Rankings | Team standings, W/L, points, team profiles | — | **API** — standings |
+| 3 | `rankings.html` | Team Rankings | Team standings, W/L, points, team profiles | Local `favouriteTeam` | **API** — standings |
 | 4 | `players.html` | Player Profiles | Individual profiles, stats, achievements | Local `playerFilter` | — |
 | 5 | `tournaments.html` | Tournaments | Brackets, results, prize pools | Session `tournamentFilter` | Share buttons |
 | 6 | `events.html` | Event Schedule | Calendar: practices, workshops, socials | Session `eventView` | **API** — venue/weather |
@@ -125,6 +129,7 @@ Implement exactly these keys. camelCase. Agreed group-wide.
 | Type | Key | Page | Example value | Lifetime | Purpose |
 |---|---|---|---|---|---|
 | Local | `theme` | site-wide | `"dark"` \| `"light"` | until cleared | Colour scheme. Read before first paint to avoid a flash of wrong theme. |
+| Local | `favouriteTeam` | rankings | `"VYNE"` | until cleared | Highlights the team's row in the standings (does not reorder the table). The homepage preview reads and writes the same key. |
 | Local | `playerFilter` | players | `{"game":"Valorant","role":"Duelist"}` | until cleared | Last-used filter, restored next visit. |
 | Local | `registrations` | register, dashboard | `[{"id":"REG…","fullName":"…","passwordHash":"…"}]` | until cleared | The member account created on the join page. Client-side store in place of a backend; still an array so `dashboard.html` reads it unchanged, and `register.html` treats the last entry as the account signed in on this browser. Signing out removes the key. The password is stored only as a short non-reversible digest — never in readable form, and never written to `registerDraft`. |
 | Session | `registerDraft` | register | `{"step":2,"name":"…"}` | tab close | Partial form data, written on field change. |
@@ -358,11 +363,44 @@ Every `<img>` still needs `alt` text (e.g. `alt="Valorant"`, `alt="Team Vitality
 
 ## 10. Wireframe & global layout
 
-**Responsiveness:** navbar, footer, and card/grid regions are built with flexbox (`display:flex` +
-`flex-wrap:wrap` for the nav links and footer columns; `gap` for spacing) so they reflow naturally at mobile
-widths without separate breakpoint-specific markup. Use CSS Grid only where a genuine 2D layout is needed
-(e.g. the rankings table, tournament card grid); flexbox everywhere else, per the mobile-responsive requirement
-in §3.
+**Responsiveness is Bootstrap's job — do not hand-roll a media query for layout.** The shell and every
+card/grid region use Bootstrap's own primitives, in the markup rather than in CSS:
+
+- **Containers** — `.nx-shell container-fluid`. Bootstrap supplies the box; `.nx-shell` adds only our
+  `--shell-max` measure and a fluid gutter.
+- **Navbar** — `navbar navbar-expand-lg` + `collapse`/`navbar-toggler` with `data-bs-toggle`. Bootstrap
+  opens and closes it and maintains `aria-expanded`; `main.js` only swaps the burger icon for a cross.
+- **Card grids** — `row row-cols-* ...` with each card in its own `<div class="col">`, `g-*` for the
+  gutter. Cards that must match height inside a row take `h-100`.
+- **Rows of controls** — `d-flex flex-wrap align-items-center justify-content-between gap-*`, plus the
+  responsive variants (`flex-md-nowrap`, `align-items-md-end`, `gap-md-4`) where the behaviour changes
+  at a breakpoint.
+- **Breakpoints are Bootstrap's** (576 / 768 / 992 / 1200 / 1400). Do not invent new ones. Where an old
+  hand-picked value (700px, 720px, 860px) was replaced, it snapped to the nearest Bootstrap edge.
+
+Two gotchas worth knowing before you add a row:
+
+1. A `.row`'s negative side margin is **half its gutter**, so `g-5` (48px) pokes 24px past `.nx-shell`,
+   whose padding is only 16px on a phone — that overflowed `about.html` horizontally. Use `g-4 g-lg-5`
+   if you want a wide desktop gutter.
+2. Bootstrap's flex utilities are `!important`. If a page's CSS also sets `align-items`/`flex-wrap` on
+   the same element, the utility wins and the CSS silently dies. Move the property into the utility
+   (`align-items-start`) rather than leaving both.
+
+**What stays hand-written CSS**, because Bootstrap genuinely cannot express it — keep these, and say so
+in a comment when you add another:
+
+- the rankings leaderboard's fixed-pixel numeric columns (an 8-track table, not a card grid)
+- `clamp()` fluid typography
+- the events calendar's `auto-fill` month grid (cell count comes from the data)
+- `players.css` / `tournaments.css` hero stages, portrait heights/transforms, halos and scroll-snap
+  strips — asymmetric 2D layouts and visual tuning, not column counts
+- off-scale `gap` values, and asymmetric row/column gaps such as the footer's `10px 22px`
+
+Verify with the overflow probe, not screenshots: headless Chrome clamps its layout viewport at ~482px, so
+a 390px capture is a **crop** and will show fake clipping. Load each page in a sized iframe from a
+same-origin page and compare `documentElement.scrollWidth` with `clientWidth`. All 8 pages currently
+report zero overflow at 320 / 360 / 390 / 430 / 768 / 1100px.
 
 ### Global shell (identical markup on all 8 pages, per §7)
 

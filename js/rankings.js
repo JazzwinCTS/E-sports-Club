@@ -1,6 +1,6 @@
 /* ==========================================================================
    rankings.js — rankings.html only.
-   Owns team standings.
+   Owns team standings. Uses localStorage `favouriteTeam` (CLAUDE.md section 5).
    ========================================================================== */
 
 $(function () {
@@ -50,6 +50,7 @@ $(function () {
   }
 
   function apply(state) {
+    var favourite = NXStore.local.get('favouriteTeam');
     var rows = allTeams.slice();
 
     if (state.game !== 'all') {
@@ -74,8 +75,10 @@ $(function () {
       rows.sort(function (a, b) { return a.rank - b.rank; });
     }
 
-    /* Rank is each team's position in the sort above, not the `rank` field
-       in the data — that is only the canonical championship-points order. */
+    /* Rank is each team's position in the sort above, not the `rank` field in
+       the data — that is only the canonical championship-points order. The
+       starred team stays exactly where the sort puts it; starring highlights
+       the row, it never reorders the table. */
     var ranked = rows.map(function (t, i) { return { team: t, rank: i + 1 }; });
 
     $board.find('.nx-board__row, .nx-empty').remove();
@@ -84,7 +87,7 @@ $(function () {
       $board.append(NXRender.empty('No teams compete in that title yet.'));
     } else {
       $board.append(ranked.map(function (r) {
-        return NXRender.boardRow(r.team, r.rank);
+        return NXRender.boardRow(r.team, favourite, r.rank);
       }).join(''));
     }
 
@@ -120,5 +123,22 @@ $(function () {
 
     apply(filters.state());
   }, 'Loading standings…');
+
+
+  /* ---- Favourite team (localStorage `favouriteTeam`) ---------------------
+     The only value this page stores, and the reason rankings.html is the
+     localStorage demonstration in the graded storage requirement. Clicking a
+     starred team again clears it. */
+  $board.on('click', '.nx-fav', function () {
+    var team = $(this).closest('.nx-board__row').data('team');
+    var current = NXStore.local.get('favouriteTeam');
+
+    if (current === team) {
+      NXStore.local.remove('favouriteTeam');
+    } else {
+      NXStore.local.set('favouriteTeam', team);
+    }
+    apply(filters ? filters.state() : { game: 'all', sort: 'rank' });
+  });
 
 });

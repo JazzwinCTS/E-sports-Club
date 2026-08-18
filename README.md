@@ -63,7 +63,10 @@ preview of the top 5 club standings, and a live stream embed.
 ### Team Rankings — `rankings.html`
 Club championship standings across every competing organisation the site tracks. A shared filter
 bar (game + sort), and a league table with team logos, played/won/lost, points and medal counts.
-- **Storage:** none of its own — the page is read-only.
+- **Storage:** reads/writes `favouriteTeam` in **localStorage** — the starred team's row is
+  highlighted wherever the current sort places it, and the choice survives closing the browser.
+  Starring never reorders the table. The homepage's top-five preview reads and writes the same
+  key, so the two pages stay in step.
 - **API:** this page owns the graded "RESTful API via jQuery" feature. `$.getJSON('data/standings.json')`
   fetches real team names (cross-checked against Liquipedia) with illustrative points/records,
   rendered into the DOM with a loading spinner and an error fallback.
@@ -126,7 +129,8 @@ across three panels — deep-linkable as `dashboard.html#favourites` / `#storage
 - **Personal info** — name, email, in-game name, member ID, primary title, experience and notes,
   shown as read-only boxes. They are not editable inputs on purpose: there is no server to save an
   edit to, so presenting them as editable would be a lie.
-- **Favourites** — your primary title, plus tiles for favourite players and events. Those two are
+- **Favourites** — your primary title, your favourite team (`favouriteTeam`, starred on the
+  rankings page), plus tiles for favourite players and events. Those last two are
   **placeholders**:
   `players.html` and `events.html` have no star yet, so nothing can set them. The code already
   reads `favouritePlayers` / `favouriteEvents` defensively, so the tiles start working the day
@@ -159,6 +163,7 @@ presence (Instagram post embed, plus links to Discord/X/Facebook).
 |---|---|---|---|---|
 | Cookie | `returningVisitor` | index | 30 days | Suppresses the intro animation, shows welcome-back |
 | Local | `theme` | about (site-wide) | until cleared | Dark/light choice, read before first paint |
+| Local | `favouriteTeam` | rankings | until cleared | Highlights a team's row in the standings |
 | Local | `playerFilter` | players | until cleared | Restores your last-used filter |
 | Local | `registrations` | register (dashboard reads) | until cleared | The member account created on the join page |
 | Session | `registerDraft` | register | tab close | In-progress form, saved on every keystroke |

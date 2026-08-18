@@ -112,7 +112,8 @@ $(function () {
     var settings = gameSettings[game];
     $('#teamGrid').html(sortedTeams().map(function (team) {
       var roster = team.rosters[game] || [], honours = team.honours[game] || [];
-      return '<button class="team-card" type="button" data-team="' + escapeHtml(team.id) + '" style="--team-color:' + escapeHtml(team.color) + '"><span class="team-card__top"><span class="team-mark" aria-hidden="true">' + (team.logo ? '<img src="' + escapeHtml(team.logo) + '" alt="">' : escapeHtml(team.code)) + '</span><span class="team-card__open"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></span><h3>' + escapeHtml(team.code) + '</h3><p class="team-card__base">Independent youth organisation · ' + escapeHtml(team.base) + '</p><span class="team-card__meta"><span><strong>' + roster.length + '</strong> starters</span><span>' + escapeHtml(honours[0] || settings.label + ' division') + '</span></span></button>';
+      /* Each card sits in its own Bootstrap column; #teamGrid is the row. */
+      return '<div class="col"><button class="team-card h-100" type="button" data-team="' + escapeHtml(team.id) + '" style="--team-color:' + escapeHtml(team.color) + '"><span class="team-card__top"><span class="team-mark" aria-hidden="true">' + (team.logo ? '<img src="' + escapeHtml(team.logo) + '" alt="">' : escapeHtml(team.code)) + '</span><span class="team-card__open"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></span><h3>' + escapeHtml(team.code) + '</h3><p class="team-card__base">Independent youth organisation · ' + escapeHtml(team.base) + '</p><span class="team-card__meta"><span><strong>' + roster.length + '</strong> starters</span><span>' + escapeHtml(honours[0] || settings.label + ' division') + '</span></span></button></div>';
     }).join(''));
   }
   function playerInitials(player) {
@@ -121,7 +122,8 @@ $(function () {
   }
   function renderPlayer(player, team) {
     var portrait = player.photo ? '<img src="' + escapeHtml(player.photo) + '" alt="Portrait of ' + escapeHtml(player.ign) + '">' : '<span aria-hidden="true">' + escapeHtml(playerInitials(player)) + '</span>';
-    return '<button class="player-card" type="button" data-player="' + escapeHtml(player.id) + '" style="--team-color:' + escapeHtml(team.color) + '"><span class="player-card__portrait">' + portrait + '</span><span class="player-card__body"><span class="player-card__role">' + escapeHtml(player.role) + '</span><strong>' + escapeHtml(player.ign) + '</strong><span class="player-card__name">' + escapeHtml(player.name) + '</span><span class="player-card__facts">Age ' + escapeHtml(player.age) + '<i class="bi bi-arrow-up-right"></i></span></span></button>';
+    /* Wrapped in a Bootstrap column — #teamModalRoster is the row. */
+    return '<div class="col"><button class="player-card h-100" type="button" data-player="' + escapeHtml(player.id) + '" style="--team-color:' + escapeHtml(team.color) + '"><span class="player-card__portrait">' + portrait + '</span><span class="player-card__body"><span class="player-card__role">' + escapeHtml(player.role) + '</span><strong>' + escapeHtml(player.ign) + '</strong><span class="player-card__name">' + escapeHtml(player.name) + '</span><span class="player-card__facts">Age ' + escapeHtml(player.age) + '<i class="bi bi-arrow-up-right"></i></span></span></button></div>';
   }
 
   function openTeam(teamId) {

@@ -22,7 +22,7 @@
 .nx-board__head,
 .nx-board__row {
   display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) 38px 38px 38px 78px 132px;
+  grid-template-columns: 46px minmax(0, 1fr) 38px 38px 38px 78px 132px 34px;
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
@@ -47,6 +47,11 @@
 /* The row itself is not a control — only the star inside it is — so it gets a
    readable hover, not a pointer cursor or a shift. */
 .nx-board__row:hover { border-color: var(--border-strong); }
+/* Starred team: highlighted where it already sits. Starring never reorders. */
+.nx-board__row.is-favourite {
+  border-color: var(--accent);
+  background: linear-gradient(90deg, var(--accent-soft), var(--surface) 40%);
+}
 .nx-board__rank {
   font-family: var(--font-heading);
   font-weight: 800;
@@ -107,6 +112,19 @@
 .nx-medal--silver { background: rgba(184, 188, 198, 0.14); color: var(--silver); border-color: rgba(184, 188, 198, 0.3); }
 .nx-medal--bronze { background: rgba(196, 121, 74, 0.14); color: var(--bronze); border-color: rgba(196, 121, 74, 0.3); }
 
+/* The one control in a row: stars a team into localStorage `favouriteTeam`. */
+.nx-fav {
+  background: transparent;
+  border: 0;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.05rem;
+  padding: 4px;
+  transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.nx-fav:hover { color: var(--accent); transform: scale(1.2); }
+.nx-fav.is-on { color: var(--accent); }
+
 /* Every track below is an explicit width apart from the club column. The
    header and the rows are separate grid containers, so an `auto` track is
    sized by that element's own content -- the word "MEDALS" in the header, the
@@ -120,7 +138,7 @@
 @media (max-width: 900px) {
   .nx-board__head,
   .nx-board__row {
-    grid-template-columns: 34px minmax(0, 1fr) 30px 30px 30px 62px 108px;
+    grid-template-columns: 34px minmax(0, 1fr) 30px 30px 30px 62px 108px 26px;
     gap: 7px;
     padding: 9px 12px;
   }
@@ -142,7 +160,7 @@
 @media (max-width: 620px) {
   .nx-board__head,
   .nx-board__row {
-    grid-template-columns: 26px minmax(0, 1fr) 24px 24px 24px 48px 64px;
+    grid-template-columns: 26px minmax(0, 1fr) 24px 24px 24px 48px 64px 20px;
     gap: 5px;
     padding: 8px 9px;
   }
@@ -164,7 +182,7 @@
 @media (max-width: 420px) {
   .nx-board__head,
   .nx-board__row {
-    grid-template-columns: 20px minmax(0, 1fr) 20px 20px 20px 40px 58px;
+    grid-template-columns: 20px minmax(0, 1fr) 20px 20px 20px 40px 58px 16px;
     gap: 4px;
     padding: 7px;
   }
@@ -173,4 +191,5 @@
   .nx-board__num { font-size: 0.65rem; }
   .nx-board__pts { font-size: 0.74rem; }
   .nx-medal { padding: 2px 4px; font-size: 0.62rem; }
+  .nx-fav { font-size: 0.85rem; padding: 0; }
 }

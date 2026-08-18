@@ -1,59 +1,314 @@
 /* ==========================================================================
-   events.css — exclusive to events.html. Owner: the same developer as
-   dashboard.css (CLAUDE.md section 7 "Events + Dashboard" pairing).
-
-   Nothing in here is referenced by any other page. js/events.js renders
-   these classes instead of inline `style="..."` attributes — pulling that
-   layout out of the JS and into here is what actually makes this page's
-   design "exclusive and editable in one place" rather than scattered through
-   generated markup.
+   events.css — styles exclusive to events.html
+   NextGen E-Sports Community Club
    ========================================================================== */
 
-/* --- Event list rows ------------------------------------------------------ */
-.ev-row { margin-bottom: 12px; }
-.ev-row__inner { align-items: flex-start; gap: 18px; flex-wrap: nowrap; }
+/* --------------------------------------------------------------------------
+   EVENT PAGE INTRO
+   -------------------------------------------------------------------------- */
 
-.ev-row__date { text-align: center; flex-shrink: 0; min-width: 56px; }
+.events-intro {
+  max-width: 720px;
+  margin-top: 14px;
+}
+
+/* --------------------------------------------------------------------------
+   VIEW SWITCHER
+   -------------------------------------------------------------------------- */
+
+.events-viewbar {
+  margin-bottom: 24px;
+}
+
+.events-viewbar .nx-tabs {
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   EVENT LIST
+   -------------------------------------------------------------------------- */
+
+.ev-row {
+  margin-bottom: 12px;
+}
+
+.ev-row:last-child {
+  margin-bottom: 0;
+}
+
+.ev-row__inner {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.ev-row__date {
+  min-width: 60px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
 .ev-row__day {
   font-family: var(--font-heading);
   font-size: 1.5rem;
   font-weight: 800;
   line-height: 1;
 }
+
 .ev-row__month {
+  margin-top: 4px;
+  color: var(--text-muted);
   font-size: 0.68rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
 }
 
-.ev-row__body { min-width: 0; flex: 1; }
-.ev-row__meta { gap: 8px; margin-bottom: 6px; }
-.ev-row__meta-text { font-size: 0.8rem; }
-.ev-row__title { font-size: 1rem; margin-bottom: 6px; }
-.ev-row__desc { font-size: 0.86rem; }
-.ev-row__link { margin-top: 12px; }
+.ev-row__body {
+  min-width: 0;
+  flex: 1;
+}
 
-/* --- Calendar view ---------------------------------------------------------
-   Grouped by month so switching views reads as a genuinely different layout,
-   not just the same rows in a grid. */
-.ev-cal { margin-bottom: 28px; }
+.ev-row__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.ev-row__meta-text {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.ev-row__title {
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.ev-row__desc {
+  margin-bottom: 0;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.ev-row__link {
+  margin-top: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   CALENDAR
+   -------------------------------------------------------------------------- */
+
+.ev-cal {
+  margin-bottom: 28px;
+}
+
+.ev-cal:last-child {
+  margin-bottom: 0;
+}
+
+.ev-cal__title {
+  margin-bottom: 14px;
+  font-size: 1rem;
+}
+
 .ev-cal__grid {
+  display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 10px;
 }
-.ev-cal__day { padding: 14px; }
-.ev-cal__daynum { font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; }
-.ev-cal__daymeta { font-size: 0.74rem; color: var(--text-muted); margin-bottom: 8px; }
-.ev-cal__title { font-size: 0.84rem; font-weight: 600; }
 
-/* --- Venue forecast panel (Open-Meteo, live) ------------------------------- */
+.ev-cal__day {
+  min-height: 110px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition:
+    border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.ev-cal__day:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.ev-cal__daynum {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.ev-cal__daymeta {
+  margin-bottom: 8px;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.ev-cal__title {
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   WEATHER PANEL
+   -------------------------------------------------------------------------- */
+
+#weatherPanel {
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
+}
+
+.ev-weather__title {
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.ev-weather__note {
+  margin-top: 14px;
+  font-size: 0.74rem;
+}
+
 .ev-weather__temp {
+  margin: 10px 0 4px;
   font-family: var(--font-heading);
   font-size: 2.4rem;
   font-weight: 800;
   line-height: 1;
-  margin: 10px 0 4px;
 }
-.ev-weather__meta { font-size: 0.84rem; }
-.ev-weather__days { margin-top: 10px; }
+
+.ev-weather__meta {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
+.ev-weather__days {
+  margin-top: 16px;
+}
+
+.ev-weather__day {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+}
+
+.ev-weather__day:first-child {
+  border-top: 0;
+}
+
+.ev-weather__day-name {
+  color: var(--text-muted);
+}
+
+.ev-weather__day-temp {
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   EVENT STATUS BADGES & STYLES (Added for past/today/upcoming)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   STATUS BADGES
+   -------------------------------------------------------------------------- */
+
+.ev-badge--upcoming {
+  background: var(--upcoming);
+  color: #fff;
+}
+
+.ev-badge--today {
+  background: var(--gold);
+  color: #000;
+}
+
+.ev-badge--past {
+  background: var(--completed);
+  color: #fff;
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   PAST EVENTS - Dimmed appearance
+   -------------------------------------------------------------------------- */
+
+.ev-row--past {
+  opacity: 0.55;
+  filter: grayscale(0.3);
+  transition: opacity var(--dur) var(--ease), filter var(--dur) var(--ease);
+}
+
+.ev-row--past:hover {
+  opacity: 0.75;
+  filter: grayscale(0.1);
+}
+
+.ev-row--past .ev-row__title {
+  color: var(--text-muted);
+}
+
+.ev-row--past .ev-row__desc {
+  opacity: 0.7;
+}
+
+/* --------------------------------------------------------------------------
+   TODAY EVENT - Highlight
+   -------------------------------------------------------------------------- */
+
+.ev-row--today {
+  border-left: 3px solid var(--gold);
+  background: var(--accent-soft);
+}
+
+.ev-row--today .ev-row__title {
+  color: var(--gold);
+}
+
+/* --------------------------------------------------------------------------
+   CALENDAR - Past event styling
+   -------------------------------------------------------------------------- */
+
+.ev-cal__day--past {
+  opacity: 0.5;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 991.98px) {
+  #weatherPanel {
+    position: static;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .ev-row__inner {
+    gap: 12px;
+  }
+
+  .ev-row__date {
+    min-width: 48px;
+  }
+
+  .ev-row__day {
+    font-size: 1.25rem;
+  }
+
+  .ev-row__desc {
+    font-size: 0.8rem;
+  }
+
+  .ev-cal__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

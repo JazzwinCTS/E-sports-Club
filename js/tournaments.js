@@ -526,14 +526,16 @@ $(function () {
   }
 
   function renderPubgFormat(game) {
-    var rounds = '<div class="pubg-rounds">' + game.rounds.map(function (round) {
+    var rounds = '<div class="pubg-rounds row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">' +
+      game.rounds.map(function (round) {
       var artwork = cardArtwork({ winnerId: round.winner, pending: round.status !== 'completed' });
-      return '<article class="pubg-round' + artwork.className + '"' + artwork.style + '>' +
+      /* Each round is a Bootstrap column; the wrapper above is the row. */
+      return '<div class="col"><article class="pubg-round h-100' + artwork.className + '"' + artwork.style + '>' +
         artwork.watermark +
         '<div class="pubg-round__top"><span>ROUND ' + escapeHtml(round.number) + '</span><span>' + escapeHtml(round.date) + ' · ' + escapeHtml(round.time) + '</span></div>' +
         '<h4>' + escapeHtml(round.map) + '</h4>' +
         '<p>' + (round.winner ? 'Winner: ' + escapeHtml(team(round.winner).code) : 'Winner to be decided') + '</p>' +
-      '</article>';
+      '</article></div>';
     }).join('') + '</div>';
 
     return rounds;

@@ -498,7 +498,9 @@
 .bracket-team.is-winner { color: var(--division-accent); }
 .bracket-match small { display: block; padding: 5px 7px 0; color: var(--text-muted); border-top: 1px solid var(--border); font-size: 0.56rem; }
 
-.pubg-rounds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 22px; }
+/* Bootstrap row, built in js/tournaments.js
+   (row-cols-1 / sm-2 / lg-3, g-3). */
+.pubg-rounds { margin-bottom: 22px; }
 .pubg-round { padding: 16px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface-raised); }
 .pubg-round__top { display: flex; justify-content: space-between; gap: 10px; color: var(--text-muted); font-size: 0.62rem; }
 .pubg-round h4 { margin: 14px 0 4px; font-size: 1rem; }
@@ -571,7 +573,6 @@
   .division-intro { grid-template-columns: 1fr; }
   .tournament-content-grid { grid-template-columns: 1fr; }
   .rules-layout { grid-template-columns: 1fr; }
-  .pubg-rounds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .pubg-table { overflow-x: auto; }
   .pubg-table__row { min-width: 690px; }
 }
@@ -597,7 +598,8 @@
   .match-card__status { display: none; }
   .schedule-filter { width: 100%; }
   .schedule-filter button { flex: 1; }
-  .pubg-rounds,
+  /* .pubg-rounds dropped from here — it is a Bootstrap row now and collapses
+     to one column on its own below sm. */
   .rules-grid { grid-template-columns: 1fr; }
   .match-modal-score { gap: 10px; }
   .match-modal-team img { width: 62px; height: 62px; }

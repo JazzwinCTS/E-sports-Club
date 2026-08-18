@@ -155,18 +155,25 @@ var NXRender = (function ($) {
             '<span class="nx-lbl-full">Points</span><span class="nx-lbl-short">Pts</span>' +
           '</div>' +
           '<div style="text-align:right">Medals</div>' +
+          '<div></div>' +
         '</div>';
     },
 
-    /* League-table row: Rank | Team | PL | W | L | Points | Medals.
+    /* League-table row: Rank | Team | PL | W | L | Points | Medals | star.
        Rank and team read left, every number sits in its own narrow column so
        the values line up down the table (design-refs/PremierLeague.png).
-       There are no draws in these formats, so PL is simply W + L. */
-    boardRow: function (team, rank) {
+       There are no draws in these formats, so PL is simply W + L.
+
+       `favourite` is the team name held in localStorage `favouriteTeam`
+       (CLAUDE.md section 5) — the starred row is highlighted in place and is
+       never reordered. */
+    boardRow: function (team, favourite, rank) {
+      var isFav = favourite === team.team;
       var played = Number(team.wins) + Number(team.losses);
 
       return '' +
-        '<div class="nx-board__row nx-reveal" data-team="' + esc(team.team) + '">' +
+        '<div class="nx-board__row nx-reveal' + (isFav ? ' is-favourite' : '') +
+          '" data-team="' + esc(team.team) + '">' +
           '<div class="nx-board__rank">' + esc(rank) + '</div>' +
           '<div class="nx-board__team">' +
             '<img class="nx-board__logo" src="' + esc(team.logo) + '" alt="' + esc(team.team) + ' logo" loading="lazy">' +
@@ -187,6 +194,11 @@ var NXRender = (function ($) {
             '<span class="nx-medal nx-medal--silver"><i class="bi bi-award-fill"></i>' + esc(team.medals.silver) + '</span>' +
             '<span class="nx-medal nx-medal--bronze"><i class="bi bi-award"></i>' + esc(team.medals.bronze) + '</span>' +
           '</div>' +
+          '<button class="nx-fav' + (isFav ? ' is-on' : '') + '" type="button" ' +
+                  'aria-pressed="' + (isFav ? 'true' : 'false') + '" ' +
+                  'aria-label="Star ' + esc(team.team) + ' as your favourite team">' +
+            '<i class="bi bi-star' + (isFav ? '-fill' : '') + '"></i>' +
+          '</button>' +
         '</div>';
     },
 
@@ -213,7 +225,7 @@ var NXRender = (function ($) {
             '<div class="nx-stat"><div class="nx-stat__v">' + esc(p.maps) + '</div>' +
               '<div class="nx-stat__k">Maps</div></div>' +
           '</div>' +
-          '<div class="nx-row" style="justify-content:center;gap:6px;margin-bottom:10px">' +
+          '<div class="d-flex flex-wrap align-items-center justify-content-center gap-1 mb-2">' +
             '<span class="nx-badge nx-badge--game">' + esc(p.role) + '</span>' +
             '<span class="nx-badge nx-badge--game">' + esc(p.gameLabel) + '</span>' +
           '</div>' +

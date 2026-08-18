@@ -7,7 +7,7 @@
 <meta name="description" content="Who NextGen E-Sports is, how the team plays, the committee, and where to find us online.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="stylesheet" href="css/style.css?v=5">
 <script>
 (function () {
   try {
@@ -20,30 +20,35 @@
 <body>
 <a class="nx-skip" href="#main">Skip to content</a>
 
-<header class="nx-nav">
-  <nav class="nx-nav__inner" aria-label="Primary">
-    <a class="nx-wordmark" href="index.html">
+<header class="nx-nav navbar navbar-expand-lg p-0">
+  <nav class="nx-nav__inner container-fluid" aria-label="Primary">
+    <a class="nx-wordmark navbar-brand" href="index.html">
       <span class="nx-wordmark__mark">N</span>
       <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>
     </a>
-    <div class="nx-nav__links" id="navLinks">
-      <a class="nx-nav__link" href="index.html">Home</a>
-      <a class="nx-nav__link" href="rankings.html">Rankings</a>
-      <a class="nx-nav__link" href="players.html">Players</a>
-      <a class="nx-nav__link" href="tournaments.html">Tournaments</a>
-      <a class="nx-nav__link" href="events.html">Events</a>
-      <a class="nx-nav__link" href="dashboard.html">Dashboard</a>
-      <a class="nx-nav__link" href="about.html">About</a>
-      <a class="nx-nav__link" href="register.html">Join</a>
-    </div>
-    <div class="nx-nav__actions">
+
+    <div class="nx-nav__actions d-flex align-items-center gap-2 ms-auto order-lg-last">
       <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
         <i class="bi bi-sun" aria-hidden="true"></i>
       </button>
-      <button class="nx-icon-btn nx-nav__toggle" id="navToggle" type="button"
-              aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
+      <button class="nx-icon-btn navbar-toggler" id="navToggle" type="button"
+              data-bs-toggle="collapse" data-bs-target="#navLinks"
+              aria-controls="navLinks" aria-expanded="false" aria-label="Toggle navigation">
         <i class="bi bi-list" aria-hidden="true"></i>
       </button>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navLinks">
+      <ul class="navbar-nav nx-nav__links ms-lg-auto">
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="rankings.html">Rankings</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="players.html">Players</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="tournaments.html">Tournaments</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="events.html">Events</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="tickets.html">Tickets</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nx-nav__link nav-link" href="signin.html">Join</a></li>
+      </ul>
     </div>
   </nav>
 </header>
@@ -51,7 +56,7 @@
 <main id="main" class="page-body">
 
   <section class="nx-section">
-    <div class="nx-shell">
+    <div class="nx-shell container-fluid">
       <!-- Hero video window, framed like design-refs/About.png -->
       <div class="nx-videoframe nx-reveal" id="videoFrame">
         <video id="aboutVideo" preload="metadata" playsinline poster="carousel2.png" autoplay muted>
@@ -69,9 +74,12 @@
   </section>
 
   <section class="nx-section nx-section--tight">
-    <div class="nx-shell">
-      <div class="nx-grid nx-grid--2" style="align-items:start;gap:48px">
-        <div>
+    <div class="nx-shell container-fluid">
+      <!-- g-4 below lg, g-5 above: a row's negative side margin is half its
+           gutter, so a 48px gutter (g-5) pokes 24px past .nx-shell, whose
+           padding is only 16px on small screens. -->
+      <div class="row row-cols-1 row-cols-lg-2 g-4 g-lg-5 align-items-start">
+        <div class="col">
           <p class="nx-eyebrow">Who we are</p>
           <h2>A community, not a tryout</h2>
           <p class="nx-muted">
@@ -86,12 +94,12 @@
             Championship for 16 to 18-year-olds, but that is one competition we run, not a bar
             to clear before you can join.
           </p>
-          <a class="nx-btn nx-btn--primary" href="register.html">
+          <a class="nx-btn nx-btn--primary" href="signin.html">
             <i class="bi bi-person-plus" aria-hidden="true"></i> Join the team
           </a>
         </div>
 
-        <div class="nx-grid" style="gap:12px">
+        <div class="col d-flex flex-column gap-3">
           <div class="nx-card nx-reveal">
             <h3 style="font-size:.95rem">Three games we play</h3>
             <p class="nx-muted nx-mb-0" style="font-size:.88rem">
@@ -117,35 +125,43 @@
 
   <!-- Committee -->
   <section class="nx-section">
-    <div class="nx-shell">
+    <div class="nx-shell container-fluid">
       <div class="nx-section-head">
         <p class="nx-eyebrow">Committee</p>
         <h2 class="nx-mb-0">Who runs it</h2>
       </div>
-      <div class="nx-grid nx-grid--4">
-        <div class="nx-card nx-pcard nx-reveal">
-          <div class="nx-avatar" aria-hidden="true">PR</div>
-          <h3 class="nx-pcard__ign">President</h3>
-          <p class="nx-pcard__name">Committee role</p>
-          <p class="nx-pcard__ach nx-mb-0">Runs the team, owns the competition calendar.</p>
+      <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4">
+        <div class="col">
+          <div class="nx-card nx-pcard nx-reveal h-100">
+            <div class="nx-avatar" aria-hidden="true">PR</div>
+            <h3 class="nx-pcard__ign">President</h3>
+            <p class="nx-pcard__name">Committee role</p>
+            <p class="nx-pcard__ach nx-mb-0">Runs the team, owns the competition calendar.</p>
+          </div>
         </div>
-        <div class="nx-card nx-pcard nx-reveal">
-          <div class="nx-avatar" aria-hidden="true">HC</div>
-          <h3 class="nx-pcard__ign">Head Coach</h3>
-          <p class="nx-pcard__name">Committee role</p>
-          <p class="nx-pcard__ach nx-mb-0">Scrim structure, VOD review, roster development.</p>
+        <div class="col">
+          <div class="nx-card nx-pcard nx-reveal h-100">
+            <div class="nx-avatar" aria-hidden="true">HC</div>
+            <h3 class="nx-pcard__ign">Head Coach</h3>
+            <p class="nx-pcard__name">Committee role</p>
+            <p class="nx-pcard__ach nx-mb-0">Scrim structure, VOD review, roster development.</p>
+          </div>
         </div>
-        <div class="nx-card nx-pcard nx-reveal">
-          <div class="nx-avatar" aria-hidden="true">EM</div>
-          <h3 class="nx-pcard__ign">Events Manager</h3>
-          <p class="nx-pcard__name">Committee role</p>
-          <p class="nx-pcard__ach nx-mb-0">Bookings, watch parties and the LAN socials.</p>
+        <div class="col">
+          <div class="nx-card nx-pcard nx-reveal h-100">
+            <div class="nx-avatar" aria-hidden="true">EM</div>
+            <h3 class="nx-pcard__ign">Events Manager</h3>
+            <p class="nx-pcard__name">Committee role</p>
+            <p class="nx-pcard__ach nx-mb-0">Bookings, watch parties and the LAN socials.</p>
+          </div>
         </div>
-        <div class="nx-card nx-pcard nx-reveal">
-          <div class="nx-avatar" aria-hidden="true">MD</div>
-          <h3 class="nx-pcard__ign">Media Director</h3>
-          <p class="nx-pcard__name">Committee role</p>
-          <p class="nx-pcard__ach nx-mb-0">Broadcast, socials and the team's visual identity.</p>
+        <div class="col">
+          <div class="nx-card nx-pcard nx-reveal h-100">
+            <div class="nx-avatar" aria-hidden="true">MD</div>
+            <h3 class="nx-pcard__ign">Media Director</h3>
+            <p class="nx-pcard__name">Committee role</p>
+            <p class="nx-pcard__ach nx-mb-0">Broadcast, socials and the team's visual identity.</p>
+          </div>
         </div>
       </div>
       <p class="nx-muted" style="font-size:.78rem;margin-top:18px">
@@ -157,20 +173,26 @@
 
   <!-- Gallery -->
   <section class="nx-section">
-    <div class="nx-shell">
+    <div class="nx-shell container-fluid">
       <div class="nx-section-head">
         <p class="nx-eyebrow">Gallery</p>
         <h2 class="nx-mb-0">Season key art</h2>
       </div>
-      <div class="nx-grid nx-grid--3">
-        <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
-          <img src="TournamentThumbnail/valorantTournament.png" alt="Valorant season key art" loading="lazy" style="width:100%;display:block">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col">
+          <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
+            <img src="TournamentThumbnail/valorantTournament.png" alt="Valorant season key art" loading="lazy" class="img-fluid d-block w-100">
+          </div>
         </div>
-        <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
-          <img src="TournamentThumbnail/CS2Tournament.png" alt="Counter-Strike 2 season key art" loading="lazy" style="width:100%;display:block">
+        <div class="col">
+          <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
+            <img src="TournamentThumbnail/CS2Tournament.png" alt="Counter-Strike 2 season key art" loading="lazy" class="img-fluid d-block w-100">
+          </div>
         </div>
-        <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
-          <img src="TournamentThumbnail/pubgTournament.png" alt="PUBG season key art" loading="lazy" style="width:100%;display:block">
+        <div class="col">
+          <div class="nx-card nx-reveal" style="padding:0;overflow:hidden">
+            <img src="TournamentThumbnail/pubgTournament.png" alt="PUBG season key art" loading="lazy" class="img-fluid d-block w-100">
+          </div>
         </div>
       </div>
     </div>
@@ -178,7 +200,7 @@
 
   <!-- Social feed embed -->
   <section class="nx-section" id="social">
-    <div class="nx-shell">
+    <div class="nx-shell container-fluid">
       <div class="nx-section-head">
         <p class="nx-eyebrow">Community</p>
         <h2 class="nx-mb-0">From our socials</h2>
@@ -187,7 +209,8 @@
           page.
         </p>
       </div>
-      <div class="nx-grid nx-grid--2" style="align-items:start">
+      <div class="row row-cols-1 row-cols-lg-2 g-4 align-items-start">
+        <div class="col">
         <div class="nx-card nx-card--flat" style="padding:12px">
           <!-- Official Instagram post embed. Replace the shortcode below with the
                team post you want featured; no API key is required. -->
@@ -200,6 +223,8 @@
             </a>
           </blockquote>
         </div>
+        </div>
+        <div class="col">
         <div class="nx-card nx-card--flat">
           <p class="nx-eyebrow">Find us</p>
           <div class="nx-stack">
@@ -217,6 +242,7 @@
             </a>
           </div>
         </div>
+        </div>
       </div>
     </div>
   </section>
@@ -224,22 +250,22 @@
 </main>
 
 <footer class="nx-footer">
-  <div class="nx-shell">
+  <div class="nx-shell container-fluid">
     <div class="nx-footer__top">
       <div class="nx-footer__brand">
-        <div class="nx-footer__namerow">
+        <div class="nx-footer__namerow d-flex flex-wrap align-items-center justify-content-between">
           <a class="nx-wordmark" href="index.html">
             <span class="nx-wordmark__mark">N</span>
             <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
           </a>
 
-          <div class="nx-social">
-            <div class="nx-social__widget">
+          <div class="nx-social d-flex flex-wrap align-items-center">
+            <div class="nx-social__widget d-flex align-items-center">
               <img src="socials/x.png" alt="" class="nx-social__icon">
               <a href="https://x.com/UCEsportsClub" class="twitter-follow-button"
                  data-show-count="false" data-size="large" data-dnt="true">Follow @UCEsportsClub</a>
             </div>
-            <div class="nx-social__widget">
+            <div class="nx-social__widget d-flex align-items-center">
               <img src="socials/facebook.png" alt="" class="nx-social__icon">
               <iframe title="NextGen E-Sports on Facebook"
                 src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fapuesportsclub%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
@@ -266,11 +292,11 @@
       </div>
     </div>
 
-    <div class="nx-footer__bottom">
+    <div class="nx-footer__bottom d-flex flex-wrap align-items-center">
       <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
       <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
       <a href="about.html">About</a>
-      <a href="register.html">Join us</a>
+      <a href="signin.html">Join us</a>
     </div>
   </div>
 </footer>
@@ -294,9 +320,9 @@
 
 <script src="vendor/jquery-3.7.1.min.js"></script>
 <script src="vendor/bootstrap.bundle.min.js"></script>
-<script src="js/storage.js?v=2"></script>
-<script src="js/render.js?v=2"></script>
-<script src="js/main.js?v=1"></script>
+<script src="js/storage.js?v=3"></script>
+<script src="js/render.js?v=4"></script>
+<script src="js/main.js?v=3"></script>
 <script src="js/about.js?v=2"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script async src="https://www.instagram.com/embed.js"></script>

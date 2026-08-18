@@ -786,3 +786,27 @@ body.dark-theme .pass-notice-box,
     background-color: #e02d4c !important;
     transform: translateY(-1px);
 }
+
+/* Force 3-column grid for ticket cards */
+#ticketContainer,
+.nx-grid--3 {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+}
+
+/* Tablet view: 2 cards per row */
+@media (max-width: 992px) {
+  #ticketContainer,
+  .nx-grid--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Mobile view: 1 card per row */
+@media (max-width: 640px) {
+  #ticketContainer,
+  .nx-grid--3 {
+    grid-template-columns: 1fr !important;
+  }
+}

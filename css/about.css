@@ -1,0 +1,418 @@
+/* ==========================================================================
+   about.css — styles exclusive to about.html
+   NextGen E-Sports Community Club
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   ABOUT HERO VIDEO
+   -------------------------------------------------------------------------- */
+
+.about-video {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--border-strong);
+    border-radius: 24px;
+    background: #000;
+    box-shadow: 0 24px 60px -25px rgba(0, 0, 0, 0.75);
+}
+
+.about-video video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.about-video__overlay {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    gap: 20px;
+    padding: 24px;
+    text-align: center;
+    background:
+        linear-gradient(to bottom,
+            rgba(11, 11, 14, 0.15),
+            rgba(11, 11, 14, 0.60));
+    transition: opacity var(--dur) var(--ease);
+    pointer-events: none;
+}
+
+.about-video.is-playing .about-video__overlay {
+    opacity: 0;
+}
+
+.about-video__title {
+    margin: 0;
+    font-size: clamp(1.8rem, 5vw, 3.6rem);
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+}
+
+.about-video__subtitle {
+    max-width: 600px;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.9rem;
+}
+
+.about-video__play {
+    width: 72px;
+    height: 72px;
+    margin-inline: auto;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.6rem;
+    cursor: pointer;
+    pointer-events: auto;
+    transition:
+        transform var(--dur) var(--ease),
+        background var(--dur) var(--ease),
+        box-shadow var(--dur) var(--ease);
+}
+
+.about-video__play:hover {
+    transform: scale(1.08);
+    background: var(--accent-hover);
+    box-shadow: 0 10px 30px var(--accent-soft);
+}
+
+/* --------------------------------------------------------------------------
+   ABOUT INTRODUCTION
+   -------------------------------------------------------------------------- */
+
+.about-intro {
+    position: relative;
+}
+
+.about-intro__text {
+    max-width: 680px;
+}
+
+.about-intro__text p {
+    max-width: 65ch;
+}
+
+.about-intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* --------------------------------------------------------------------------
+   THREE GAMES
+   -------------------------------------------------------------------------- */
+
+.about-games {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.about-game-card {
+    position: relative;
+    overflow: hidden;
+    padding: 22px;
+}
+
+.about-game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform var(--dur) var(--ease);
+}
+
+.about-game-card:hover::before {
+    transform: scaleY(1);
+}
+
+.about-game-card__top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.about-game-card__icon {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 1.2rem;
+}
+
+.about-game-card h3 {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.about-game-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.84rem;
+}
+
+/* --------------------------------------------------------------------------
+   COMMUNITY HIGHLIGHTS
+   -------------------------------------------------------------------------- */
+
+.about-highlight {
+    height: 100%;
+}
+
+.about-highlight__number {
+    display: block;
+    margin-bottom: 10px;
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.about-highlight h3 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.about-highlight p {
+    margin-bottom: 0;
+    color: var(--text-muted);
+    font-size: 0.84rem;
+}
+
+/* --------------------------------------------------------------------------
+   TEAM / COACH CARDS
+   -------------------------------------------------------------------------- */
+
+.about-person-card {
+    height: 100%;
+    text-align: center;
+}
+
+.about-person-card .nx-avatar {
+    margin-bottom: 16px;
+}
+
+.about-person-card__role {
+    margin-bottom: 10px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.about-person-card__description {
+    margin-bottom: 0;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+/* --------------------------------------------------------------------------
+   FLAGSHIP CHAMPIONSHIP
+   -------------------------------------------------------------------------- */
+
+.about-championship {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(24px, 5vw, 48px);
+    border: 1px solid var(--border-strong);
+    background:
+        linear-gradient(135deg,
+            var(--surface),
+            var(--surface-raised));
+}
+
+.about-championship::after {
+    content: '';
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    right: -100px;
+    top: -120px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    filter: blur(10px);
+    pointer-events: none;
+}
+
+.about-championship__content {
+    position: relative;
+    z-index: 1;
+}
+
+.about-championship__label {
+    display: inline-block;
+    margin-bottom: 12px;
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.about-championship h2 {
+    max-width: 750px;
+    margin-bottom: 16px;
+}
+
+.about-championship p {
+    max-width: 720px;
+    color: var(--text-muted);
+}
+
+.about-championship__games {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.about-championship__game {
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   GALLERY
+   -------------------------------------------------------------------------- */
+
+.about-gallery-card {
+    overflow: hidden;
+    height: 100%;
+    padding: 0;
+}
+
+.about-gallery-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 220px;
+    object-fit: cover;
+    transition: transform 500ms var(--ease);
+}
+
+.about-gallery-card:hover img {
+    transform: scale(1.05);
+}
+
+/* --------------------------------------------------------------------------
+   SOCIAL COMMUNITY SECTION
+   -------------------------------------------------------------------------- */
+
+.about-social-card {
+    height: 100%;
+}
+
+.about-social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.about-social-links .nx-btn {
+    justify-content: flex-start;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE DESIGN
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 767.98px) {
+    .about-video {
+        border-radius: 16px;
+    }
+
+    .about-video__title {
+        font-size: 1.5rem;
+    }
+
+    .about-video__subtitle {
+        display: none;
+    }
+
+    .about-video__play {
+        width: 58px;
+        height: 58px;
+        font-size: 1.3rem;
+    }
+
+    .about-intro__actions {
+        flex-direction: column;
+    }
+
+    .about-intro__actions .nx-btn {
+        width: 100%;
+    }
+
+    .about-championship {
+        padding: 24px 20px;
+    }
+
+    .about-gallery-card img {
+        min-height: 180px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .about-video__play,
+    .about-game-card::before,
+    .about-gallery-card img {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   ABOUT PAGE — Reduce spacing
+   -------------------------------------------------------------------------- */
+
+/* Make all about sections more compact */
+.about-video-section {
+    padding-bottom: clamp(8px, 2vw, 24px);
+}
+
+.about-compact-section {
+    padding-block: clamp(20px, 3vw, 40px);
+}
+
+.about-compact-section .nx-section-head {
+    margin-bottom: calc(var(--space) * 2);
+}
+
+.about-championship-section {
+    padding-block: clamp(12px, 2vw, 28px);
+}
+
+.about-gallery-section {
+    padding-block: clamp(16px, 2.5vw, 32px);
+}
+
+.about-social-section {
+    padding-block: clamp(20px, 3vw, 40px);
+}
