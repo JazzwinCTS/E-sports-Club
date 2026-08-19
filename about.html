@@ -128,7 +128,8 @@
         <section class="nx-section about-video-section">
             <div class="nx-shell container-fluid">
                 <div class="about-video nx-reveal" id="videoFrame">
-                    <video id="aboutVideo" preload="metadata" playsinline poster="indexImages/carousel2.png" autoplay muted>
+                    <video id="aboutVideo" preload="metadata" playsinline poster="indexImages/carousel2.png" autoplay
+                        muted>
                         <source src="Video1.mp4" type="video/mp4">
                         Your browser does not support embedded video.
                     </video>
@@ -269,7 +270,7 @@
                     <h2>
                         More than competition
                     </h2>
-                    
+
                     <p class="nx-muted">
                         NextGen brings together players, coaches, organisers
                         and supporters through different esports activities.
@@ -489,8 +490,8 @@
         </section>
 
         <!-- ==========================================================
-             GALLERY  
-             ========================================================== -->
+     GALLERY
+     ========================================================== -->
 
         <section class="nx-section about-gallery-section">
             <div class="nx-shell container-fluid">
@@ -504,26 +505,52 @@
                     </h2>
                 </div>
 
+
                 <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                    <!-- VALORANT -->
                     <div class="col">
-                        <div class="nx-card about-gallery-card">
+                        <div class="nx-card about-gallery-card game-hover" data-video="videos/valorant.mp4">
                             <img src="TournamentThumbnail/valorantTournament.png" alt="VALORANT tournament artwork"
-                                loading="lazy">
+                                loading="lazy" class="game-thumb">
+                            <video class="game-video" muted loop playsinline>
+                                <source src="videos/valorant.mp4" type="video/mp4">
+                            </video>
+                            
+                            <div class="game-overlay">
+                                <h3>VALORANT</h3>
+                                <p>NextGen Youth Championship 2026</p>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Counter-Strike 2 -->
                     <div class="col">
-                        <div class="nx-card about-gallery-card">
+                        <div class="nx-card about-gallery-card game-hover" data-video="videos/cs2.mp4">
                             <img src="TournamentThumbnail/CS2Tournament.png" alt="Counter-Strike 2 tournament artwork"
-                                loading="lazy">
+                                loading="lazy" class="game-thumb">
+                            <video class="game-video" muted loop playsinline>
+                                <source src="videos/cs2.mp4" type="video/mp4">
+                            </video>
+                            <div class="game-overlay">
+                                <h3>Counter-Strike 2</h3>
+                                <p>NextGen Invitational</p>
+                            </div>
                         </div>
                     </div>
 
-
+                    <!-- PUBG -->
                     <div class="col">
-                        <div class="nx-card about-gallery-card">
+                        <div class="nx-card about-gallery-card game-hover" data-video="videos/pubg.mp4">
                             <img src="TournamentThumbnail/pubgTournament.png" alt="PUBG tournament artwork"
-                                loading="lazy">
+                                loading="lazy" class="game-thumb">
+                            <video class="game-video" muted loop playsinline>
+                                <source src="videos/pubg.mp4" type="video/mp4">
+                            </video>
+                            <div class="game-overlay">
+                                <h3>PUBG</h3>
+                                <p>NextGen Battle Royale Cup</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -572,8 +599,9 @@
                                     Facebook
                                 </a>
 
-                                <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://discord.com/invite/vibes-tribe-719490731047125014"
-                                    target="_blank" rel="noopener noreferrer">
+                                <a class="nx-btn nx-btn--ghost nx-btn--sm"
+                                    href="https://discord.com/invite/vibes-tribe-719490731047125014" target="_blank"
+                                    rel="noopener noreferrer">
                                     <i class="bi bi-discord"></i>
                                     Discord Community
                                 </a>
@@ -630,7 +658,8 @@
                              to a space and the mark renders as "N ext Gen  E-Sports". -->
                         <a class="nx-wordmark" href="index.html">
                             <span class="nx-wordmark__mark">N</span>
-                            <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
+                            <span class="nx-wordmark__text">ext<span
+                                    class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
                         </a>
 
                         <!-- Official platform plugins, identical to the other seven pages. The Instagram icon anchors down to the
@@ -730,4 +759,5 @@
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 </body>
+
 </html>
