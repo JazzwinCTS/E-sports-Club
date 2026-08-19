@@ -44,9 +44,7 @@
         <nav class="nx-nav__inner container-fluid" aria-label="Primary">
             <a class="nx-wordmark navbar-brand" href="index.html">
                 <span class="nx-wordmark__mark">N</span>
-                <span class="nx-wordmark__text">
-                    ext<span class="nx-wordmark__gen">Gen</span>
-                </span>
+                <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>
             </a>
 
             <div class="nx-nav__actions d-flex align-items-center gap-2 ms-auto order-lg-last">
@@ -561,27 +559,27 @@
                             </p>
 
                             <div class="about-social-links">
-                                <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://x.com/NextGenEsports"
+                                <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://x.com/nextGen_eSport"
                                     target="_blank" rel="noopener noreferrer">
                                     <i class="bi bi-twitter-x"></i>
                                     X / Twitter
                                 </a>
 
                                 <a class="nx-btn nx-btn--ghost nx-btn--sm"
-                                    href="https://www.facebook.com/NextGenEsports" target="_blank"
+                                    href="https://www.facebook.com/nextgenesports/" target="_blank"
                                     rel="noopener noreferrer">
                                     <i class="bi bi-facebook"></i>
                                     Facebook
                                 </a>
 
-                                <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://discord.com/invite/nextgen"
+                                <a class="nx-btn nx-btn--ghost nx-btn--sm" href="https://discord.com/invite/vibes-tribe-719490731047125014"
                                     target="_blank" rel="noopener noreferrer">
                                     <i class="bi bi-discord"></i>
                                     Discord Community
                                 </a>
 
                                 <a class="nx-btn nx-btn--ghost nx-btn--sm"
-                                    href="https://www.instagram.com/nextgenesports" target="_blank"
+                                    href="https://www.instagram.com/nges.gg/?hl=en" target="_blank"
                                     rel="noopener noreferrer">
                                     <i class="bi bi-instagram"></i>
                                     Instagram
@@ -628,24 +626,57 @@
             <div class="nx-footer__top">
                 <div class="nx-footer__brand">
                     <div class="nx-footer__namerow d-flex flex-wrap align-items-center justify-content-between">
+                        <!-- Kept on one line: a newline inside .nx-wordmark__text collapses
+                             to a space and the mark renders as "N ext Gen  E-Sports". -->
                         <a class="nx-wordmark" href="index.html">
                             <span class="nx-wordmark__mark">N</span>
-                            <span class="nx-wordmark__text">
-                                ext<span class="nx-wordmark__gen">Gen</span>
-                            </span>
-                            &nbsp;E-Sports
+                            <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
                         </a>
+
+                        <!-- Official platform plugins, identical to the other seven pages
+                             (CLAUDE.md section 10). The Instagram icon anchors down to the
+                             Stay Connected section on this page rather than across to it. -->
+                        <div class="nx-social d-flex flex-wrap align-items-center">
+                            <div class="nx-social__widget d-flex align-items-center">
+                                <img src="socials/x.png" alt="" class="nx-social__icon">
+                                <a href="https://x.com/nextGen_eSport" class="twitter-follow-button"
+                                    data-show-count="false" data-size="large" data-dnt="true">
+                                    Follow @nextGen_eSport
+                                </a>
+                            </div>
+
+                            <div class="nx-social__widget d-flex align-items-center">
+                                <img src="socials/facebook.png" alt="" class="nx-social__icon">
+                                <iframe title="NextGen E-Sports on Facebook"
+                                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fnextgenesports%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+                                    width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
+                                    frameborder="0" allowfullscreen="true"
+                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                            </div>
+
+                            <a class="nx-discord" id="discordWidget"
+                                href="https://discord.com/invite/vibes-tribe-719490731047125014" target="_blank"
+                                rel="noopener">
+                                <img src="socials/discord.png" alt="" class="nx-social__icon">
+                                <span>Discord</span>
+                                <span class="nx-discord__count">…</span>
+                            </a>
+
+                            <a class="nx-icon-btn" href="#social" aria-label="NextGen E-Sports on Instagram">
+                                <img src="socials/instagram.png" alt="" class="nx-social__icon">
+                            </a>
+                        </div>
                     </div>
                     <p class="nx-footer__tag">
-                        A community esports club focused on
-                        VALORANT, Counter-Strike 2 and PUBG.
+                        A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
+                        players of every level, and host of the 2026 NextGen Youth Championship.
                     </p>
                 </div>
             </div>
 
             <div class="nx-footer__bottom d-flex flex-wrap align-items-center">
                 <span>
-                    &copy; 2026 NextGen E-Sports
+                    &copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports
                 </span>
 
                 <button class="nx-linkbtn" id="cookiePrefs" type="button">
@@ -693,8 +724,11 @@
 
     <script src="js/storage.js?v=3"></script>
     <script src="js/render.js?v=4"></script>
-    <script src="js/main.js?v=3"></script>
+    <script src="js/main.js?v=4"></script>
     <script src="js/about.js?v=2"></script>
+
+    <!-- Official X Follow Button widget, as on the other seven pages -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 </body>
 </html>

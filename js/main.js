@@ -109,7 +109,7 @@ $(function () {
   var $discord = $('#discordWidget');
   if ($discord.length) {
     $.ajax({
-      url: 'https://discord.com/api/v10/invites/theesportsclub?with_counts=true',
+      url: 'https://discord.com/api/v10/invites/vibes-tribe-719490731047125014?with_counts=true',
       method: 'GET',
       dataType: 'json',
       timeout: 6000,
