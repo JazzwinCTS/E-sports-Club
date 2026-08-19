@@ -28,21 +28,50 @@ $(function () {
   //
   // We read the account here rather than waiting on the signin page's script,
   // because no page's script should depend on another one having run.
-  var accounts = NXStore.local.get('registrations', []) || [];
-  var account = accounts.length ? accounts[accounts.length - 1] : null;
+  // Two different things, and the navbar needs both. The account lives in
+  // local storage so it survives closing the browser, but being signed in is
+  // per-tab and lives in session storage. Signing out only clears the session,
+  // on purpose, so that you can sign back in without joining again - which
+  // means checking for the account alone would keep showing the email to
+  // someone who has just signed out. The same applies straight after joining,
+  // where signin.html sends you to the sign-in panel rather than logging you
+  // straight in.
+  var $accountLink = $('.nx-nav__link[href="signin.html"]');
+  var joinLabel = $.trim($accountLink.text()) || 'Join';
 
-  if (account && account.email) {
-    // Built with .text() instead of an HTML string. This file runs on all
-    // eight pages and two of them do not load render.js, so reaching for its
-    // escape helper here used to throw and take out everything below it.
-    $('.nx-nav__link[href="signin.html"]')
-      .addClass('nx-nav__link--account')
-      .attr('title', account.email)
-      .attr('aria-label', 'Signed in as ' + account.email)
-      .empty()
-      .append($('<i class="bi bi-person-circle" aria-hidden="true"></i>'))
-      .append($('<span class="nx-nav__email"></span>').text(account.email));
+  function paintAccountLink() {
+    var accounts = NXStore.local.get('registrations', []) || [];
+    var account = accounts.length ? accounts[accounts.length - 1] : null;
+    var signedIn = NXStore.session.get('isLoggedIn');
+
+    if (account && account.email && signedIn) {
+      // Built with .text() instead of an HTML string. This file runs on all
+      // eight pages and two of them do not load render.js, so reaching for its
+      // escape helper here used to throw and take out everything below it.
+      $accountLink
+        .addClass('nx-nav__link--account')
+        .attr('title', account.email)
+        .attr('aria-label', 'Signed in as ' + account.email)
+        .empty()
+        .append($('<i class="bi bi-person-circle" aria-hidden="true"></i>'))
+        .append($('<span class="nx-nav__email"></span>').text(account.email));
+    } else {
+      $accountLink
+        .removeClass('nx-nav__link--account')
+        .removeAttr('title')
+        .removeAttr('aria-label')
+        .empty()
+        .text(joinLabel);
+    }
   }
+
+  paintAccountLink();
+
+  // Signing in happens without a page load - signin.html just swaps panels -
+  // so the navbar has to be told. That page already announces the change, and
+  // this is the only thing outside it that was not listening, which is why the
+  // label sat on "Join" until you navigated somewhere else.
+  $(window).on('accountChanged', paintAccountLink);
 
   // Theme toggle, remembered in local storage
   function applyTheme(theme) {
