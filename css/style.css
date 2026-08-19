@@ -1,9 +1,9 @@
 /* ==========================================================================
    NextGen E-Sports — single source of truth for all design tokens.
-   Never hardcode a hex value in a page. See CLAUDE.md section 7 and 11.
+   Never hardcode a hex value in a page.
    ========================================================================== */
 
-/* --- Self-hosted fonts (offline requirement, CLAUDE.md section 2) --------- */
+/* Fonts are served from this folder, so the site still works offline */
 @font-face {
   font-family: 'Unbounded';
   src: url('../fonts/unbounded-latin.woff2') format('woff2');
@@ -68,7 +68,7 @@
   --bg-bottom:      var(--bg);
 }
 
-/* Light theme — driven by localStorage key `theme` (CLAUDE.md section 5) */
+/* Light theme — driven by localStorage key `theme` */
 [data-theme="light"] {
   --bg:             #F3F3F7;
   --surface:        #FFFFFF;
@@ -657,10 +657,8 @@ img { max-width: 100%; height: auto; }
   animation: nx-pulse 1.4s ease-in-out infinite;
 }
 
-/* Leaderboard styles moved to css/rankings.css — exclusive to rankings.html
-   (index.html links rankings.css too, since its homepage preview reuses the
-   same board-row component; both pages are the same developer's per
-   CLAUDE.md section 7). */
+/* The leaderboard lives in css/rankings.css. The home page links that file
+   too, because its "Top of the table" preview reuses the same row. */
 
 /* --- Tournament cards ---------------------------------------------------- */
 .nx-tcard { display: flex; flex-direction: column; padding: 0; overflow: hidden; }
@@ -717,7 +715,7 @@ img { max-width: 100%; height: auto; }
 }
 .nx-pcard:hover::before { opacity: 1; }
 
-/* Avatar — a real photo where one was sourced (CLAUDE.md section 2), else a
+/* Avatar — a real photo where one was sourced, else a
    generated monogram in the same hexagon frame so the grid stays consistent. */
 .nx-avatar {
   width: 72px; height: 72px;
@@ -774,7 +772,7 @@ img { max-width: 100%; height: auto; }
 .nx-pcard__ach { font-size: 0.78rem; color: var(--text-muted); font-style: italic; }
 
 /* Hero/carousel and game-strip styles moved to css/index.css — exclusive to
-   index.html, nobody else uses them. See CLAUDE.md section 7. */
+   index.html, nobody else uses them. */
 
 /* --- About video window -------------------------------------------------- */
 .nx-videoframe {
@@ -819,7 +817,7 @@ img { max-width: 100%; height: auto; }
 .nx-play:hover { transform: scale(1.1); background: var(--accent-hover); }
 
 /* Form-control styles moved to css/register.css — register.html is the only
-   page with a form, so they belong to that page. See CLAUDE.md section 7. */
+   page with a form, so they belong to that page. */
 
 /* --- Feedback states ----------------------------------------------------- */
 .nx-spinner {

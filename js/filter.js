@@ -1,18 +1,14 @@
-/* ==========================================================================
-   filter.js — the shared filter bar used on rankings, players and
-   tournaments. One implementation so the control behaves and looks identical
-   on all three pages (CLAUDE.md section 7: consistency comes from shared files).
-
-   Behaviour follows design-refs/filter.png: a single airy row of controls;
-   clicking one flips its chevron to point up and drops its options open.
-
-   Usage:
-     NXFilter.init({
-       mount: '#rankings-filter',
-       controls: [{ key: 'game', label: 'Game', value: 'all', options: [...] }],
-       onChange: function (state) { ... }
-     });
-   ========================================================================== */
+// The filter bar shared by rankings, players and tournaments. It lives in
+// one file so the control looks and behaves the same on all three pages.
+//
+// Clicking a control flips its chevron up and drops its options open.
+//
+// To use it:
+//   NXFilter.init({
+//     mount: '#rankings-filter',
+//     controls: [{ key: 'game', label: 'Game', value: 'all', options: [...] }],
+//     onChange: function (state) { ... }
+//   });
 
 var NXFilter = (function ($) {
   'use strict';
@@ -84,7 +80,7 @@ var NXFilter = (function ($) {
       var $bar = render(cfg);
       $mount.empty().append($bar);
 
-      /* Open / close a single control */
+      // Open or close one control
       $bar.on('click', '.nx-filter__trigger', function (e) {
         e.stopPropagation();
         var $control = $(this).closest('.nx-filter__control');
@@ -96,7 +92,7 @@ var NXFilter = (function ($) {
         }
       });
 
-      /* Pick an option */
+      // Pick an option
       $bar.on('click', '.nx-filter__option', function (e) {
         e.stopPropagation();
         var $opt = $(this);
@@ -112,7 +108,7 @@ var NXFilter = (function ($) {
         if (cfg.onChange) { cfg.onChange(state); }
       });
 
-      /* Reset every control to its first option */
+      // Put every control back to its first option
       $bar.on('click', '.nx-filter__reset', function () {
         cfg.controls.forEach(function (c) {
           var first = c.options[0];
@@ -126,7 +122,7 @@ var NXFilter = (function ($) {
         if (cfg.onChange) { cfg.onChange(state); }
       });
 
-      /* Click outside or press Escape closes any open menu */
+      // Clicking away or pressing Escape closes whatever is open
       $(document).on('click', function () { closeAll($bar); });
       $(document).on('keydown', function (e) {
         if (e.key === 'Escape') { closeAll($bar); }

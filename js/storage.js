@@ -1,19 +1,17 @@
-/* ==========================================================================
-   storage.js — shared helpers for all three storage technologies.
-   Key names are frozen in CLAUDE.md section 5. Do not invent new keys here;
-   add them to the spec first so all four pages agree.
-
-   Local   -> user-owned data expected to survive the browser closing.
-   Session -> tab-scoped working state that should NOT persist.
-   Cookie  -> needs a defined expiry; the one value that would legitimately
-              travel to a server in a real deployment.
-   ========================================================================== */
+// Helpers for the three kinds of storage this site uses.
+//
+// Local storage holds things you would expect to still be there tomorrow.
+// Session storage holds things that should disappear when the tab closes.
+// A cookie is for the one value that needs a real expiry date.
+//
+// The key names are agreed across the whole team, so if you need a new one,
+// add it to the spec first rather than inventing it here.
 
 var NXStore = (function () {
   'use strict';
 
-  /* Private browsing and disabled-storage modes throw on access, so every
-     call is guarded — a storage failure must never break page rendering. */
+  // Private browsing can make even reading storage throw, so every call is
+  // wrapped. A storage problem should never stop the page from rendering.
   function safeGet(store, key) {
     try {
       var raw = store.getItem(key);
@@ -39,8 +37,7 @@ var NXStore = (function () {
   }
 
   return {
-    /* ---- localStorage: theme, favouriteTeam, playersGame, registrations,
-       userTickets ------------------------------------------------------- */
+    // Local: theme, favouriteTeam, playersGame, registrations, userTickets
     local: {
       get: function (key, fallback) {
         var v = safeGet(window.localStorage, key);
@@ -50,7 +47,7 @@ var NXStore = (function () {
       remove: function (key) { safeRemove(window.localStorage, key); }
     },
 
-    /* ---- sessionStorage: registerDraft, tournamentFilter, eventView ------ */
+    // Session: registerDraft, isLoggedIn, tournamentFilter, eventView
     session: {
       get: function (key, fallback) {
         var v = safeGet(window.sessionStorage, key);
@@ -60,7 +57,7 @@ var NXStore = (function () {
       remove: function (key) { safeRemove(window.sessionStorage, key); }
     },
 
-    /* ---- cookies: returningVisitor -------------------------------------- */
+    // Cookies: returningVisitor
     cookie: {
       get: function (name) {
         var parts = document.cookie ? document.cookie.split('; ') : [];
@@ -88,12 +85,10 @@ var NXStore = (function () {
       }
     },
 
-    /* Wipe everything this site owns — used by the cookie preferences modal.
-       Keep this list in step with the table in CLAUDE.md section 5: it listed
-       a `playerFilter` key that nothing ever wrote (players.js uses
-       `playersGame`), while `userTickets` and `isLoggedIn` arrived later and
-       were never added — so "Decline & clear" was leaving real user data
-       behind and deleting a key that did not exist. */
+    // Wipes everything the site has stored, for the decline button on the
+    // cookie banner. Keep this list honest: it used to name a key nothing
+    // wrote and miss two that people actually had data in, so declining
+    // quietly left their tickets behind.
     clearAll: function () {
       ['theme', 'favouriteTeam', 'playersGame', 'registrations', 'userTickets']
         .forEach(function (k) {

@@ -1,6 +1,6 @@
 /* ==========================================================================
    rankings.css — exclusive to rankings.html. Owner: the same developer as
-   index.css (CLAUDE.md section 7 "Home + Rankings" pairing).
+   index.css.
 
    index.html links this file too — its "Top of the table" homepage preview
    renders the exact same board-row component (js/render.js boardRow()) that

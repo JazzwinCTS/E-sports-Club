@@ -1,6 +1,4 @@
-/* ==========================================================================
-   about.js — about.html only. Team film playback.
-   ========================================================================== */
+// about.html only. Plays the team film.
 
 $(function () {
   'use strict';
@@ -15,7 +13,8 @@ $(function () {
     var played = video.play();
     if (played && played.catch) {
       played.catch(function () {
-        /* Autoplay policies can refuse — leave the controls visible instead. */
+        // The browser is allowed to refuse autoplay. If it does, leave the controls
+        // showing so people can start it themselves.
         $frame.removeClass('is-playing');
       });
     }

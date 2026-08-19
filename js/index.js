@@ -1,6 +1,6 @@
 /* ==========================================================================
    index.js — index.html only. Aggregated previews that link out to the pages
-   that actually own each entity (CLAUDE.md section 4).
+   that actually own each entity.
    ========================================================================== */
 
 $(function () {
@@ -357,7 +357,7 @@ $(function () {
   /* The rows are a read-only preview — the "Full standings" button is the way
      through to rankings.html, so the rows themselves are not click targets.
      The star inside them is, though: it writes the same localStorage
-     `favouriteTeam` rankings.html reads (CLAUDE.md section 5), so the two
+     `favouriteTeam` rankings.html reads, so the two
      pages stay in step without either script knowing about the other. */
   $standings.on('click', '.nx-fav', function () {
     var team = $(this).closest('.nx-board__row').data('team');
@@ -371,19 +371,15 @@ $(function () {
     paintStandings();
   });
 
-  /* ---- Stream embed -----------------------------------------------------
-     Twitch requires a `parent` matching the host serving the page, so the
-     embed is built at runtime. Opened straight off disk there is no host and
-     the embed cannot work — say so plainly instead of showing a dead frame.
-
-     `parent` can be repeated to allow-list more than one host. Local dev
-     servers (VS Code Live Server, `python serve.py`) commonly serve over
-     `127.0.0.1` — Twitch's parent check is a plain string match against
-     the embedding page's real hostname, so the literal IP won't match a
-     `parent=localhost` example copied from a tutorial, and vice versa.
-     Sending both covers whichever one the page actually loaded on, without
-     needing to know in advance which the dev used.
-     --------------------------------------------------------------------- */
+  // The Twitch embed needs a `parent` that matches the host serving the
+  // page, so it is built at runtime. Opened straight off disk there is no
+  // host at all and the embed cannot work, so we say so plainly rather than
+  // showing a dead frame.
+  //
+  // `parent` can be repeated. Live Server usually serves over 127.0.0.1
+  // while GitHub Pages serves a real domain, and Twitch matches that string
+  // exactly, so we send both and let whichever one the page actually loaded
+  // on be the match.
   var host = window.location.hostname;
   var $mount = $('#streamMount');
 

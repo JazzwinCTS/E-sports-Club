@@ -1,14 +1,12 @@
-/* ==========================================================================
-   render.js — shared renderers and the single AJAX wrapper every page uses.
-   Kept in one file so a tournament card looks identical on the home page and
-   on tournaments.html (CLAUDE.md section 7).
-   ========================================================================== */
+// Shared renderers, plus the one AJAX wrapper every page uses. Kept together
+// so a tournament card looks the same on the home page as it does anywhere
+// else.
 
 var NXRender = (function ($) {
   'use strict';
 
-  /* NextGen focuses on three titles — see CLAUDE.md section 1. Trimming this
-     shared map is enough to trim every game filter/strip on the site. */
+  // We only cover three games. Trimming this one map trims every game filter
+  // and strip on the site.
   var GAME_LOGOS = {
     valorant: 'GameLogos/valorantLogo.png',
     cs2:      'GameLogos/CS2Logo.png',
@@ -21,13 +19,13 @@ var NXRender = (function ($) {
     pubg:     'PUBG'
   };
 
-  /* Escape anything that came out of a JSON file before it reaches innerHTML. */
+  // Escape anything from a JSON file before it goes near innerHTML.
   function esc(value) {
     return $('<div></div>').text(value == null ? '' : value).html();
   }
 
-  /* Prize money is in ringgit — tournaments.html and data/youth-tournament.json
-     both quote RM, so the shared card must not print a dollar sign. */
+  // Prize money is in ringgit. The tournaments page and the data file both
+  // say RM, so this card must not print a dollar sign.
   function money(n) {
     return 'RM' + Number(n).toLocaleString('en-US');
   }
@@ -70,8 +68,8 @@ var NXRender = (function ($) {
              '</div>';
     },
 
-    /* Every AJAX call in this project goes through here: jQuery only, always a
-       spinner, always an error fallback (CLAUDE.md section 6). */
+    // Every request in the project comes through here: jQuery only, always a
+       // spinner while it loads, always something sensible if it fails.
     load: function ($target, url, onSuccess, loadingLabel) {
       $.ajax({
         url: url,
@@ -131,21 +129,20 @@ var NXRender = (function ($) {
         '</article>';
     },
 
-    /* `rank` is this team's position in whatever list is being rendered right
-       now — the caller computes it from array order after sorting/filtering,
-       it is never read from team.rank. That field only exists as the
-       canonical championship-points order used for the "Championship rank"
-       sort option. There is no rank-change indicator: once rank depends on
-       whichever sort is active, "moved up 2 places" has no single baseline
-       to be measured against, so no such number is shown. */
-    /* The leaderboard's column headings. Shared so the homepage preview and
-       rankings.html cannot drift apart — the column set here must match
-       boardRow() below exactly, or the grid columns misalign. */
+    // `rank` is the team's place in whatever list is on screen right now, so
+       // the caller works it out from the order after sorting. It is never the
+       // rank stored on the team, which is only the championship-points order.
+       //
+       // There is deliberately no "moved up 2 places" arrow. Once rank depends
+       // on the sort you picked, there is nothing single to measure against.
+    // The leaderboard headings. Shared so the home page preview and the
+       // rankings page cannot drift apart. These columns have to match
+       // boardRow below exactly, or the headings sit over the wrong numbers.
     boardHead: function () {
       return '' +
         '<div class="nx-board__head" aria-hidden="true">' +
-          /* "Rank" is wider than the rank column once the table scales down,
-             so it would run into "Team". The short form takes over there. */
+          // "Rank" is wider than its own column once the table shrinks, so it
+             // would run into "Team". The short form takes over there.
           '<div><span class="nx-lbl-full">Rank</span><span class="nx-lbl-short">#</span></div>' +
           '<div>Team</div>' +
           '<div class="nx-board__pl" style="text-align:center" title="Played">PL</div>' +
@@ -159,14 +156,13 @@ var NXRender = (function ($) {
         '</div>';
     },
 
-    /* League-table row: Rank | Team | PL | W | L | Points | Medals | star.
-       Rank and team read left, every number sits in its own narrow column so
-       the values line up down the table (design-refs/PremierLeague.png).
-       There are no draws in these formats, so PL is simply W + L.
-
-       `favourite` is the team name held in localStorage `favouriteTeam`
-       (CLAUDE.md section 5) — the starred row is highlighted in place and is
-       never reordered. */
+    // One league-table row: rank, team, played, wins, losses, points, medals
+       // and the star. Rank and team read from the left; every number gets its
+       // own narrow column so the values line up down the table. Nothing here
+       // can end in a draw, so played is just wins plus losses.
+       //
+       // `favourite` is the starred team. Its row is highlighted where it
+       // stands, and never moved.
     boardRow: function (team, favourite, rank) {
       var isFav = favourite === team.team;
       var played = Number(team.wins) + Number(team.losses);
@@ -179,8 +175,8 @@ var NXRender = (function ($) {
             '<img class="nx-board__logo" src="' + esc(team.logo) + '" alt="' + esc(team.team) + ' logo" loading="lazy">' +
             '<div style="min-width:0">' +
               '<div class="nx-board__name">' + esc(team.team) + '</div>' +
-              /* Narrow screens drop the PL/W/L columns; this line carries the
-                 same three numbers so nothing is lost on mobile. */
+              // Narrow screens drop the played/won/lost columns, so this line
+                 // carries the same three numbers instead.
               '<div class="nx-board__mini nx-num">' + played + ' PL · ' +
                 esc(team.wins) + 'W · ' + esc(team.losses) + 'L</div>' +
             '</div>' +

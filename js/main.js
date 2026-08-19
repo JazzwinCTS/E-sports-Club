@@ -1,16 +1,11 @@
-/* ==========================================================================
-   main.js — site-wide behaviour only: navigation, theme toggle, cookie
-   banner, footer year, and the shared footer Discord widget.
-   Page-specific logic belongs in js/[page].js (CLAUDE.md section 7).
-   ========================================================================== */
+// Runs on every page. Nav, theme toggle, cookie banner, footer year and the
+// Discord widget. Anything specific to one page belongs in that page's file.
 
 $(function () {
   'use strict';
 
-  /* ---- Mobile navigation ------------------------------------------------
-     Bootstrap's collapse plugin opens and closes the menu via data-bs-toggle
-     and keeps aria-expanded in step, so the only thing left to do by hand is
-     swap the icon between the burger and the close cross. */
+  // Bootstrap opens and closes the mobile menu itself and keeps aria-expanded
+  // right, so all we do here is swap the burger for a cross.
   $('#navLinks')
     .on('show.bs.collapse', function () {
       $('#navToggle i').attr('class', 'bi bi-x-lg');
@@ -19,7 +14,7 @@ $(function () {
       $('#navToggle i').attr('class', 'bi bi-list');
     });
 
-  /* Mark the current page in the navbar without hardcoding it per page */
+  // Highlight the current page, rather than hardcoding it on each one
   var here = window.location.pathname.split('/').pop() || 'index.html';
   $('.nx-nav__link').each(function () {
     if ($(this).attr('href') === here) {
@@ -27,23 +22,19 @@ $(function () {
     }
   });
 
-  /* ---- Signed-in state in the navbar (site-wide) -------------------------
-     Once an account exists in localStorage `registrations`, the "Join" link
-     becomes the member's email address. The href is left alone: signin.html
-     is still where the account lives, and it shows the membership panel with
-     the sign-out button rather than the sign-up form.
-
-     Every page reads the key itself here rather than depending on
-     register.js having run — no page script reads another page script's
-     state (CLAUDE.md section 7). */
+  // Once someone has joined, the "Join" link becomes their email address. The
+  // link still points at signin.html, which by then shows their profile
+  // instead of the sign-up form.
+  //
+  // We read the account here rather than waiting on the signin page's script,
+  // because no page's script should depend on another one having run.
   var accounts = NXStore.local.get('registrations', []) || [];
   var account = accounts.length ? accounts[accounts.length - 1] : null;
 
   if (account && account.email) {
-    /* Built with .text() rather than an HTML string: main.js runs on all 8
-       pages and must not depend on render.js being loaded (players.html and
-       tournaments.html do not load it). Using NXRender.esc here threw on
-       those two pages, which killed every later handler in this file. */
+    // Built with .text() instead of an HTML string. This file runs on all
+    // eight pages and two of them do not load render.js, so reaching for its
+    // escape helper here used to throw and take out everything below it.
     $('.nx-nav__link[href="signin.html"]')
       .addClass('nx-nav__link--account')
       .attr('title', account.email)
@@ -53,7 +44,7 @@ $(function () {
       .append($('<span class="nx-nav__email"></span>').text(account.email));
   }
 
-  /* ---- Theme toggle (localStorage `theme`, site-wide) -------------------- */
+  // Theme toggle, remembered in local storage
   function applyTheme(theme) {
     $('html').attr('data-theme', theme);
     $('#themeToggle i').attr('class', theme === 'light' ? 'bi bi-moon-stars' : 'bi bi-sun');
@@ -69,18 +60,19 @@ $(function () {
     applyTheme(next);
   });
 
-  /* ---- Footer copyright year -------------------------------------------- */
+  // Footer copyright year
   var yearEl = document.getElementById('copyYear');
   if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
 
-  /* ---- Cookie consent (cookie `returningVisitor`, 30 days) --------------- */
+  // Cookie consent. The cookie lasts 30 days.
   var $banner = $('#cookieBanner');
 
   if (!NXStore.cookie.get('returningVisitor')) {
-    /* First visit in 30 days — ask for consent. */
+    // First visit in 30 days, so ask.
     setTimeout(function () { $banner.addClass('is-visible'); }, 700);
   } else {
-    /* Returning visitor: greet them instead of replaying the intro. */
+    // They have been here before, so welcome them back rather than replaying
+    // the intro.
     $('#welcomeBack').removeClass('nx-sr');
   }
 
@@ -94,18 +86,17 @@ $(function () {
     $banner.removeClass('is-visible');
   });
 
-  /* Footer "Cookie Preferences" re-opens the banner on any page */
+  // "Cookie Preferences" in the footer brings the banner back on any page
   $('#cookiePrefs').on('click', function (e) {
     e.preventDefault();
     $banner.addClass('is-visible');
     $('html, body').animate({ scrollTop: $(document).height() }, 300);
   });
 
-  /* ---- Footer Discord widget -------------------------------------------
-     A real, keyless REST call over jQuery. The invite code is resolved live
-     rather than hardcoding a member count. Fails quietly to a plain join
-     link so the footer still works offline (CLAUDE.md section 2).
-     --------------------------------------------------------------------- */
+  // The Discord widget. A real request over jQuery, no key needed, so the
+  // member count is live rather than a number typed in by hand. If it fails
+  // it quietly becomes a plain join link, which matters because the site has
+  // to work offline.
   var $discord = $('#discordWidget');
   if ($discord.length) {
     $.ajax({
