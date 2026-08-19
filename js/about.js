@@ -1,28 +1,81 @@
-// about.html only. Plays the team film.
+/* ==========================================================================
+   about.js — about.html only. Team film playback + gallery hover video
+   ========================================================================== */
 
-$(function () {
-  'use strict';
+   $(function () {
+    'use strict';
 
-  var video = document.getElementById('aboutVideo');
-  var $frame = $('#videoFrame');
+    // ==============================================================
+    // 1. TEAM FILM PLAYBACK (Hero Video)
+    // ==============================================================
 
-  $('#playVideo').on('click', function () {
-    if (!video) { return; }
-    $frame.addClass('is-playing');
-    video.controls = true;
-    var played = video.play();
-    if (played && played.catch) {
-      played.catch(function () {
-        // The browser is allowed to refuse autoplay. If it does, leave the controls
-        // showing so people can start it themselves.
-        $frame.removeClass('is-playing');
-      });
+    var video = document.getElementById('aboutVideo');
+    var $frame = $('#videoFrame');
+    var $playBtn = $('#playVideo');
+
+    if ($playBtn.length && video) {
+        $playBtn.on('click', function () {
+            $frame.addClass('is-playing');
+            video.controls = true;
+            $playBtn.hide(); 
+
+            var played = video.play();
+            if (played && played.catch) {
+                played.catch(function () {
+                    $frame.removeClass('is-playing');
+                    video.controls = true;
+                    $playBtn.show();
+                });
+            }
+        });
+
+        
+        $(video).on('play', function () {
+            $frame.addClass('is-playing');
+            $playBtn.hide();
+        });
+
+        $(video).on('pause ended', function () {
+            if (video.ended) {
+                $frame.removeClass('is-playing');
+                $playBtn.show();
+                video.controls = false;
+            } else if (video.paused && video.currentTime > 0) {
+                $playBtn.show();
+            }
+        });
     }
-  });
 
-  if (video) {
-    $(video).on('pause ended', function () {
-      if (video.ended) { $frame.removeClass('is-playing'); }
+    // ==============================================================
+    // 2. GALLERY HOVER VIDEO
+    // ==============================================================
+
+    var hoverCards = document.querySelectorAll('.game-hover');
+
+    hoverCards.forEach(function (card) {
+        var videoEl = card.querySelector('.game-video');
+        var thumb = card.querySelector('.game-thumb');
+
+        if (!videoEl) return;
+
+        card.addEventListener('mouseenter', function () {
+            videoEl.currentTime = 0;
+            videoEl.play().catch(function (err) {
+                console.log('Video autoplay prevented:', err);
+            });
+        });
+
+        card.addEventListener('mouseleave', function () {
+            videoEl.pause();
+        });
+        
+        videoEl.addEventListener('loadeddata', function () {
+            console.log('Video loaded:', videoEl.src);
+        });
+        
+        videoEl.addEventListener('ended', function () {
+            videoEl.currentTime = 0;
+        });
     });
-  }
+
 });
