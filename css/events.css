@@ -100,6 +100,34 @@
 }
 
 /* --------------------------------------------------------------------------
+   EVENT DETAIL TOGGLE
+   -------------------------------------------------------------------------- */
+
+.ev-detail-toggle {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  transition: color var(--dur) var(--ease);
+}
+
+.ev-detail-toggle:hover {
+  color: var(--accent);
+}
+
+.ev-detail {
+  animation: nx-rise 200ms var(--ease) both;
+}
+
+.ev-detail div {
+  line-height: 1.6;
+}
+
+@media (max-width: 575.98px) {
+  .ev-detail div {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
    CALENDAR
    -------------------------------------------------------------------------- */
 
