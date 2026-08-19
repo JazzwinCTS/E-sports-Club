@@ -32,15 +32,18 @@
         
         $(video).on('play', function () {
             $frame.addClass('is-playing');
+            video.controls = true;
             $playBtn.hide();
         });
 
         $(video).on('pause ended', function () {
             if (video.ended) {
                 $frame.removeClass('is-playing');
+                video.controls = true;
                 $playBtn.show();
-                video.controls = false;
+                video.controls = true;
             } else if (video.paused && video.currentTime > 0) {
+                video.controls = true;
                 $playBtn.show();
             }
         });
