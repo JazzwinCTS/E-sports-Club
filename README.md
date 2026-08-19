@@ -48,8 +48,8 @@ behaviour: nav highlighting, the theme toggle, the cookie banner, and the footer
 widget). Only the content between them changes per page.
 
 One piece of that shared behaviour is signed-in state: once you have joined, the navbar's **Join**
-link becomes your **email address** on all eight pages. It still points at `register.html`, which
-by then shows your membership panel and the sign-out button instead of the sign-up form.
+link becomes your **email address** on all eight pages. It still points at `signin.html`, which
+by then shows your profile and the sign-out button instead of the sign-up form.
 
 ### Home — `index.html`
 The landing page. A three-slide Bootstrap hero carousel, a static title strip (Valorant / CS /
@@ -75,14 +75,14 @@ bar (game + sort), and a league table with team logos, played/won/lost, points a
 A reference database of real competitive players across Valorant, Counter-Strike and PUBG — not
 NextGen's own roster (the club has no real members). A filter bar (game + role + sort) and a grid
 of player cards with real photos, ratings, and achievements.
-- **Storage:** reads/writes `playerFilter` (`{game, role}`) in **localStorage** — your last filter
+- **Storage:** reads/writes `playersGame` in **localStorage** — the game division you last viewed
   is restored automatically on your next visit.
 - **API:** `$.getJSON('data/players.json')`, same pattern as rankings.
 
 ### Tournaments — `tournaments.html`
 Brackets, prize pools and results for the competitions the club follows. A status toolbar
 (All/Live/Upcoming/Completed) plus the shared filter bar, and a card grid with tournament art, a
-pulsing LIVE badge on active tournaments, and a link into `register.html` pre-filled with the
+pulsing LIVE badge on active tournaments, and a link into `signin.html` pre-filled with the
 tournament as context.
 - **Storage:** reads/writes `tournamentFilter` (`{status, game, sort}`) in **sessionStorage** — the
   active filter survives navigating between tabs on this page in the same browser tab, but a new
@@ -101,50 +101,52 @@ for example) without duplicating that tournament's detail.
      club's venue. This is the site's clearest "real HTTP request → JSON → rendered via jQuery"
      demonstration.
 
-### Registration — `register.html`
-Creates a member account, entirely in the browser. Full name, email, in-game name, password +
-confirmation, primary title (Valorant/CS/PUBG), experience level, and free-text notes. A query
-param (`?event=<id>`) can prefill context when linked from another page.
+### Sign In / Join / Profile — `signin.html`
+One page, three views, merged from the former `register.html` and `dashboard.html` in PR #2.
+A query param (`?event=<id>`) can prefill context when linked from another page.
+
+**Join** creates a member account entirely in the browser: full name, email, in-game name,
+password + confirmation, primary title (Valorant/CS/PUBG), experience level and free-text notes.
 - **Validation:** client-side and live. Every field is re-checked on each keystroke; the border
   turns **green** the moment the value is valid. The red error state is deliberately held back
   until you've left the field once (or pressed submit), so a half-typed email isn't flagged as
   wrong while you're still typing it. The password shows its three requirements as a checklist
   that ticks off as you meet them, and editing the password re-checks the confirmation box.
-- **Two states, one page:** with no account it shows the form; once the account exists it shows a
-  "Thank you for joining us" panel (artwork: `registerImgs/Joined.png`) with the membership
-  summary and a **Sign out** button. Sign out goes through `confirm()` first, then deletes the
-  stored account and returns you to a clean form.
-- **Storage:** two, deliberately different lifetimes:
+- Once the account exists you get a "Thank you for joining us" panel
+  (artwork: `registerImgs/Joined.png`) and a **Sign out** button, which goes through `confirm()`
+  first, then clears the stored account.
+
+**Sign In** signs an existing account back in on this browser.
+
+**Profile** is the member area — a monogram avatar, your name and email, and a mini-nav across
+three panels, deep-linkable as `signin.html#panel-favourites`:
+- **Personal info** — name, email, in-game name, member ID, primary title, experience and notes,
+  shown as read-only boxes. They are not editable inputs on purpose: there is no server to save an
+  edit to, so presenting them as editable would be a lie.
+- **Favourites** — your primary title and your favourite team (`favouriteTeam`, starred on the
+  rankings page).
+- **Tickets** — the tickets claimed on `tickets.html`, read back from `userTickets`.
+
+- **Storage:** three keys with deliberately different lifetimes:
   - `registerDraft` in **sessionStorage** — every keystroke is saved so a refresh never loses your
     half-finished form, but it's gone once the tab closes (it's meant to be transient). The
     password fields are excluded from the draft on purpose.
+  - `isLoggedIn` in **sessionStorage** — whether *this tab* is signed in. The account itself
+    persists; the session does not, so closing the browser doesn't leave someone else signed in.
   - `registrations` in **localStorage** — the account itself, meant to persist like a client-side
     stand-in for a real backend. The password is kept only as a short non-reversible digest;
     nothing readable is stored, and a real deployment would hash it server-side instead.
 - **API:** none — account creation is entirely client-side; there is no server to send it to.
 
-### Dashboard / Profile — `dashboard.html`
-Your profile. A monogram avatar, your name and email, a sign-out button, and a segmented mini-nav
-across three panels — deep-linkable as `dashboard.html#favourites` / `#storage`:
-- **Personal info** — name, email, in-game name, member ID, primary title, experience and notes,
-  shown as read-only boxes. They are not editable inputs on purpose: there is no server to save an
-  edit to, so presenting them as editable would be a lie.
-- **Favourites** — your primary title, your favourite team (`favouriteTeam`, starred on the
-  rankings page), plus tiles for favourite players and events. Those last two are
-  **placeholders**:
-  `players.html` and `events.html` have no star yet, so nothing can set them. The code already
-  reads `favouritePlayers` / `favouriteEvents` defensively, so the tiles start working the day
-  those pages ship — see `CLAUDE.md` §5 "reserved, not yet implemented".
-- **Storage** — the original dashboard: favourite club / membership / visitor-status tiles, a raw
-  table of every key in local and session storage with a plain-language explanation of each, your
-  account record, and a "clear everything stored" button.
-- **Storage:** reads all three storage types and **writes no preference** of its own — every value
-  shown here is owned and set by the page named next to it. This is intentional (see `CLAUDE.md`
-  §7): no page's script reads a variable defined by another page's script, so `dashboard.html`
-  re-reads each key independently from storage rather than depending on another page having run
-  first. The one write it performs is a deletion — signing out, the same clear `register.html`
-  does. The selected panel lives in the URL hash rather than storage, since a section is worth
-  deep-linking to but is not a preference.
+> **Note for the report:** the old dashboard had a fourth **Storage** panel that printed all three
+> storage technologies and their live contents in three tables. That panel did not survive the
+> merge. All three technologies are still used with defensible purposes, but nothing on the site
+> displays them any more — see `CLAUDE.md` §5.
+
+### Tickets — `tickets.html`
+Pick a division (Valorant / CS2 / PUBG) and quantity, and get a QR pass from `TicketsQR/`.
+- **Storage:** `userTickets` in **localStorage** — the claimed tickets, which `signin.html`'s
+  Tickets panel reads back. Persistent because a ticket should survive closing the browser.
 - **API:** none.
 
 ### About / Join Us — `about.html`
@@ -164,9 +166,11 @@ presence (Instagram post embed, plus links to Discord/X/Facebook).
 | Cookie | `returningVisitor` | index | 30 days | Suppresses the intro animation, shows welcome-back |
 | Local | `theme` | about (site-wide) | until cleared | Dark/light choice, read before first paint |
 | Local | `favouriteTeam` | rankings | until cleared | Highlights a team's row in the standings |
-| Local | `playerFilter` | players | until cleared | Restores your last-used filter |
-| Local | `registrations` | register (dashboard reads) | until cleared | The member account created on the join page |
-| Session | `registerDraft` | register | tab close | In-progress form, saved on every keystroke |
+| Local | `playersGame` | players | until cleared | Restores your last-viewed game division |
+| Local | `registrations` | signin | until cleared | The member account created on the join view |
+| Local | `userTickets` | tickets (signin reads) | until cleared | Tickets claimed, shown again in the profile |
+| Session | `registerDraft` | signin | tab close | In-progress form, saved on every keystroke |
+| Session | `isLoggedIn` | signin | tab close | Whether this tab is signed in |
 | Session | `tournamentFilter` | tournaments | tab close | Active filter + sort |
 | Session | `eventView` | events | tab close | List or calendar view |
 
@@ -198,7 +202,7 @@ so in its own `_source` field.
 ├── css/
 │   ├── style.css          general file: tokens, shared shell, and anything used by
 │   │                        3+ pages — no hardcoded colours in pages
-│   └── index.css, rankings.css, events.css, dashboard.css, register.css
+│   └── index.css, rankings.css, events.css, about.css, signin.css, tickets.css
 │                            page-exclusive styles — one file per developer's page,
 │                            see CLAUDE.md section 7
 ├── js/
@@ -210,7 +214,7 @@ so in its own `_source` field.
 ├── data/*.json             content loaded at runtime with $.getJSON
 ├── vendor/                jQuery, Bootstrap 5, Bootstrap Icons (local copies)
 ├── fonts/                  Unbounded + Sora (self-hosted for offline use)
-└── GameLogos/ TeamLogo/ TournamentThumbnail/ PlayerPhotos/ registerImgs/
+└── GameLogos/ TeamLogo/ TournamentThumbnail/ PlayerPhotos/ registerImgs/ TicketsQR/
     carousel*.png Video1.mp4
 ```
 

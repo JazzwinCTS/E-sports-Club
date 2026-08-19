@@ -21,7 +21,7 @@ exists for anyone who wants it, but it's never the framing for the club as a who
 aged 16–18, split into three divisions (Valorant / CS2 / PUBG) contested by **eight member teams**
 (VYNE, KOVA, RIFT, ZERA, AXEN, MIRA, TALO, BRIX). This is *one event the club runs*, not what the
 club is — `players.html`, `tournaments.html` and `rankings.html` are all scoped to it, while
-`index.html`, `about.html` and `register.html` speak for the club and stay open to everyone. Don't
+`index.html`, `about.html` and `signin.html` speak for the club and stay open to everyone. Don't
 let the championship's 16–18 eligibility leak into the club's own copy.
 
 **Everything is fictional — including the clubs and players.** The eight orgs, their 112 players
@@ -95,17 +95,20 @@ duplicating content. This rule exists to prevent overlap — please preserve it.
 | # | File | Page | Owns exclusively | Storage | API / Plugin |
 |---|---|---|---|---|---|
 | 1 | `index.html` | Home | Hero, carousel, aggregated previews, stream embed | Cookie `returningVisitor` | Stream iframe |
-| 2 | `dashboard.html` | Dashboard / Profile | Profile: mini nav across Personal info / Favourites / Storage | All three, read-only (plus sign out, which deletes) | — |
+| 2 | `signin.html` | Sign In / Join / Profile | Sign-in, the sign-up form + live validation, and the member profile: mini nav across Personal info / Favourites / Tickets | Local `registrations` + Session `registerDraft`, `isLoggedIn` | — |
 | 3 | `rankings.html` | Team Rankings | Team standings, W/L, points, team profiles | Local `favouriteTeam` | **API** — standings |
-| 4 | `players.html` | Player Profiles | Individual profiles, stats, achievements | Local `playerFilter` | — |
+| 4 | `players.html` | Player Profiles | Individual profiles, stats, achievements | Local `playersGame` | — |
 | 5 | `tournaments.html` | Tournaments | Brackets, results, prize pools | Session `tournamentFilter` | Share buttons |
 | 6 | `events.html` | Event Schedule | Calendar: practices, workshops, socials | Session `eventView` | **API** — venue/weather |
-| 7 | `register.html` | Registration | Sign-up form + live client-side validation, the member account, sign out | Session draft + Local account | — |
+| 7 | `tickets.html` | Tickets | Ticket selection and the QR pass per division | Local `userTickets` | — |
 | 8 | `about.html` | About / Join Us | Club identity, committee, concept gallery | Local `theme` (site-wide) | **Social feed embed** |
 
-*Social feed embed, fulfilled two ways: the footer's X/Facebook/Discord plugins are shared markup present on
-every page including this one, and this page additionally embeds a real Instagram post (§10) since Instagram
-has no small no-auth footer widget.*
+*Social feed embed: the footer's X / Facebook / Discord plugins are shared markup present on every page
+including this one, so the graded requirement is met site-wide. **`about.html` used to add a real Instagram
+post embed on top of that, and no longer does** — the events/about rework replaced it with a "Stay Connected"
+card of plain links, and the footer's Instagram icon now anchors to that section. Instagram has no small
+no-auth footer widget (§10), so if a genuine Instagram *embed* is wanted back, it has to be a post embed on
+this page again.*
 
 ### Content boundaries — do not blur these
 
@@ -114,8 +117,10 @@ has no small no-auth footer widget.*
 - **Tournaments vs Events** — tournaments are *competitions with outcomes* (brackets, results).
   Events are *scheduled activities* (practice, workshops, socials). A tournament may appear on the
   events calendar as a dated entry **linking to** `tournaments.html` — never as duplicated detail.
-- **Registration** lives only on `register.html`. Other pages link to it with a query param to
-  prefill context (e.g. `register.html?event=valorant-open`).
+- **Registration, sign-in and the profile all live on `signin.html`.** PR #2 merged the old
+  `register.html` and `dashboard.html` into this one page (three views: Sign In, Join, Profile).
+  Other pages link to it with a query param to prefill context
+  (e.g. `signin.html?event=valorant-open`, parsed by `js/signin.js`).
 - **Games** is deliberately *not* a page. Game titles are a filter dimension on rankings, players,
   and tournaments.
 - **Gallery** is a section inside `about.html`, not its own page.
@@ -130,26 +135,29 @@ Implement exactly these keys. camelCase. Agreed group-wide.
 |---|---|---|---|---|---|
 | Local | `theme` | site-wide | `"dark"` \| `"light"` | until cleared | Colour scheme. Read before first paint to avoid a flash of wrong theme. |
 | Local | `favouriteTeam` | rankings | `"VYNE"` | until cleared | Highlights the team's row in the standings (does not reorder the table). The homepage preview reads and writes the same key. |
-| Local | `playerFilter` | players | `{"game":"Valorant","role":"Duelist"}` | until cleared | Last-used filter, restored next visit. |
-| Local | `registrations` | register, dashboard | `[{"id":"REG…","fullName":"…","passwordHash":"…"}]` | until cleared | The member account created on the join page. Client-side store in place of a backend; still an array so `dashboard.html` reads it unchanged, and `register.html` treats the last entry as the account signed in on this browser. Signing out removes the key. The password is stored only as a short non-reversible digest — never in readable form, and never written to `registerDraft`. |
-| Session | `registerDraft` | register | `{"step":2,"name":"…"}` | tab close | Partial form data, written on field change. |
+| Local | `playersGame` | players | `"valorant"` | until cleared | Last-viewed game division, restored next visit. (The spec originally named this `playerFilter` and described a `{game, role}` object; `js/players.js` shipped `playersGame` holding just the division, so the table follows the code. Nothing writes `playerFilter`.) |
+| Local | `registrations` | signin | `[{"id":"REG…","fullName":"…","passwordHash":"…"}]` | until cleared | The member account created on the join view. Client-side store in place of a backend; an array, with the last entry treated as the account on this browser. Signing out removes the key. The password is stored only as a short non-reversible digest — never in readable form, and never written to `registerDraft`. |
+| Local | `userTickets` | tickets, signin | `[{"division":"valorant","qty":2,…}]` | until cleared | Tickets the visitor has claimed. `tickets.html` writes them; `signin.html`'s Tickets panel reads them back. |
+| Session | `registerDraft` | signin | `{"step":2,"name":"…"}` | tab close | Partial form data, written on field change. Cleared once the account is created. |
+| Session | `isLoggedIn` | signin | `"true"` | tab close | Whether this tab is signed in. Deliberately session-scoped: the *account* persists in `registrations`, but a new tab starts signed out, so closing the browser does not leave someone else signed in. |
 | Session | `tournamentFilter` | tournaments | `"valorant"` | tab close | Active filter + sort, survives in-tab navigation. |
 | Session | `eventView` | events | `"calendar"` \| `"list"` | tab close | Selected view and month. |
 | Cookie | `returningVisitor` | index | `"true"` | 30 days | Suppresses intro animation, shows welcome-back. `path=/; SameSite=Lax` |
 
-**Reserved, not yet implemented.** `dashboard.html`'s Favourites tab shows four categories.
-Two of them — favourite **players** and favourite **events** — have no way to be set yet: those
-pages are still to be built by the rest of the team, so the tiles render a "coming soon"
-placeholder. `js/dashboard.js` already reads `favouritePlayers` and `favouriteEvents` from
-localStorage defensively (array of display names) so the tiles light up the day those pages ship.
-**That shape is a proposal, not an agreed key** — whoever builds the star on `players.html` /
-`events.html` owns the decision and should add the real row to the table above first. Nothing in
-the project writes either key today.
+**The storage *display* no longer exists.** The old `dashboard.html` had a Storage panel that
+printed all three technologies and their live contents in three tables — the visible proof for the
+15-mark band in §3. PR #2 replaced that page with `signin.html`, whose panels are Personal info /
+Favourites / **Tickets**. All three technologies are still *used* with defensible purposes (table
+above), but nothing on the site now *shows* them. If the report or demo needs that evidence back,
+adding a fourth panel to `signin.html` is the cheapest fix — the old markup is in
+`dashboard.html` at commit `d9ccaed`.
 
 **Signed-in state is site-wide.** Once `registrations` holds an account, `js/main.js` relabels the
-navbar's "Join" link to the member's email address on all 8 pages. The href stays `register.html`
-— that page shows the membership panel and the sign-out button once an account exists. Every page
-reads the key itself rather than depending on `register.js` having run (§7).
+navbar's "Join" link to the member's email address on all 8 pages. The href stays `signin.html`
+— that page shows the profile view and the sign-out button once an account exists. Every page
+reads the key itself rather than depending on `signin.js` having run (§7). **The selector in
+`main.js` matches on `[href="signin.html"]`**, so renaming that page again silently breaks the
+indicator on all 8 pages; it did exactly that when PR #2 first landed.
 
 ### Why each technology (this reasoning is assessed in Q&A)
 
@@ -236,8 +244,8 @@ Pages are developed independently by four people. Consistency must come from sha
 
 ```
 /
-├── index.html  dashboard.html  rankings.html  players.html
-├── tournaments.html  events.html  register.html  about.html
+├── index.html  signin.html  rankings.html  players.html
+├── tournaments.html  events.html  tickets.html  about.html
 ├── css/
 │   ├── style.css        ← general file: tokens, shell (nav/footer/cookie banner), base,
 │   │                       buttons/cards, and any component used by 3+ pages or by a
@@ -247,9 +255,10 @@ Pages are developed independently by four people. Consistency must come from sha
 │   ├── rankings.css      ← exclusive to rankings.html (leaderboard/medals/favourite —
 │   │                       index.html links this too, see note below)
 │   ├── events.css        ← exclusive to events.html (event rows, calendar, weather panel)
-│   ├── dashboard.css     ← exclusive to dashboard.html (stat tiles, storage-table rows)
-│   └── register.css      ← exclusive to register.html (form controls, live validity
-│                           states, password checklist, joined/thank-you panel)
+│   ├── about.css         ← exclusive to about.html (hero video, story, committee)
+│   ├── signin.css        ← exclusive to signin.html (form controls, live validity states,
+│   │                       password checklist, profile sidebar + panels)
+│   └── tickets.css       ← exclusive to tickets.html (ticket cards, QR pass, summary)
 ├── js/
 │   ├── main.js          ← site-wide only: nav, theme toggle, cookie banner, footer widget
 │   ├── storage.js       ← shared get/set helpers for all three storage types
@@ -259,41 +268,39 @@ Pages are developed independently by four people. Consistency must come from sha
 ├── data/                ← local JSON for API fetches
 ├── vendor/              ← jQuery, Bootstrap 5, Bootstrap Icons (local, for offline)
 ├── fonts/               ← Unbounded + Sora woff2 (self-hosted, see §11)
-└── GameLogos/ TeamLogo/ TournamentThumbnail/ registerImgs/ carousel*.png Video1.mp4
+└── GameLogos/ TeamLogo/ TournamentThumbnail/ registerImgs/ TicketsQR/ carousel*.png Video1.mp4
 ```
 
 `render.js` and `filter.js` are **shared components**, not page scripts — they exist so a
 tournament card and a filter row are identical everywhere they appear. Treat them like
 `style.css`: change them once, and every page that uses them changes together.
 
-**CSS modularity — the five pages above are treated as two developer pairs (Home+Rankings,
-Events+Dashboard) plus Register, who never need to touch `style.css` or each other's page
-file for their own page's design:**
+**CSS modularity — every page now has its own exclusive stylesheet, so no one needs to touch
+`style.css` or another page's file for their own page's design:**
 
-- A rule only belongs in `style.css` if it's shell/tokens/base, **or** if a page outside
-  this set of five (players/tournaments/about) also depends on it. Those three pages are
-  untouched by this split and still only link `style.css` — moving something they use
-  would break them.
-- **Forms are register-exclusive.** `.nx-field`/`.nx-label`/`.nx-input`/`.nx-select`/
-  `.nx-textarea`/`.nx-error` moved out of `style.css` into `register.css`, because
-  `register.html` is the only page in the site that renders a form (grep those class names
-  across `*.html` and `js/*.js` before assuming otherwise). If a second page ever grows a
-  form, move those base control rules back into `style.css` and leave only the `reg-`
-  classes behind. The `nx-` prefix on them marks the design system, not the file they
-  live in, so they kept their names when they moved.
-- `index.css`/`rankings.css`/`events.css`/`dashboard.css`/`register.css` hold only what's
-  genuinely exclusive to that one page. `index.html` is the one exception: it links `rankings.css`
-  as well as its own `index.css`, because its homepage "Top of the table" preview reuses
-  `js/render.js`'s `boardRow()` — the exact same component rankings.html's full
-  leaderboard renders — so the styling has to be identical. That's only acceptable because
-  both consuming pages belong to the same developer pair; never reach into a page file
-  owned by the *other* pair.
-- `events.js`/`dashboard.js` render dedicated classes (`ev-*`, `dash-*`) instead of inline
-  `style="..."` — inline styles were the main reason those two pages had nothing of their
-  own to put in a page-exclusive file in the first place.
-- Before adding a new component class: if it's only ever used by one of these four pages,
-  it goes in that page's file. If a page outside this set needs it too, it goes in
-  `style.css`. Don't guess — grep for the class across `*.html` and `js/*.js` first.
+- A rule only belongs in `style.css` if it's shell/tokens/base, **or** if several pages
+  genuinely depend on it. `players.css` and `tournaments.css` belong to the players /
+  tournaments pair; `signin.css` and `tickets.css` arrived with PR #2.
+- **Forms are signin-exclusive.** `.nx-field`/`.nx-label`/`.nx-input`/`.nx-select`/
+  `.nx-textarea`/`.nx-error` live in `signin.css` (they moved there with the merge, from
+  the old `register.css`), because `signin.html` is the only page that renders a form —
+  grep those class names across `*.html` and `js/*.js` before assuming otherwise. If a
+  second page ever grows a form, move those base control rules back into `style.css`. The
+  `nx-` prefix marks the design system, not the file they live in.
+- Each page file holds only what's genuinely exclusive to that page. `index.html` is the one
+  exception: it links `rankings.css` as well as its own `index.css`, because its homepage
+  "Top of the table" preview reuses `js/render.js`'s `boardRow()` — the exact same component
+  rankings.html's full leaderboard renders — so the styling has to be identical.
+- Page scripts render dedicated classes (`ev-*`, `dash-*`, `ticket-*`) instead of inline
+  `style="..."` — inline styles were the main reason some pages had nothing of their own to
+  put in a page-exclusive file in the first place.
+- Before adding a new component class: if only one page ever uses it, it goes in that page's
+  file. If several pages need it, it goes in `style.css`. Don't guess — grep for the class
+  across `*.html` and `js/*.js` first.
+- **A page file must not depend on a utility `style.css` no longer defines.** `signin.html`
+  arrived using `.nx-row`, `.nx-between` and `.nx-grid--2`, which §10's Bootstrap conversion
+  had already deleted, so five of its containers rendered with no layout at all. Layout comes
+  from Bootstrap utilities in the markup now — see §10.
 
 Images stayed in the asset folders they arrived in rather than moving to `img/` — the paths
 are already referenced throughout, so renaming them now buys nothing.
@@ -347,7 +354,8 @@ their presence as license to re-add League of Legends / Dota 2 / EA SPORTS FC co
 | `TeamLogo/` | Team_Liquid, Natus_Vincere, Team_Vitality, Virtus.Pro, Team_Falcons, Faze_Clan, Team_Spirit, Aurora_Gaming, AG.AL, Fnatic, Sentinels **in active use**; T1, GenG, Team_Vision present but unreferenced (their teams were League/Dota-only, dropped with the scope) | Club badges in the rankings leaderboard / team profile cards. **NextGen E-Sports has no logo file** — render its identity as a styled CSS wordmark/emblem, not an `<img>` |
 | `PlayerPhotos/` | 10 real headshots **in active use**, one per `data/players.json` entry; 10 more (League/Dota/FC players dropped with the scope) present but unreferenced | Player cards on `players.html` (`nx-avatar--photo`); falls back to a generated monogram if a player has no `photo` field. Sourced once via Liquipedia's `action=parse` infobox image (§6), not hotlinked |
 | `TournamentThumbnail/` | valorantTournament, CS2Tournament, pubgTournament **in active use**; LOLTournament, dota2Tournament, FC26Tournament present but unreferenced | Card header art on `tournaments.html`; linked-event image when a tournament appears on `events.html`'s calendar |
-| `registerImgs/` | `Joined.png` — celebratory group artwork | Background of `register.html`'s "Thank you for joining us" panel, behind a dark scrim in both themes. Set in `css/register.css`, not as an `<img>`, so it stays decorative and needs no alt text |
+| `registerImgs/` | `Joined.png` — celebratory group artwork | Background of `signin.html`'s "Thank you for joining us" panel, behind a dark scrim in both themes. Set in `css/signin.css`, not as an `<img>`, so it stays decorative and needs no alt text |
+| `TicketsQR/` | `valorant-qr.jpg`, `cs2-qr.jpg`, `pubg-qr.jpg` | The QR pass shown per division on `tickets.html` |
 | `carousel.png`, `carousel1.png`, `carousel2.png` | real event/gameplay photography | Homepage hero carousel (3 slides) |
 | `Video1.mp4` | real event footage | `about.html` hero video, framed like `design-refs/About.png` |
 
@@ -492,16 +500,18 @@ staying opaque when sticky over scrolled content. 1px bottom border at low-opaci
 - **players.html** — no dedicated design ref — a real player database (e.g. s1mple, ZywOo, TenZ, Derke),
   sourced from a Liquipedia snapshot (§6): real name, country, current team/role, achievements. Reuses the
   shared card/list patterns from §11. Not NextGen's own roster — the club has no real members (§1).
-- **dashboard.html** — a profile page, taking the *idea* of `design-refs/profile.png` (title + subtitle,
-  sign-out top-right, a segmented pill mini-nav above one big panel) without copying its layout or its
-  light palette: the pill is accent-filled on our dark surface, the identity block gains a hexagon
-  monogram avatar reusing `.nx-avatar`, and the panels are Personal info / Favourites / Storage. The
-  Storage panel is where the whole original dashboard lives — the three storage tables are the graded
-  §3 requirement and must not be dropped in a redesign. The active panel is hash-linked
-  (`dashboard.html#favourites`), deliberately **not** stored: a section is worth deep-linking to but is
-  not a preference, so it does not take a storage key.
-- **events.html, register.html** — no dedicated design ref; reuse the shared shell + the
-  card/list/table patterns above with the same tokens.
+- **signin.html** — three views in one page: Sign In, Join (the form) and Profile. The profile takes
+  the *idea* of `design-refs/profile.png` (title + subtitle, sign-out top-right, a mini-nav beside one
+  big panel) without copying its layout or its light palette. Its panels are Personal info /
+  Favourites / Tickets, hash-linked (`signin.html#panel-favourites`) and deliberately **not** stored:
+  a section is worth deep-linking to but is not a preference, so it takes no storage key. Its sidebar
+  is a flex column that turns into a horizontal scroller below `768px` — give any new child there an
+  explicit width, since `align-items: flex-start` makes children fit-content rather than stretch (§5).
+  **The old dashboard's Storage panel was dropped here** — see the note in §5 before assuming the
+  three storage tables still exist somewhere.
+- **tickets.html, events.html** — no dedicated design ref; reuse the shared shell + the
+  card/list/table patterns above with the same tokens. `tickets.html` pairs each division with a QR
+  pass from `TicketsQR/` and writes the `userTickets` key that `signin.html` reads back.
 
 ---
 

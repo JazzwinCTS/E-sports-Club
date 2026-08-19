@@ -39,7 +39,8 @@ var NXStore = (function () {
   }
 
   return {
-    /* ---- localStorage: theme, favouriteTeam, playerFilter, registrations -- */
+    /* ---- localStorage: theme, favouriteTeam, playersGame, registrations,
+       userTickets ------------------------------------------------------- */
     local: {
       get: function (key, fallback) {
         var v = safeGet(window.localStorage, key);
@@ -87,12 +88,18 @@ var NXStore = (function () {
       }
     },
 
-    /* Wipe everything this site owns — used by the cookie preferences modal. */
+    /* Wipe everything this site owns — used by the cookie preferences modal.
+       Keep this list in step with the table in CLAUDE.md section 5: it listed
+       a `playerFilter` key that nothing ever wrote (players.js uses
+       `playersGame`), while `userTickets` and `isLoggedIn` arrived later and
+       were never added — so "Decline & clear" was leaving real user data
+       behind and deleting a key that did not exist. */
     clearAll: function () {
-      ['theme', 'favouriteTeam', 'playerFilter', 'registrations'].forEach(function (k) {
-        safeRemove(window.localStorage, k);
-      });
-      ['registerDraft', 'tournamentFilter', 'eventView'].forEach(function (k) {
+      ['theme', 'favouriteTeam', 'playersGame', 'registrations', 'userTickets']
+        .forEach(function (k) {
+          safeRemove(window.localStorage, k);
+        });
+      ['registerDraft', 'isLoggedIn', 'tournamentFilter', 'eventView'].forEach(function (k) {
         safeRemove(window.sessionStorage, k);
       });
       NXStore.cookie.remove('returningVisitor');
