@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign In & Dashboard — NextGen E-Sports</title>
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/signin.css">
+    <script>
+        (function () {
+            try {
+                var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
+                document.documentElement.setAttribute('data-theme', t);
+            } catch (e) { }
+        })();
+    </script>
+</head>
+
+<body>
+    <a class="nx-skip" href="#main">Skip to content</a>
+
+    <header class="nx-nav navbar navbar-expand-lg p-0">
+        <nav class="nx-nav__inner container-fluid" aria-label="Primary">
+            <a class="nx-wordmark navbar-brand" href="index.html">
+                <span class="nx-wordmark__mark">N</span>
+                <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>
+            </a>
+
+            <div class="nx-nav__actions d-flex align-items-center gap-2 ms-auto order-lg-last">
+                <button class="nx-icon-btn" id="themeToggle" type="button" aria-label="Switch theme">
+                    <i class="bi bi-sun" aria-hidden="true"></i>
+                </button>
+                <button class="nx-icon-btn navbar-toggler" id="navToggle" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navLinks" aria-controls="navLinks" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <i class="bi bi-list" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navLinks">
+                <ul class="navbar-nav nx-nav__links ms-lg-auto">
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="rankings.html">Rankings</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="players.html">Players</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="tournaments.html">Tournaments</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="events.html">Events</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="tickets.html">Tickets</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nx-nav__link nav-link" href="signin.html">Join</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main" class="page-body">
+        <section class="nx-section">
+            <div class="nx-shell">
+
+                <!-- =========================================================
+            1. SIGN IN PANEL (Shown by default)
+            ========================================================= -->
+                <div id="loginPanel">
+                    <div class="nx-section-head">
+                        <p class="nx-eyebrow">Welcome Back</p>
+                        <h1 class="nx-mb-0">Sign In</h1>
+                        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
+                            Sign in to your NextGen account to manage your profile, view your tickets, and update your
+                            preferences.
+                        </p>
+                    </div>
+
+                    <div style="max-width: 500px; margin: 0 auto;">
+                        <form class="nx-card nx-card--flat" id="loginForm" style="margin-bottom: 24px;" novalidate>
+                            <p class="nx-eyebrow">Access your account</p>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="loginEmail">Email</label>
+                                <div class="reg-control">
+                                    <input class="nx-input" id="loginEmail" name="loginEmail" type="email"
+                                        autocomplete="email" required>
+                                    <span class="reg-mark" aria-hidden="true"></span>
+                                </div>
+                                <span class="nx-error" id="loginEmailError"></span>
+                            </div>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="loginPassword">Password</label>
+                                <div class="reg-control">
+                                    <input class="nx-input" id="loginPassword" name="loginPassword" type="password"
+                                        autocomplete="current-password" required>
+                                    <span class="reg-mark" aria-hidden="true"></span>
+                                </div>
+                                <span class="nx-error" id="loginPasswordError"></span>
+                            </div>
+
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <button class="nx-btn nx-btn--primary" type="submit">
+                                    <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Sign In
+                                </button>
+                            </div>
+                        </form>
+
+                        <aside>
+                            <div class="nx-card nx-card--flat">
+                                <p class="nx-eyebrow">New to NextGen?</p>
+                                <p class="nx-muted" style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                                    If you don't have an account yet, you can create one in seconds. Join the club to
+                                    participate in tournaments, join scrims, and track your stats.
+                                </p>
+                                <button class="nx-btn nx-btn--ghost" type="button" id="showJoinBtnAside"
+                                    style="width: 100%;">
+                                    Sign up now
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+
+                <!-- =========================================================
+            2. SIGN UP PANEL (Hidden by default)
+            ========================================================= -->
+                <div id="joinPanel" hidden>
+                    <div class="nx-section-head">
+                        <p class="nx-eyebrow">Membership</p>
+                        <h1 class="nx-mb-0">Join NextGen</h1>
+                        <p class="nx-muted" style="max-width:62ch;margin-top:14px">
+                            Open to amateur players and students across Valorant, Counter-Strike and PUBG — no
+                            experience required. Fill this in and your member account is created straight away.
+                        </p>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-lg-2 g-4 align-items-start">
+                        <div class="col">
+                        <form class="nx-card nx-card--flat" id="registerForm" novalidate>
+                            <p class="nx-eyebrow">Create your account</p>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="fullName">Full name</label>
+                                <div class="reg-control">
+                                    <input class="nx-input" id="fullName" name="fullName" type="text"
+                                        autocomplete="name" aria-describedby="fullNameError" required>
+                                    <span class="reg-mark" aria-hidden="true"></span>
+                                </div>
+                                <span class="nx-error" id="fullNameError"></span>
+                            </div>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="email">Email</label>
+                                <div class="reg-control">
+                                    <input class="nx-input" id="email" name="email" type="email" autocomplete="email"
+                                        aria-describedby="emailError" required>
+                                    <span class="reg-mark" aria-hidden="true"></span>
+                                </div>
+                                <span class="nx-error" id="emailError"></span>
+                            </div>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="ign">In-game name</label>
+                                <div class="reg-control">
+                                    <input class="nx-input" id="ign" name="ign" type="text" autocomplete="nickname"
+                                        maxlength="16" aria-describedby="ignError" required>
+                                    <span class="reg-mark" aria-hidden="true"></span>
+                                </div>
+                                <span class="nx-error" id="ignError"></span>
+                            </div>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="password">Password</label>
+                                <div class="reg-control">
+                                    <input class="nx-input" id="password" name="password" type="password"
+                                        autocomplete="new-password" aria-describedby="passwordRules passwordError"
+                                        required>
+                                    <span class="reg-mark" aria-hidden="true"></span>
+                                </div>
+                                <ul class="reg-rules" id="passwordRules">
+                                    <li class="reg-rule" data-rule="length">8 characters or more</li>
+                                    <li class="reg-rule" data-rule="letter">A letter</li>
+                                    <li class="reg-rule" data-rule="number">A number</li>
+                                </ul>
+                                <span class="nx-error" id="passwordError"></span>
+                            </div>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="confirm">Confirm password</label>
+                                <div class="reg-control">
+                                    <input class="nx-input" id="confirm" name="confirm" type="password"
+                                        autocomplete="new-password" aria-describedby="confirmError" required>
+                                    <span class="reg-mark" aria-hidden="true"></span>
+                                </div>
+                                <span class="nx-error" id="confirmError"></span>
+                            </div>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="game">Primary title</label>
+                                <select class="nx-select" id="game" name="game" aria-describedby="gameError" required>
+                                    <option value="">Choose a title…</option>
+                                    <option value="valorant">Valorant</option>
+                                    <option value="cs2">Counter-Strike 2</option>
+                                    <option value="pubg">PUBG</option>
+                                </select>
+                                <span class="nx-error" id="gameError"></span>
+                            </div>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="level">Experience</label>
+                                <select class="nx-select" id="level" name="level">
+                                    <option value="casual">Casual — I just want to play</option>
+                                    <option value="improving">Improving — I want structured practice</option>
+                                    <option value="competitive">Competitive — I want a roster spot</option>
+                                </select>
+                            </div>
+
+                            <div class="nx-field">
+                                <label class="nx-label" for="notes">Anything else?</label>
+                                <textarea class="nx-textarea" id="notes" name="notes"
+                                    placeholder="Availability, past teams, what you want out of the club…"></textarea>
+                            </div>
+
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <button class="nx-btn nx-btn--primary" type="submit">
+                                    <i class="bi bi-person-plus" aria-hidden="true"></i> Create my account
+                                </button>
+                                <button class="nx-btn nx-btn--ghost" type="button" id="showLoginBtn">Sign in
+                                    instead</button>
+                                <button class="nx-btn nx-btn--ghost" type="button" id="clearDraft">Clear form</button>
+                            </div>
+                        </form>
+                        </div>
+
+                        <div class="col">
+                        <aside>
+                            <div class="nx-card nx-card--flat">
+                                <p class="nx-eyebrow">What happens next</p>
+                                <ol class="nx-muted reg-steps">
+                                    <li>Your account is created the moment the form validates.</li>
+                                    <li>A committee member reviews it and says hello.</li>
+                                    <li>You are invited to the next social or scrim night to meet everyone.</li>
+                                    <li>Want a more competitive scene? Optional tryouts run periodically.</li>
+                                    <li>Otherwise, you are straight into the community — nobody is turned away.</li>
+                                </ol>
+                            </div>
+                        </aside>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =========================================================
+    3. PROFILE / DASHBOARD PANEL
+    ========================================================= -->
+        <section class="nx-section">
+            <div class="nx-shell">
+
+                <div class="dash-head">
+                    <div class="dash-head__id">
+                        <div class="nx-avatar dash-avatar" id="profileAvatar" aria-hidden="true">?</div>
+                        <div>
+                            <p class="nx-eyebrow">Your account</p>
+                            <h1 class="nx-mb-0">Profile</h1>
+                            <p class="nx-muted dash-head__sub" id="profileSub">
+                                Manage your details, your favourites, and everything this site remembers about you — all
+                                in one place.
+                            </p>
+                        </div>
+                    </div>
+                    <button class="nx-btn nx-btn--ghost nx-btn--sm dash-head__out" id="signOut" type="button" hidden>
+                        <i class="bi bi-box-arrow-right" aria-hidden="true"></i> Sign out
+                    </button>
+                </div>
+
+                <div class="dash-layout">
+                    <!-- Sidebar -->
+                    <aside class="dash-sidebar">
+                        <nav class="dash-nav" aria-label="Dashboard sections">
+                            <a href="#panel-personal" class="dash-nav__link is-active">
+                                <i class="bi bi-person" aria-hidden="true"></i> Personal info
+                            </a>
+                            <a href="#panel-favourites" class="dash-nav__link">
+                                <i class="bi bi-star" aria-hidden="true"></i> Favourites
+                            </a>
+                            <a href="#panel-tickets" class="dash-nav__link">
+                                <i class="bi bi-ticket-perforated" aria-hidden="true"></i> Tickets
+                            </a>
+                        </nav>
+                    </aside>
+
+                    <!-- Scrollable Content -->
+                    <div class="dash-content">
+                        <!-- Personal Info -->
+                        <div class="nx-card dash-panel" id="panel-personal">
+                            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                                <h2 class="dash-panel__title">Personal information</h2>
+                                <p class="nx-muted dash-panel__lead">
+                                    Your core details, exactly as they were entered when this account was created.
+                                </p>
+                            </div>
+                            <hr class="dash-rule">
+                            <div id="personalFields"></div>
+                        </div>
+
+                        <!-- Favourites -->
+                        <div class="nx-card dash-panel" id="panel-favourites">
+                            <h2 class="dash-panel__title">Favourites</h2>
+                            <p class="nx-muted dash-panel__lead">
+                                Manage your primary game title and view teams starred from the rankings page.
+                            </p>
+                            <hr class="dash-rule">
+                            <div class="dash-favs" id="favFields"></div>
+                        </div>
+
+                        <!-- Tickets -->
+                        <div class="nx-card dash-panel" id="panel-tickets">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                                <div>
+                                    <h2 class="dash-panel__title nx-mb-0">Your Tickets</h2>
+                                    <p class="nx-muted dash-panel__lead mb-0">
+                                        Manage your registered events and view your entry passes.
+                                    </p>
+                                </div>
+
+                                <div class="ticket-status-filter">
+                                    <button type="button" class="ticket-tab-btn is-active" id="tabValidTickets">
+                                        Valid <span class="badge" id="validTicketCount">0</span>
+                                    </button>
+                                    <button type="button" class="ticket-tab-btn" id="tabExpireTickets">
+                                        Expire <span class="badge" id="expireTicketCount">0</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <hr class="dash-rule">
+
+                            <div class="dash-tickets-scroll">
+                                <div id="validTicketsGrid" class="dash-tickets-grid"></div>
+                                <div id="expireTicketsGrid" class="dash-tickets-grid" style="display: none;"></div>
+
+                                <div id="ticketPassModal" class="ticket-modal-backdrop" hidden>
+                                    <div class="ticket-modal-content">
+                                        <button type="button" id="closePassModal" class="ticket-modal-close"
+                                            aria-label="Close Pass">&times;</button>
+                                        <div id="passCardBody"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER (identical on all 8 pages) ================= -->
+    <footer class="nx-footer">
+        <div class="nx-shell container-fluid">
+            <div class="nx-footer__top">
+                <div class="nx-footer__brand">
+                    <div class="nx-footer__namerow d-flex flex-wrap align-items-center justify-content-between">
+                        <a class="nx-wordmark" href="index.html">
+                            <span class="nx-wordmark__mark">N</span>
+                            <span class="nx-wordmark__text">ext<span
+                                    class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
+                        </a>
+
+                        <div class="nx-social d-flex flex-wrap align-items-center">
+                            <!-- X: official follow button widget -->
+                            <div class="nx-social__widget d-flex align-items-center">
+                                <img src="socials/x.png" alt="" class="nx-social__icon">
+                                <a href="https://x.com/nextGen_eSport" class="twitter-follow-button"
+                                    data-show-count="false" data-size="large" data-dnt="true">Follow @nextGen_eSport</a>
+                            </div>
+                            <!-- Facebook: official page plugin -->
+                            <div class="nx-social__widget d-flex align-items-center">
+                                <img src="socials/facebook.png" alt="" class="nx-social__icon">
+                                <iframe title="NextGen E-Sports on Facebook"
+                                    src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fnextgenesports%2F&tabs=&width=280&height=70&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+                                    width="280" height="70" style="border:none;overflow:hidden" scrolling="no"
+                                    frameborder="0" allowfullscreen="true"
+                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                            </div>
+                            <!-- Discord: live member count via a real jQuery REST call -->
+                            <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/vibes-tribe-719490731047125014"
+                                target="_blank" rel="noopener">
+                                <img src="socials/discord.png" alt="" class="nx-social__icon">
+                                <span>Discord</span>
+                                <span class="nx-discord__count">…</span>
+                            </a>
+                            <!-- Instagram: anchors to the real post embed on the About page -->
+                            <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
+                                <img src="socials/instagram.png" alt="" class="nx-social__icon">
+                            </a>
+                        </div>
+                    </div>
+
+                    <p class="nx-footer__tag">
+                        A community esports team for Valorant, Counter-Strike and PUBG &mdash; open to
+                        players of every level, and host of the 2026 NextGen Youth Championship.
+                    </p>
+                </div>
+            </div>
+
+            <div class="nx-footer__bottom d-flex flex-wrap align-items-center">
+                <span>&copy; 2026&ndash;<span id="copyYear">2026</span> NextGen E-Sports</span>
+                <button class="nx-linkbtn" id="cookiePrefs" type="button">Cookie Preferences</button>
+                <a href="about.html">About</a>
+                <a href="signin.html">Join us</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ===================== COOKIE CONSENT BANNER ===================== -->
+    <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+        <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
+        <p class="nx-muted nx-mb-0" style="font-size:.86rem">
+            We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
+            here before, plus local and session storage for your theme, filters and saved entries.
+            Nothing is sent anywhere — this site has no server.
+        </p>
+        <div class="nx-cookie__actions">
+            <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
+            <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp;
+                clear</button>
+        </div>
+    </div>
+
+    <script src="vendor/jquery-3.7.1.min.js"></script>
+    <script src="vendor/bootstrap.bundle.min.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/signin.js"></script>
+</body>
+
+</html>

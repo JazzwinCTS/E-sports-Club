@@ -123,7 +123,7 @@ var NXRender = (function ($) {
             '</div>' +
             '<div class="nx-tcard__foot">' +
               '<a class="nx-btn nx-btn--primary nx-btn--block nx-btn--sm" ' +
-                 'href="register.html?event=' + encodeURIComponent(t.id) + '">' +
+                 'href="signin.html?event=' + encodeURIComponent(t.id) + '">' +
                 (t.status === 'completed' ? 'View results' : 'Register interest') +
               '</a>' +
             '</div>' +

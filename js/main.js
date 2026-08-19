@@ -29,7 +29,7 @@ $(function () {
 
   /* ---- Signed-in state in the navbar (site-wide) -------------------------
      Once an account exists in localStorage `registrations`, the "Join" link
-     becomes the member's email address. The href is left alone: register.html
+     becomes the member's email address. The href is left alone: signin.html
      is still where the account lives, and it shows the membership panel with
      the sign-out button rather than the sign-up form.
 
@@ -44,7 +44,7 @@ $(function () {
        pages and must not depend on render.js being loaded (players.html and
        tournaments.html do not load it). Using NXRender.esc here threw on
        those two pages, which killed every later handler in this file. */
-    $('.nx-nav__link[href="register.html"]')
+    $('.nx-nav__link[href="signin.html"]')
       .addClass('nx-nav__link--account')
       .attr('title', account.email)
       .attr('aria-label', 'Signed in as ' + account.email)
