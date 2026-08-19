@@ -1,6 +1,7 @@
 /* ==========================================================================
    events.js — events.html only.
-   Owns the team activity calendar. Uses sessionStorage `eventView` and calls the Open-Meteo REST API with jQuery.
+   Owns the team activity calendar. Uses sessionStorage `eventView`
+   and calls the Open-Meteo REST API with jQuery.
    ========================================================================== */
 
 $(function () {
@@ -54,8 +55,9 @@ $(function () {
     }
 
     // ============================================================
-    //  eventRow – Added status check and styling.
+    //  eventRow - Includes an expandable details feature
     // ============================================================
+
     function eventRow(e) {
         var d = new Date(e.date + 'T00:00:00');
         var status = getEventStatus(e.date);
@@ -67,10 +69,16 @@ $(function () {
             statusClass = ' ev-row--today';
         }
 
+        var detailId = 'detail-' + e.id.replace(/[^a-zA-Z0-9]/g, '-');
+
         var link = e.linkedTournament
             ? '<a class="nx-btn nx-btn--ghost nx-btn--sm ev-row__link" ' +
             'href="tournaments.html">View tournament <i class="bi bi-arrow-right"></i></a>'
             : '';
+
+        var gameName = e.game || 'TBD';
+
+        var timeDisplay = e.time || 'TBD';
 
         return '' +
             '<article class="nx-card nx-reveal ev-row' + statusClass + '">' +
@@ -85,15 +93,36 @@ $(function () {
             '<span class="nx-badge nx-badge--game">' +
             '<i class="bi ' + (TYPE_ICON[e.type] || 'bi-calendar') + '"></i> ' +
             NXRender.esc(e.type) + '</span>' +
-            // Display status labels
             getStatusBadge(status) +
-            '<span class="nx-muted ev-row__meta-text">' +
-            NXRender.esc(e.time) + ' · ' + e.durationHours + 'h · ' +
-            NXRender.esc(e.location) + '</span>' +
             '</div>' +
             '<h3 class="ev-row__title">' + NXRender.esc(e.title) + '</h3>' +
             '<p class="nx-muted nx-mb-0 ev-row__desc">' +
             NXRender.esc(e.description) + '</p>' +
+
+            // ============================================================
+            // Expand details button
+            // ============================================================
+            '<button class="nx-btn nx-btn--sm nx-btn--ghost ev-detail-toggle" ' +
+            'data-target="' + detailId + '" ' +
+            'style="margin-top:12px; font-size:0.7rem;">' +
+            '<i class="bi bi-chevron-down"></i> Show Details' +
+            '</button>' +
+
+            // ============================================================
+            // Details Area (hidden by default) - Show all details
+            // ============================================================
+            '<div id="' + detailId + '" class="ev-detail" style="display:none; margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">' +
+            '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.85rem;">' +
+            '<div><span class="nx-muted">📍 Location:</span> ' + NXRender.esc(e.location) + '</div>' +
+            '<div><span class="nx-muted">⏰ Time:</span> ' + NXRender.esc(timeDisplay) + '</div>' +
+            '<div><span class="nx-muted">⏱️ Duration:</span> ' + e.durationHours + ' hours</div>' +
+            '<div><span class="nx-muted">📅 Date:</span> ' + d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) + '</div>' +
+            '<div><span class="nx-muted">🎮 Game:</span> ' + NXRender.esc(gameName) + '</div>' +
+
+            '</div>' +
+            (e.linkedTournament ? '<div style="margin-top:10px;"><span class="nx-muted">🏆 Tournament:</span> ' + NXRender.esc(e.linkedTournament) + '</div>' : '') +
+            '</div>' +
+
             link +
             '</div>' +
             '</div>' +
@@ -104,7 +133,6 @@ $(function () {
     //  calendarView - Added status colors
     // ============================================================
     function calendarView(list) {
-        /* Group by month so the calendar view reads differently from the list */
         var months = {};
         list.forEach(function (e) {
             var d = new Date(e.date + 'T00:00:00');
@@ -124,7 +152,6 @@ $(function () {
                     var d = new Date(e.date + 'T00:00:00');
                     var status = getEventStatus(e.date);
 
-                    // Apply different styles based on the state
                     var statusColor = '';
                     var statusLabel = '';
                     if (status === 'past') {
@@ -155,16 +182,12 @@ $(function () {
     //  paint – Sorting: upcoming items first
     // ============================================================
     function paint() {
-        // Sorting: Upcoming items appear first, past items appear last.
         var sortedEvents = events.slice().sort(function (a, b) {
             var statusA = getEventStatus(a.date);
             var statusB = getEventStatus(b.date);
 
-            // Past events are placed last
             if (statusA === 'past' && statusB !== 'past') return 1;
             if (statusA !== 'past' && statusB === 'past') return -1;
-
-            // Otherwise, sort by date
             return new Date(a.date) - new Date(b.date);
         });
 
@@ -172,6 +195,23 @@ $(function () {
         $('#viewTabs .nx-tab').removeClass('is-active').attr('aria-selected', 'false')
             .filter('[data-view="' + view + '"]').addClass('is-active').attr('aria-selected', 'true');
     }
+
+    // ============================================================
+    //  Expand/Collapse Details - Click Event
+    // ============================================================
+    $(document).on('click', '.ev-detail-toggle', function () {
+        var targetId = $(this).data('target');
+        var $detail = $('#' + targetId);
+        var $btn = $(this);
+
+        if ($detail.is(':visible')) {
+            $detail.slideUp(200);
+            $btn.html('<i class="bi bi-chevron-down"></i> Show Details');
+        } else {
+            $detail.slideDown(200);
+            $btn.html('<i class="bi bi-chevron-up"></i> Hide Details');
+        }
+    });
 
     /* ---- Load the schedule ------------------------------------------------ */
     NXRender.load($list, 'data/events.json', function (data) {
@@ -188,9 +228,7 @@ $(function () {
         paint();
     });
 
-    /* ---- Live venue forecast (Open-Meteo: free, keyless, CORS-open) --------
-       This is the page's RESTful API requirement — a real request over jQuery.
-       --------------------------------------------------------------------- */
+    /* ---- Live venue forecast (Open-Meteo) --------------------------------- */
     function loadWeather() {
         var $weather = $('#weather');
 
@@ -221,7 +259,7 @@ $(function () {
                     return '<div class="nx-trow">' +
                         '<span class="nx-trow__k">' +
                         d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) +
-                        ' &nbsp; '+
+                        ' &nbsp; ' +
                         '</span>' +
                         '<span class="nx-trow__v">' +
                         Math.round(res.daily.temperature_2m_max[i]) + '° / ' +
