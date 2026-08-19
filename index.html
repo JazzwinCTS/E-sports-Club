@@ -8,10 +8,9 @@
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 <link rel="stylesheet" href="css/style.css?v=5">
-<!-- Page-exclusive: index.css is this page's own design; rankings.css is
-     linked too because the "Top of the table" preview below reuses
-     rankings.html's leaderboard-row styling (same developer, see
-     CLAUDE.md section 7). -->
+<!-- index.css is this page's own design. rankings.css is linked as well,
+     because the "Top of the table" preview below reuses the leaderboard row
+     from the rankings page. -->
 <link rel="stylesheet" href="css/rankings.css?v=4">
 <link rel="stylesheet" href="css/index.css?v=2">
 <script>
@@ -73,13 +72,13 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="carousel.png" alt="Players lifting a championship trophy on stage">
+          <img src="indexImages/carousel.png" alt="Players lifting a championship trophy on stage">
         </div>
         <div class="carousel-item">
-          <img src="carousel1.png" alt="A team competing side by side at a LAN event">
+          <img src="indexImages/carousel1.png" alt="A team competing side by side at a LAN event">
         </div>
         <div class="carousel-item">
-          <img src="carousel2.png" alt="A packed esports arena during a live final">
+          <img src="indexImages/carousel2.png" alt="A packed esports arena during a live final">
         </div>
       </div>
       <div class="nx-hero__scrim"></div>
@@ -145,7 +144,7 @@
         <!-- Filled by js/index.js from data/youth-tournament.json: the running
              championship's headline facts plus a live countdown to the next
              match. Finished events are not previewed here — tournaments.html
-             owns those (CLAUDE.md section 4). -->
+             owns those. -->
         <div id="homeTournaments" aria-live="polite"></div>
       </div>
     </section>

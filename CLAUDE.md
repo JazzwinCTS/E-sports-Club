@@ -61,7 +61,7 @@ from before the scope was narrowed.
   rubric names jQuery explicitly and a marker will look for the `$`.
 - No fabricated statistics presented as verified fact (rankings/points/prize pools stay illustrative). This is an
   unpublished, non-commercial coursework prototype, so the real game/org logos and event photography already
-  supplied in `GameLogos/`, `TeamLogo/`, `TournamentThumbnail/`, and `carousel*.png` are used directly. Additional
+  supplied in `GameLogos/`, `TeamLogo/`, `TournamentThumbnail/`, and `indexImages/` are used directly. Additional
   real team logos and real player headshots may be sourced the same way (via Liquipedia's `imageinfo` endpoint,
   fetched once by hand and stored locally — see §6) for `players.json`/`standings.json` entries, since these are
   real public competitive figures/organisations, not private individuals.
@@ -268,7 +268,7 @@ Pages are developed independently by four people. Consistency must come from sha
 ├── data/                ← local JSON for API fetches
 ├── vendor/              ← jQuery, Bootstrap 5, Bootstrap Icons (local, for offline)
 ├── fonts/               ← Unbounded + Sora woff2 (self-hosted, see §11)
-└── GameLogos/ TeamLogo/ TournamentThumbnail/ registerImgs/ TicketsQR/ carousel*.png Video1.mp4
+└── GameLogos/ TeamLogo/ TournamentThumbnail/ registerImgs/ TicketsQR/ indexImages/ Video1.mp4
 ```
 
 `render.js` and `filter.js` are **shared components**, not page scripts — they exist so a
@@ -356,8 +356,8 @@ their presence as license to re-add League of Legends / Dota 2 / EA SPORTS FC co
 | `TournamentThumbnail/` | valorantTournament, CS2Tournament, pubgTournament **in active use**; LOLTournament, dota2Tournament, FC26Tournament present but unreferenced | Card header art on `tournaments.html`; linked-event image when a tournament appears on `events.html`'s calendar |
 | `registerImgs/` | `Joined.png` — celebratory group artwork | Background of `signin.html`'s "Thank you for joining us" panel, behind a dark scrim in both themes. Set in `css/signin.css`, not as an `<img>`, so it stays decorative and needs no alt text |
 | `TicketsQR/` | `valorant-qr.jpg`, `cs2-qr.jpg`, `pubg-qr.jpg` | The QR pass shown per division on `tickets.html` |
-| `carousel.png`, `carousel1.png`, `carousel2.png` | real event/gameplay photography | Homepage hero carousel (3 slides) |
-| `Video1.mp4` | real event footage | `about.html` hero video, framed like `design-refs/About.png` |
+| `indexImages/` | `carousel.png`, `carousel1.png`, `carousel2.png` | The three homepage hero slides. `carousel2.png` doubles as the poster frame for `about.html`’s hero video. |
+| `Video1.mp4` | real event footage | `about.html` hero video, in a large rounded window |
 
 **Before wiring these in:** several files are well above a sane per-image budget (`pubgTournament.png` ≈ 4.5MB,
 `registerImgs/Joined.png` ≈ 1.3MB, multiple `TeamLogo`/`GameLogos` PNGs > 400KB, a few `PlayerPhotos/` infobox images > 400KB) — this applies to the
@@ -449,9 +449,9 @@ Cards/panels sit on `--surface` (#1A1A24) so they read as raised, independent of
 
 **Navbar** — solid `var(--bg-top)` (#0B0B0E) exactly, so it continues the gradient's own top stop while
 staying opaque when sticky over scrolled content. 1px bottom border at low-opacity accent for separation
-(mirrors the underline glow in `design-refs/About.png` and the divider in `design-refs/Footer.png`).
+(the same underline glow the about hero uses, and the divider above the footer).
 
-**Footer spec** (mirrors `design-refs/Footer.png`):
+**Footer spec:**
 
 - Club name repeated: "NextGen E-Sports" (+ optional one-line tagline)
 - Copyright: `© 2026–<span id="copyYear"></span> NextGen E-Sports`, year filled by
@@ -483,25 +483,25 @@ staying opaque when sticky over scrolled content. 1px bottom border at low-opaci
 
 ### Per-page layout notes
 
-- **index.html** — hero Bootstrap carousel (`carousel.png`/`1`/`2`), a static 3-icon title strip
+- **index.html** — hero Bootstrap carousel (`indexImages/carousel.png`/`1`/`2`), a static 3-icon title strip
   (`GameLogos/` — Valorant/CS2/PUBG only, per §1; plain badges, not links or buttons), 2–3
   live/upcoming tournament preview cards (`TournamentThumbnail/`), stream embed, footer.
-- **rankings.html** — filter row styled like `design-refs/filter.png` (single-row control, chevron flips on
-  open) using `GameLogos/` as the game filter; leaderboard table styled like `design-refs/Leaderboard.png`
-  (rank, `TeamLogo/` badge + name, points, gold/silver/bronze medal boxes) — standings data is a real
+- **rankings.html** — a single-row filter control whose chevron flips when it opens, using
+  `GameLogos/` as the game filter; leaderboard with rank, `TeamLogo/` badge + name, points and
+  gold/silver/bronze medal boxes — standings data is a real
   Liquipedia group-stage/standings snapshot (§6), team names cross-mapped to the existing `TeamLogo/` files.
-- **tournaments.html** — status toolbar (All/Live/Upcoming/Ongoing/Completed) like `design-refs/tournaments.png`;
+- **tournaments.html** — status toolbar (All/Live/Upcoming/Ongoing/Completed);
   cards use `TournamentThumbnail/` as header art + a small `GameLogos/` badge, pulsing LIVE badge per §8 — card
   data (dates, prize pool, participant count, status) is a real Liquipedia tournament snapshot (§6); card art
   stays local (`TournamentThumbnail/`), not fetched from Liquipedia.
-- **about.html** — hero exactly like `design-refs/About.png`: large rounded video window playing `Video1.mp4`
+- **about.html** — hero: a large rounded video window playing `Video1.mp4`
   with an original hook line (not "Legacy Unrivaled" — pick NextGen's own), then club story, committee,
   gallery, and the real Instagram post embed described above.
 - **players.html** — no dedicated design ref — a real player database (e.g. s1mple, ZywOo, TenZ, Derke),
   sourced from a Liquipedia snapshot (§6): real name, country, current team/role, achievements. Reuses the
   shared card/list patterns from §11. Not NextGen's own roster — the club has no real members (§1).
 - **signin.html** — three views in one page: Sign In, Join (the form) and Profile. The profile takes
-  the *idea* of `design-refs/profile.png` (title + subtitle, sign-out top-right, a mini-nav beside one
+  the *idea* of a standard profile screen (title + subtitle, sign-out top-right, a mini-nav beside one
   big panel) without copying its layout or its light palette. Its panels are Personal info /
   Favourites / Tickets, hash-linked (`signin.html#panel-favourites`) and deliberately **not** stored:
   a section is worth deep-linking to but is not a preference, so it takes no storage key. Its sidebar
@@ -517,9 +517,7 @@ staying opaque when sticky over scrolled content. 1px bottom border at low-opaci
 
 ## 11. Visual design system
 
-**Reference screenshots:** `design-refs/filter.jpeg`,`design-refs/tournaments.jpeg`,`design-refs/Leaderboard.png`,`design-refs/About.png`,`design-refs/Footer.png`,`design-refs/profile.png`
-
-**What to take from them:** in filter.jpeg, the single row filter control is appealing with the space and opacity being enough, the animation of the arrow when clicked on turns pointing up and a dropdown of the choices appear. intournaments.png, the presentations of tournaments below a toolbar for choosing all, live, upcoming, ongoing is clean and intuitive, integrate the idea but not copy. The leaderboard.png displays the medals for each team cleanly in boxes coloured gold, silver and bronze, along witht he points for each team. The About.png has a large round bordered window showing a video with a hook word"Legacy Unrivaled", the video serves as a hook, the club's details are then displayed below. The Footer.png is the footer of the website and lists the social media links/icons for the clubs's socials, use that idea and the copyright elements, cookie preferences.
+**Design references.** The screenshots this design was worked from (a filter control, a leaderboard, a tournament toolbar, an about hero, a footer and a profile screen) have been removed from the repo. What was taken from them is already described per page in section 10, and is now built and visible in the pages themselves.
 
 **What NOT to copy:** layout wholesale, or anything from a site reviewed in Chapter 2 of the report.
 The report argues how this site *differs* from those, so cloning one contradicts it.
@@ -550,7 +548,8 @@ neither is a default system font.
 
 **Density:** airy — section padding roughly 64–96px desktop / 32–40px mobile
 **Card style:** flat surface + 1px low-opacity border, accent glow on hover (no heavy drop shadows against the dark gradient)
-**Headings:** uppercase + letterspaced — matches the condensed bold treatment in `tournaments.png`/`Leaderboard.png`
+**Headings:** uppercase + letterspaced, in the condensed bold treatment used across the tournament
+and leaderboard pages
 
 ---
 

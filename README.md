@@ -1,163 +1,138 @@
 # NextGen E-Sports
 
 NextGen E-Sports is a **community esports team** — open to players of every level, not an elite
-competitive program. The team focuses on three titles: **Valorant, Counter-Strike, and PUBG**.
+competitive program. The team plays three titles: **Valorant, Counter-Strike 2 and PUBG**.
 
-It currently hosts one competition, the **2026 NextGen Youth Championship** for players aged
-16–18, contested by eight member teams (VYNE, KOVA, RIFT, ZERA, AXEN, MIRA, TALO, BRIX) across
-three divisions. That championship is what `players.html`, `tournaments.html` and `rankings.html`
-cover; the team itself stays open to everyone. All of it — teams, players, results — is fictional
-content written for this project.
+It runs one competition, the **2026 NextGen Youth Championship** for players aged 16–18, contested
+by eight teams (VYNE, KOVA, RIFT, ZERA, AXEN, MIRA, TALO, BRIX) across three divisions. That
+championship is what `rankings.html`, `players.html`, `tournaments.html` and `tickets.html` cover;
+the team itself stays open to everyone.
 
-This repository is a university coursework prototype: a mobile-responsive, eight-page website built
-with plain HTML5, CSS3, JavaScript, jQuery and Bootstrap 5 — no backend, no build step, no
-framework. Every page can be read from the source directly; this document exists to save you that
-trip by walking through what each page does, what it stores in the browser, and which pages talk to
-a real API.
+**Everything here is fictional.** The eight teams, their 112 players, the 24 coaches and every
+result were written for this coursework project. Each file in `data/` says so in its own `_source`
+field.
+
+The site is eight pages of plain HTML5, CSS3, JavaScript, jQuery and Bootstrap 5. No backend, no
+build step, no framework, no npm.
 
 ## Running it
 
-**Don't open `index.html` by double-clicking it.** Browsers block `XMLHttpRequest` against `file://`
-URLs, so the pages that load their content from `data/*.json` (rankings, players, tournaments,
-events) would show a load error, and `about.html`'s video would fail to play in Safari. The site
-needs to be served over http — locally while developing, or from real hosting once it's live.
+The pages load their content from `data/*.json` over `XMLHttpRequest`, and browsers block that
+against `file://` URLs. So **don't open `index.html` by double-clicking it** — it has to be served
+over http.
 
-### While developing — VS Code Live Server
+Two ways, both already in use:
 
-The fastest loop: install the **Live Server** extension (`ritwickdey.LiveServer`), then right-click
-any `.html` file → *Open with Live Server*, or click *Go Live* in the status bar. It serves the
-folder, opens the browser, and auto-refreshes on every save — no terminal command to re-run. It
-also handles HTTP Range requests correctly, so `about.html`'s video plays properly in Safari too.
+- **GitHub Pages** for the live site. Nothing to configure.
+- **VS Code Live Server** while developing. Install the Live Server extension, then right-click any
+  `.html` file → *Open with Live Server*, or hit *Go Live* in the status bar. It reloads on save.
 
-Any other static server works the same way (`npx serve`, XAMPP/Apache) — just not
-`python -m http.server` on its own, which ignores the `Range` header and breaks Safari video
-playback specifically (Chrome tolerates the gap and plays it anyway, which is why it only shows up
-in one browser). If you don't have Node or an IDE extension handy, `python serve.py 8000` is a
-small stdlib-only fallback that adds the missing Range support.
-
-### Once it's live — GitHub Pages
-
-Hosted through GitHub Pages (or any real static host), this stops being a concern entirely — GitHub
-Pages serves Range requests correctly out of the box, so there's nothing extra to configure and
-`serve.py` isn't needed at all in that environment.
+One thing worth knowing if you swap in another server: `about.html`'s hero video needs HTTP Range
+requests to play in Safari. Live Server and GitHub Pages both handle that. Plain
+`python -m http.server` does not, and the video silently fails there in Safari while still working
+in Chrome.
 
 ## The eight pages
 
-The navbar and footer are identical byte-for-byte on every page (`js/main.js` runs the shared
-behaviour: nav highlighting, the theme toggle, the cookie banner, and the footer's live Discord
-widget). Only the content between them changes per page.
+The navbar and footer are the same on every page. `js/main.js` runs everything shared: highlighting
+the current nav link, the theme toggle, the cookie banner, the footer copyright year and the
+footer's live Discord widget.
 
-One piece of that shared behaviour is signed-in state: once you have joined, the navbar's **Join**
-link becomes your **email address** on all eight pages. It still points at `signin.html`, which
-by then shows your profile and the sign-out button instead of the sign-up form.
+One piece of that shared behaviour is signed-in state — once you have joined, the navbar's **Join**
+link becomes your **email address** on all eight pages. It still points at `signin.html`, which by
+then shows your profile instead of the sign-up form.
 
 ### Home — `index.html`
-The landing page. A three-slide Bootstrap hero carousel, a static title strip (Valorant / CS /
-PUBG icons, presented as plain badges — not clickable), a preview of 3 live/upcoming tournaments, a
-preview of the top 5 club standings, and a live stream embed.
-- **Storage:** sets/reads the `returningVisitor` **cookie** (30 days) — suppresses the intro
-  animation and shows a "welcome back" badge on repeat visits.
-- **API:** none of its own; the previews read local `data/tournaments.json` and
-  `data/standings.json` via `$.getJSON`.
+A three-slide Bootstrap carousel, a strip of the three game badges, a "Happening now" panel for the
+running championship, a five-row standings preview, and a Twitch embed.
+
+The Happening now panel shows the championship's prize pool and dates, then one card per division
+with a **live countdown** to that division's next match. It works off the clock rather than a
+status field in the data, so it still reads correctly once those dates pass.
+
+- **Storage:** the `returningVisitor` **cookie** (30 days). Suppresses the intro animation and
+  shows a welcome-back badge on repeat visits.
+- **Fetches:** `data/youth-tournament.json` and `data/standings.json`.
 
 ### Team Rankings — `rankings.html`
-Club championship standings across every competing organisation the site tracks. A shared filter
-bar (game + sort), and a league table with team logos, played/won/lost, points and medal counts.
-- **Storage:** reads/writes `favouriteTeam` in **localStorage** — the starred team's row is
-  highlighted wherever the current sort places it, and the choice survives closing the browser.
-  Starring never reorders the table. The homepage's top-five preview reads and writes the same
-  key, so the two pages stay in step.
-- **API:** this page owns the graded "RESTful API via jQuery" feature. `$.getJSON('data/standings.json')`
-  fetches real team names (cross-checked against Liquipedia) with illustrative points/records,
-  rendered into the DOM with a loading spinner and an error fallback.
+The championship league table: rank, team, played, won, lost, points, and gold/silver/bronze medal
+counts. A shared filter bar switches game division and sort.
+
+The rank shown on a row is its position in the **current** sort, not a stored number. The four sort
+options are deliberately decorrelated in the data, so each one produces a genuinely different top
+team.
+
+- **Storage:** `favouriteTeam` in **localStorage**. The starred team's row is highlighted wherever
+  the current sort places it; starring never reorders the table. The home page preview reads and
+  writes the same key.
+- **Fetches:** `data/standings.json`.
 
 ### Player Profiles — `players.html`
-A reference database of real competitive players across Valorant, Counter-Strike and PUBG — not
-NextGen's own roster (the club has no real members). A filter bar (game + role + sort) and a grid
-of player cards with real photos, ratings, and achievements.
-- **Storage:** reads/writes `playersGame` in **localStorage** — the game division you last viewed
-  is restored automatically on your next visit.
-- **API:** `$.getJSON('data/players.json')`, same pattern as rankings.
+Two halves. A **Weekly MVP** feature with a radar chart of that player's stats for the week, and a
+**team directory** — pick a game division, then a team, and a modal opens with its story, honours,
+coach and full roster.
+
+- **Storage:** `playersGame` in **localStorage** — the division you last looked at, restored next
+  visit.
+- **Fetches:** `data/players.json` and `data/weekly-mvp.json`.
 
 ### Tournaments — `tournaments.html`
-Brackets, prize pools and results for the competitions the club follows. A status toolbar
-(All/Live/Upcoming/Completed) plus the shared filter bar, and a card grid with tournament art, a
-pulsing LIVE badge on active tournaments, and a link into `signin.html` pre-filled with the
-tournament as context.
-- **Storage:** reads/writes `tournamentFilter` (`{status, game, sort}`) in **sessionStorage** — the
-  active filter survives navigating between tabs on this page in the same browser tab, but a new
-  tab starts clean.
-- **API:** `$.getJSON('data/tournaments.json')`, same pattern as rankings.
+The championship itself: prize pool, dates, venue and broadcast plan, then a division picker.
+Each division shows its schedule, format and results — a knockout bracket for Valorant and CS2, and
+a round-by-round table for PUBG.
+
+- **Storage:** `tournamentFilter` in **sessionStorage** — the active division and filter survive
+  moving around the page, but a new tab starts clean.
+- **Fetches:** `data/youth-tournament.json`.
 
 ### Event Schedule — `events.html`
-The club's own activity calendar — practices, workshops, socials and tryouts — with a list/calendar
-view toggle. A dated event can link out to `tournaments.html` if it's tied to one (a watch party,
-for example) without duplicating that tournament's detail.
-- **Storage:** reads/writes `eventView` (`"list"` or `"calendar"`) in **sessionStorage**.
-- **API:** two, and this is the only page with a genuinely *live* external call:
-  1. `$.getJSON('data/events.json')` — the schedule itself, a local snapshot.
-  2. `$.ajax` to **Open-Meteo** (`api.open-meteo.com/v1/forecast`) — a real, keyless, no-auth
-     weather API called live on every page load, showing the actual current forecast for the
-     club's venue. This is the site's clearest "real HTTP request → JSON → rendered via jQuery"
-     demonstration.
+The team's own calendar — practices, workshops, socials and tryouts — with a list/calendar toggle.
+Past events dim, today's is highlighted. An event tied to a competition links across to
+`tournaments.html` rather than repeating its detail.
+
+- **Storage:** `eventView` in **sessionStorage** (`"list"` or `"calendar"`).
+- **Fetches:** `data/events.json`, plus a **live** call to Open-Meteo for the venue forecast.
+
+### Tickets — `tickets.html`
+Pick a division and a quantity, and get a QR pass. Includes a checkout step.
+
+- **Storage:** `userTickets` in **localStorage** — persistent, because a ticket should survive
+  closing the browser. `signin.html`'s Tickets panel reads it back.
+- **Fetches:** `data/youth-tournament.json`.
 
 ### Sign In / Join / Profile — `signin.html`
-One page, three views, merged from the former `register.html` and `dashboard.html` in PR #2.
-A query param (`?event=<id>`) can prefill context when linked from another page.
+One page, three views. A query param (`?event=<id>`) can prefill context when another page links in.
 
-**Join** creates a member account entirely in the browser: full name, email, in-game name,
-password + confirmation, primary title (Valorant/CS/PUBG), experience level and free-text notes.
-- **Validation:** client-side and live. Every field is re-checked on each keystroke; the border
-  turns **green** the moment the value is valid. The red error state is deliberately held back
-  until you've left the field once (or pressed submit), so a half-typed email isn't flagged as
-  wrong while you're still typing it. The password shows its three requirements as a checklist
-  that ticks off as you meet them, and editing the password re-checks the confirmation box.
-- Once the account exists you get a "Thank you for joining us" panel
-  (artwork: `registerImgs/Joined.png`) and a **Sign out** button, which goes through `confirm()`
-  first, then clears the stored account.
+**Join** creates a member account entirely in the browser: name, email, in-game name, password and
+confirmation, primary title, experience level and notes.
+
+- **Validation** is live. Every field is rechecked on each keystroke and the border turns green as
+  soon as the value is valid. The red error state is held back until you have left the field once,
+  or pressed submit, so a half-typed email is not flagged while you are still typing it. The
+  password shows its three requirements as a checklist, and editing it rechecks the confirm box.
+- Once the account exists you get a thank-you panel and a **Sign out** button, which asks for
+  confirmation before clearing the account.
 
 **Sign In** signs an existing account back in on this browser.
 
-**Profile** is the member area — a monogram avatar, your name and email, and a mini-nav across
-three panels, deep-linkable as `signin.html#panel-favourites`:
-- **Personal info** — name, email, in-game name, member ID, primary title, experience and notes,
-  shown as read-only boxes. They are not editable inputs on purpose: there is no server to save an
-  edit to, so presenting them as editable would be a lie.
-- **Favourites** — your primary title and your favourite team (`favouriteTeam`, starred on the
-  rankings page).
-- **Tickets** — the tickets claimed on `tickets.html`, read back from `userTickets`.
+**Profile** has three panels, deep-linkable as `signin.html#panel-favourites`:
 
-- **Storage:** three keys with deliberately different lifetimes:
-  - `registerDraft` in **sessionStorage** — every keystroke is saved so a refresh never loses your
-    half-finished form, but it's gone once the tab closes (it's meant to be transient). The
-    password fields are excluded from the draft on purpose.
-  - `isLoggedIn` in **sessionStorage** — whether *this tab* is signed in. The account itself
-    persists; the session does not, so closing the browser doesn't leave someone else signed in.
-  - `registrations` in **localStorage** — the account itself, meant to persist like a client-side
-    stand-in for a real backend. The password is kept only as a short non-reversible digest;
-    nothing readable is stored, and a real deployment would hash it server-side instead.
-- **API:** none — account creation is entirely client-side; there is no server to send it to.
+- **Personal information** — your details as read-only boxes. Not editable inputs on purpose: there
+  is no server to save an edit to.
+- **Favourites** — your primary title and your favourite team.
+- **Your Tickets** — read back from `userTickets`.
 
-> **Note for the report:** the old dashboard had a fourth **Storage** panel that printed all three
-> storage technologies and their live contents in three tables. That panel did not survive the
-> merge. All three technologies are still used with defensible purposes, but nothing on the site
-> displays them any more — see `CLAUDE.md` §5.
+- **Storage:** `registrations` in **localStorage** (the account; the password is kept only as a
+  short non-reversible digest, never in readable form), plus `registerDraft` and `isLoggedIn` in
+  **sessionStorage**.
 
-### Tickets — `tickets.html`
-Pick a division (Valorant / CS2 / PUBG) and quantity, and get a QR pass from `TicketsQR/`.
-- **Storage:** `userTickets` in **localStorage** — the claimed tickets, which `signin.html`'s
-  Tickets panel reads back. Persistent because a ticket should survive closing the browser.
-- **API:** none.
+### About — `about.html`
+A hero video, then the team's story: who we are, more than competition, the Youth Championship,
+committee and coaches, our games, a gallery, and a Stay Connected section linking the real socials.
 
-### About / Join Us — `about.html`
-Club identity: a looping muted autoplay hero video, the club's story, a committee section (roles,
-not real people — the club has no real members), a photo gallery, and the club's real social
-presence (Instagram post embed, plus links to Discord/X/Facebook).
-- **Storage:** the designated owner of `theme` (`"dark"`/`"light"`) in **localStorage**, though in
-  practice the toggle lives in the navbar and works identically from every page — it's read before
-  first paint everywhere to avoid a flash of the wrong theme.
-- **API:** no `$.ajax` call of its own, but it hosts the site's other graded requirement — the
-  **social media plugin** — via a real Instagram post embed (`instagram.com/embed.js`, no key).
+- **Storage:** the owner of `theme` in **localStorage**, though the toggle sits in the navbar and
+  works identically from every page. It is read before first paint everywhere so there is no flash
+  of the wrong theme.
 
 ## Storage, all in one place
 
@@ -166,63 +141,78 @@ presence (Instagram post embed, plus links to Discord/X/Facebook).
 | Cookie | `returningVisitor` | index | 30 days | Suppresses the intro animation, shows welcome-back |
 | Local | `theme` | about (site-wide) | until cleared | Dark/light choice, read before first paint |
 | Local | `favouriteTeam` | rankings | until cleared | Highlights a team's row in the standings |
-| Local | `playersGame` | players | until cleared | Restores your last-viewed game division |
+| Local | `playersGame` | players | until cleared | Last-viewed game division |
 | Local | `registrations` | signin | until cleared | The member account created on the join view |
 | Local | `userTickets` | tickets (signin reads) | until cleared | Tickets claimed, shown again in the profile |
-| Session | `registerDraft` | signin | tab close | In-progress form, saved on every keystroke |
+| Session | `registerDraft` | signin | tab close | In-progress form, saved as you type |
 | Session | `isLoggedIn` | signin | tab close | Whether this tab is signed in |
-| Session | `tournamentFilter` | tournaments | tab close | Active filter + sort |
+| Session | `tournamentFilter` | tournaments | tab close | Active division and filter |
 | Session | `eventView` | events | tab close | List or calendar view |
 
-## API calls, all in one place
+The reasoning behind each choice: local storage is for things you would expect to still be there
+tomorrow, session storage for working state that should not outlive the tab, and the cookie for the
+one value that needs a real expiry date.
 
-Every network call in the project uses jQuery (`$.ajax`/`$.getJSON`) — never `fetch()`.
+`NXStore.clearAll()` in `js/storage.js` wipes all ten, and the cookie banner's decline button calls
+it.
 
-| Call | Where | Live or local? |
+## Network calls
+
+Every call uses jQuery (`$.ajax` / `$.getJSON`), never `fetch()`.
+
+| Call | Where | Live or local |
 |---|---|---|
-| Open-Meteo weather forecast | `js/events.js`, on `events.html` | **Live** — a real external request every page load |
-| Discord invite lookup | `js/main.js`, in the shared footer on **all 8 pages** | **Live** — real member count, keyless |
-| `data/standings.json` | `js/rankings.js` + homepage preview | Local snapshot (real names, illustrative stats) |
-| `data/players.json` | `js/players.js` | Local snapshot (real names, illustrative stats) |
-| `data/tournaments.json` | `js/tournaments.js` + homepage preview | Local snapshot |
-| `data/events.json` | `js/events.js` | Local snapshot |
+| Open-Meteo forecast | `js/events.js` | **Live** — real external request, no key |
+| Discord invite lookup | `js/main.js`, footer on all 8 pages | **Live** — real member count, no key |
+| `data/standings.json` | `js/rankings.js`, `js/index.js` | Local file |
+| `data/players.json`, `data/weekly-mvp.json` | `js/players.js` | Local file |
+| `data/youth-tournament.json` | `js/tournaments.js`, `js/tickets.js`, `js/index.js` | Local file |
+| `data/events.json` | `js/events.js` | Local file |
 
-The local-snapshot files are still fetched with a real `$.ajax` call each time the page loads (that's
-why the site can't be opened via `file://`) — they're just reading a file already sitting in the
-repo rather than a live external source. Team/player/tournament **names** in those files are real
-and were checked against Liquipedia by hand while building the site (never at runtime — see
-`CLAUDE.md` §6); **statistics** (points, ratings, prize pools) are illustrative and each file says
-so in its own `_source` field.
+The local files still go through a real request on every page load — that is why the site cannot be
+opened over `file://`. They are just reading a file already in the repo rather than a live source.
 
 ## Structure
 
 ```
-├── serve.py              dev-only local server with Range support (see "Running it")
-├── *.html                 8 pages; navbar and footer markup identical across all
+├── *.html                  8 pages; navbar and footer the same on each
 ├── css/
-│   ├── style.css          general file: tokens, shared shell, and anything used by
-│   │                        3+ pages — no hardcoded colours in pages
-│   └── index.css, rankings.css, events.css, about.css, signin.css, tickets.css
-│                            page-exclusive styles — one file per developer's page,
-│                            see CLAUDE.md section 7
+│   ├── style.css           tokens, shared shell, anything used across pages
+│   └── index.css  rankings.css  players.css  tournaments.css
+│       events.css  about.css  signin.css  tickets.css
+│                            one file per page, nothing shared
 ├── js/
-│   ├── storage.js         helpers for cookies + local + session storage
-│   ├── render.js          shared card/row renderers and the single AJAX wrapper
-│   ├── filter.js          the shared filter bar (rankings, players, tournaments)
-│   ├── main.js             site-wide: nav, theme, cookie banner, footer widget
-│   └── <page>.js           one per page, page-specific only
-├── data/*.json             content loaded at runtime with $.getJSON
-├── vendor/                jQuery, Bootstrap 5, Bootstrap Icons (local copies)
-├── fonts/                  Unbounded + Sora (self-hosted for offline use)
-└── GameLogos/ TeamLogo/ TournamentThumbnail/ PlayerPhotos/ registerImgs/ TicketsQR/
-    carousel*.png Video1.mp4
+│   ├── main.js             site-wide: nav, theme, cookie banner, Discord widget
+│   ├── storage.js          helpers for cookies + local + session storage
+│   ├── render.js           shared renderers and the one AJAX wrapper
+│   ├── filter.js           the filter bar (used by rankings)
+│   └── <page>.js           one per page
+├── data/*.json             loaded at runtime with $.getJSON
+├── vendor/                 jQuery, Bootstrap 5, Bootstrap Icons (local copies)
+├── fonts/                  Unbounded + Sora, self-hosted
+└── GameArt/ GameLogos/ PlayerPhotos/ TeamLogo/ TicketsQR/ TournamentThumbnail/
+    TournamentVideo/ registerImgs/ socials/ indexImages/ Video1.mp4
 ```
 
-Some files in the asset folders (League of Legends / Dota 2 / EA SPORTS FC logos, thumbnails and
-photos) are left over from before the club's scope was narrowed to three titles — they're not
-referenced by any page. See `CLAUDE.md` §9 if you're deciding whether to remove or reuse them.
+Responsiveness is Bootstrap's, not hand-written: `container-fluid` for the shell, a collapsing
+`navbar-expand-lg`, and `row` / `row-cols-*` / `col` for every card grid. The few things Bootstrap
+cannot express stay as CSS and say so in a comment — the leaderboard's fixed-pixel numeric columns,
+`clamp()` type scaling, and the events calendar's `auto-fill` month grid.
+
+Some files in the asset folders (League of Legends, Dota 2 and EA SPORTS FC logos and thumbnails)
+are left over from before the scope narrowed to three titles. Nothing references them.
+
+## Known issues
+
+- `events.html` loads Bootstrap Icons from a CDN instead of `vendor/`, so its icons disappear
+  without an internet connection. Every other page uses the local copy.
+- `js/tickets.js` contains a **Stripe secret key** (`sk_test_…`) and posts to the Stripe API from
+  the browser. A secret key must never be in client-side code or a public repo, and Stripe blocks
+  direct browser calls to that endpoint anyway. The key needs rotating in the Stripe dashboard.
+- No page displays the contents of the three storage technologies any more. The old dashboard had a
+  panel that did; it did not survive the merge into `signin.html`.
 
 ## Note
 
-NextGen E-Sports is a fictional club built for coursework. Imagery is illustrative and the
-competitive statistics shown are not verified results.
+NextGen E-Sports is a fictional team built for coursework. Imagery is illustrative and the
+statistics shown are not real results.
