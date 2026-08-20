@@ -360,6 +360,15 @@ $(function () {
      `favouriteTeam` rankings.html reads, so the two
      pages stay in step without either script knowing about the other. */
   $standings.on('click', '.nx-fav', function () {
+    // Same gate as the rankings table. This preview writes the same key, so
+    // leaving it open would have let a signed-out visitor set a favourite the
+    // rankings page refuses to let them set.
+    if (!NXStore.isSignedIn()) {
+      alert('Please sign in to your account before selecting a favourite team.');
+      window.location.href = 'signin.html';
+      return;
+    }
+
     var team = $(this).closest('.nx-board__row').data('team');
     var current = NXStore.local.get('favouriteTeam');
 
