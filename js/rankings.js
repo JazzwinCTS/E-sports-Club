@@ -125,9 +125,7 @@ $(function () {
   // The favourite team is the only thing this page stores. Clicking the star
   // on a team that is already starred clears it.
   $board.on('click', '.nx-fav', function () {
-    var isLoggedIn = NXStore.session.get('isLoggedIn') === true;
-
-    if (!isLoggedIn) {
+    if (!NXStore.isSignedIn()) {
       alert('Please sign in to your account before selecting a favourite team.');
       window.location.href = 'signin.html';
       return;

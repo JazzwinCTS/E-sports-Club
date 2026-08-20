@@ -26,9 +26,9 @@ $(function () {
     pubg: "url('../GameArt/pubg-profile.jpg')"
   };
   var divisionDays = {
-    pubg: { short: 'FRI', full: 'Friday' },
-    cs2: { short: 'SAT', full: 'Saturday' },
-    valorant: { short: 'SUN', full: 'Sunday' }
+    pubg: { short: 'TUE', full: 'Tuesday' },
+    cs2: { short: 'WED', full: 'Wednesday' },
+    valorant: { short: 'THU', full: 'Thursday' }
   };
   var matchDurations = {
     valorant: { BO3: 150, BO5: 240 },
@@ -585,7 +585,7 @@ $(function () {
   }
 
   function showPubgModal(round) {
-    $('#matchModalStage').text('PUBG Friday Series · Round ' + round.number);
+    $('#matchModalStage').text('PUBG Tuesday Series · Round ' + round.number);
     $('#matchModalTitle').text(round.map + ' lobby');
     $('#matchModalBody').html(
       '<div class="match-modal-score">' +

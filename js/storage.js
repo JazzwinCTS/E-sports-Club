@@ -85,6 +85,15 @@ var NXStore = (function () {
       }
     },
 
+    // Signed in means a live session, not merely a saved account: signing out
+    // clears this and deliberately leaves `registrations` in place so you can
+    // sign back in. Shared here because more than one page gates on it, and
+    // the star was gated on the rankings table but not the home page one for
+    // exactly that reason.
+    isSignedIn: function () {
+      return NXStore.session.get('isLoggedIn') === true;
+    },
+
     // Wipes everything the site has stored, for the decline button on the
     // cookie banner. Keep this list honest: it used to name a key nothing
     // wrote and miss two that people actually had data in, so declining
