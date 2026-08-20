@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>NextGen E-Sports — Home</title>
-    <meta name="description"
-        content="NextGen E-Sports is a community esports team for Valorant, Counter-Strike and PUBG, open to players of every level.">
+    <meta name="description" content="NextGen E-Sports is a community esports team for Valorant, Counter-Strike and PUBG, open to players of every level.">
     <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css?v=6">
@@ -66,20 +65,15 @@
                 <div class="nx-section-head">
                     <p class="nx-eyebrow">Official Ticketing</p>
                     <h2 class="nx-h2">SECURE YOUR SEAT</h2>
-                    <p class="nx-muted">Experience the 2026 NextGen Youth Championship live. Select a division to filter
-                        events.</p>
+                    <p class="nx-muted">Experience the 2026 NextGen Youth Championship live. Select a division to filter events.</p>
                 </div>
 
                 <!-- SIMPLE TAB FILTERS -->
                 <div class="nx-tabs" id="ticketFilter" role="tablist" aria-label="Game divisions">
-                    <button class="nx-tab is-active" type="button" data-filter="all" role="tab"
-                        aria-selected="true">All</button>
-                    <button class="nx-tab" type="button" data-filter="valorant" role="tab"
-                        aria-selected="false">Valorant</button>
-                    <button class="nx-tab" type="button" data-filter="cs2" role="tab"
-                        aria-selected="false">Counter-Strike 2</button>
-                    <button class="nx-tab" type="button" data-filter="pubg" role="tab"
-                        aria-selected="false">PUBG</button>
+                    <button class="nx-tab is-active" type="button" data-filter="all" role="tab" aria-selected="true">All</button>
+                    <button class="nx-tab" type="button" data-filter="valorant" role="tab" aria-selected="false">Valorant</button>
+                    <button class="nx-tab" type="button" data-filter="cs2" role="tab" aria-selected="false">Counter-Strike 2</button>
+                    <button class="nx-tab" type="button" data-filter="pubg" role="tab" aria-selected="false">PUBG</button>
                 </div>
 
                 <!-- 3-IN-A-ROW GRID (Will be populated by tickets.js) -->
@@ -93,8 +87,7 @@
         <div class="nx-modal" id="ticketModal" aria-hidden="true">
             <div class="nx-modal__backdrop" id="modalBackdrop"></div>
             <div class="nx-modal__dialog">
-                <button type="button" class="nx-modal__close" id="closeModalBtn"
-                    aria-label="Close modal">&times;</button>
+                <button type="button" class="nx-modal__close" id="closeModalBtn" aria-label="Close modal">&times;</button>
 
                 <!-- STEP 1: EVENT SELECTION & MAP -->
                 <div class="ticket-modal__step is-active" id="modalStep1">
@@ -153,8 +146,7 @@
                                     <span class="ticket-modal__total-price">RM 35</span>
                                 </div>
 
-                                <button type="button" class="nx-btn nx-btn--primary nx-btn--block ticket-modal__pay-btn"
-                                    id="goToPaymentBtn">Proceed to Payment</button>
+                                <button type="button" class="nx-btn nx-btn--primary nx-btn--block ticket-modal__pay-btn" id="goToPaymentBtn">Proceed to Payment</button>
                             </div>
                         </div>
                     </div>
@@ -200,11 +192,8 @@
                                 <!-- Total Price at Left Bottom (Small 'RM', Big Number) -->
                                 <div class="ticket-summary__total-box">
                                     <span>Grand Total</span>
-                                    <h1 class="ticket-summary__grand-total"
-                                        style="font-size: 2.75rem; font-weight: 900; line-height: 1; margin-top: 6px; color: var(--accent);">
-                                        <small
-                                            style="font-size: 0.45em; font-weight: 700; margin-right: 4px; vertical-align: middle;">RM
-                                            35</small>
+                                    <h1 class="ticket-summary__grand-total" style="font-size: 2.75rem; font-weight: 900; line-height: 1; margin-top: 6px; color: var(--accent);">
+                                        <small style="font-size: 0.45em; font-weight: 700; margin-right: 4px; vertical-align: middle;">RM</small> 35
                                     </h1>
                                 </div>
                             </div>
@@ -229,37 +218,33 @@
                                 </div>
 
                                 <div class="nx-form-group">
-                                    <label class="nx-label">Cardholder Name</label>
-                                    <input type="text" class="nx-input" id="stripeCardName" placeholder="e.g. Alex Tan">
+                                    <label class="nx-label" for="stripeCardName">Cardholder Name</label>
+                                    <input type="text" class="nx-input" id="stripeCardName" name="cardName" placeholder="e.g. Alex Tan" autocomplete="cc-name">
                                 </div>
 
                                 <div class="nx-form-group">
-                                    <label class="nx-label">Card Number</label>
+                                    <label class="nx-label" for="stripeCardNumber">Card Number</label>
                                     <div class="nx-input-icon">
                                         <i class="bi bi-credit-card"></i>
-                                        <input type="text" class="nx-input" id="stripeCardNumber"
-                                            placeholder="4242 4242 4242 4242" maxlength="19">
+                                        <input type="text" class="nx-input" id="stripeCardNumber" name="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" autocomplete="cc-number">
                                     </div>
                                 </div>
 
                                 <div class="nx-form-row">
                                     <div class="nx-form-group">
-                                        <label class="nx-label">Expiry Date</label>
-                                        <input type="text" class="nx-input" id="stripeCardExpiry" placeholder="MM/YY"
-                                            maxlength="5">
+                                        <label class="nx-label" for="stripeCardExpiry">Expiry Date</label>
+                                        <input type="text" class="nx-input" id="stripeCardExpiry" name="cardExpiry" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp">
                                     </div>
                                     <div class="nx-form-group">
-                                        <label class="nx-label">CVC</label>
-                                        <input type="text" class="nx-input" id="stripeCardCvc" placeholder="123"
-                                            maxlength="3">
+                                        <label class="nx-label" for="stripeCardCvc">CVC</label>
+                                        <input type="text" class="nx-input" id="stripeCardCvc" name="cardCvc" placeholder="123" maxlength="3" autocomplete="cc-csc">
                                     </div>
                                 </div>
                                 <p class="stripe-hint">* Prototype simulation: Any test card will pass validation.</p>
                             </div>
 
                             <!-- Final Pay Button -->
-                            <button type="button" class="nx-btn nx-btn--primary nx-btn--block ticket-modal__pay-btn"
-                                id="confirmPayBtn">
+                            <button type="button" class="nx-btn nx-btn--primary nx-btn--block ticket-modal__pay-btn" id="confirmPayBtn">
                                 Pay <small style="font-size: 0.7em;">RM 35</small>
                             </button>
                         </div>
@@ -271,36 +256,32 @@
                     <div class="row g-4 g-lg-5 align-items-stretch">
                         <!-- LEFT COLUMN: Game Ticket Pass -->
                         <div class="col-md-6">
-                            <div id="ticketPassCard"
-                                class="ticket-pass-card p-3 rounded-3 position-relative overflow-hidden text-white h-100 shadow border border-danger">
+                            <div id="ticketPassCard" class="ticket-pass-card p-3 rounded-3 position-relative overflow-hidden text-white h-100 shadow border border-danger">
                                 <div class="ticket-bg-overlay"></div>
-                                <div
-                                    class="ticket-content position-relative z-1 d-flex flex-column justify-content-between h-100">
+                                <div class="ticket-content position-relative z-1 d-flex flex-column justify-content-between h-100">
                                     <div>
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="badge bg-danger text-white fw-bold px-2 py-1">ENTRY PASS</span>
                                             <small class="text-white-50">#TKT-<span id="passCode">88219</span></small>
                                         </div>
-                                        <h4 class="fw-bold mb-0 text-uppercase text-white" id="passGameName">VALORANT
-                                        </h4>
-                                        <p class="text-danger small mb-3 fw-semibold" id="passStage">FINALS CHAMPIONSHIP
-                                        </p>
+                                        <h4 class="fw-bold mb-0 text-uppercase text-white" id="passGameName">VALORANT</h4>
+                                        <p class="text-danger small mb-3 fw-semibold" id="passStage">FINALS CHAMPIONSHIP</p>
 
                                         <div class="ticket-details-box small mb-2">
-                                            <div class="mb-1"><i
-                                                    class="bi bi-calendar3 me-2 text-danger"></i><strong>Date:</strong>
+                                            <div class="mb-1">
+                                                <i class="bi bi-calendar3 me-2 text-danger"></i><strong>Date:</strong>
                                                 <span id="passDate">24 OCT 2026</span>
                                             </div>
-                                            <div class="mb-1"><i
-                                                    class="bi bi-clock me-2 text-danger"></i><strong>Time:</strong>
+                                            <div class="mb-1">
+                                                <i class="bi bi-clock me-2 text-danger"></i><strong>Time:</strong>
                                                 <span id="passTime">2:00 PM</span>
                                             </div>
-                                            <div class="mb-1"><i
-                                                    class="bi bi-geo-alt me-2 text-danger"></i><strong>Venue:</strong>
+                                            <div class="mb-1">
+                                                <i class="bi bi-geo-alt me-2 text-danger"></i><strong>Venue:</strong>
                                                 <span id="passVenue">Bukit Jalil Stadium</span>
                                             </div>
-                                            <div class="mb-1"><i
-                                                    class="bi bi-people me-2 text-danger"></i><strong>Quantity:</strong>
+                                            <div class="mb-1">
+                                                <i class="bi bi-people me-2 text-danger"></i><strong>Quantity:</strong>
                                                 <span id="passQty">1 Ticket(s)</span>
                                             </div>
                                         </div>
@@ -309,12 +290,9 @@
                                     <!-- Dynamic QR Code Box -->
                                     <div class="text-center mt-2 pt-2 border-top border-secondary">
                                         <div class="qr-container bg-white p-2 d-inline-block rounded shadow-sm">
-                                            <img src="TicketsQR/valorant-qr.jpg" alt="Ticket QR" id="passQrImg"
-                                                class="img-fluid"
-                                                style="width: 105px; height: 105px; object-fit: contain;">
+                                            <img src="TicketsQR/valorant-qr.jpg" alt="Ticket QR" id="passQrImg" class="img-fluid" style="width: 105px; height: 105px; object-fit: contain;">
                                         </div>
-                                        <div class="text-white-50 mt-1" style="font-size: 0.72rem;">Scan at Venue
-                                            Counter</div>
+                                        <div class="text-white-50 mt-1" style="font-size: 0.72rem;">Scan at Venue Counter</div>
                                     </div>
                                 </div>
                             </div>
@@ -324,22 +302,18 @@
                         <div class="col-md-6 d-flex flex-column justify-content-between">
                             <div>
                                 <h3 class="fw-bold pass-success-title mb-2">Here is your ticket!</h3>
-                                <p class="pass-success-desc small">Your payment was confirmed and your entry pass is
-                                    generated.</p>
+                                <p class="pass-success-desc small">Your payment was confirmed and your entry pass is generated.</p>
 
                                 <div class="pass-notice-box small my-3 p-3">
                                     <ul class="mb-0 ps-3">
-                                        <li class="mb-2">Please present this <strong>QR Code</strong> at the venue
-                                            entrance counter on event day.</li>
-                                        <li class="mb-2">This ticket has been saved to your <strong>Profile</strong>
-                                            dashboard.</li>
+                                        <li class="mb-2">Please present this <strong>QR Code</strong> at the venue entrance counter on event day.</li>
+                                        <li class="mb-2">This ticket has been saved to your <strong>Profile</strong> dashboard.</li>
                                         <li>Arrive at least 15 minutes before competition start time.</li>
                                     </ul>
                                 </div>
                             </div>
 
-                            <button type="button" class="nx-btn nx-btn--primary nx-btn--block py-2 mt-3"
-                                id="completeTicketBtn">
+                            <button type="button" class="nx-btn nx-btn--primary nx-btn--block py-2 mt-3" id="completeTicketBtn">
                                 <i class="bi bi-check-circle-fill me-1"></i> COMPLETE
                             </button>
                         </div>
@@ -348,6 +322,7 @@
             </div>
         </div>
     </main>
+
     <!-- ================= FOOTER (identical on all 8 pages) ================= -->
     <footer class="nx-footer">
         <div class="nx-shell container-fluid">
@@ -356,16 +331,14 @@
                     <div class="nx-footer__namerow d-flex flex-wrap align-items-center justify-content-between">
                         <a class="nx-wordmark" href="index.html">
                             <span class="nx-wordmark__mark">N</span>
-                            <span class="nx-wordmark__text">ext<span
-                                    class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
+                            <span class="nx-wordmark__text">ext<span class="nx-wordmark__gen">Gen</span></span>&nbsp;E-Sports
                         </a>
 
                         <div class="nx-social d-flex flex-wrap align-items-center">
                             <!-- X: official follow button widget -->
                             <div class="nx-social__widget d-flex align-items-center">
                                 <img src="socials/x.png" alt="" class="nx-social__icon">
-                                <a href="https://x.com/nextGen_eSport" class="twitter-follow-button"
-                                    data-show-count="false" data-size="large" data-dnt="true">Follow @nextGen_eSport</a>
+                                <a href="https://x.com/nextGen_eSport" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @nextGen_eSport</a>
                                 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                             </div>
                             <!-- Facebook: official page plugin -->
@@ -378,9 +351,7 @@
                                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
                             </div>
                             <!-- Discord: live member count via a real jQuery REST call -->
-                            <a class="nx-discord" id="discordWidget"
-                                href="https://discord.com/invite/vibes-tribe-719490731047125014" target="_blank"
-                                rel="noopener">
+                            <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/vibes-tribe-719490731047125014" target="_blank" rel="noopener">
                                 <img src="socials/discord.png" alt="" class="nx-social__icon">
                                 <span>Discord</span>
                                 <span class="nx-discord__count">…</span>
@@ -408,7 +379,6 @@
         </div>
     </footer>
 
-
     <!-- ===================== COOKIE CONSENT BANNER ===================== -->
     <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
         <h3 class="nx-cookie__title">Cookies on this site</h3>
@@ -423,8 +393,7 @@
         </ul>
         <div class="nx-cookie__actions">
             <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
-            <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp;
-                clear</button>
+            <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
         </div>
     </div>
 
