@@ -783,7 +783,8 @@ body.dark-theme .pass-notice-box,
     transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
-.nx-btn--primary:hover {
+.ticket-modal .nx-btn--primary:hover,
+.ticket-card .nx-btn--primary:hover {
     background-color: #e02d4c !important;
     transform: translateY(-1px);
 }
