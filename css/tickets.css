@@ -767,7 +767,8 @@ body.dark-theme .pass-notice-box,
 /* ========================================================
    2. ANGLED GAMING BUTTON (MATCHING YOUR IMAGE DESIGN)
    ======================================================== */
-.nx-btn--primary {
+.ticket-modal .nx-btn--primary,
+.ticket-card .nx-btn--primary {
     background-color: #ff3b5c !important; /* Red background */
     color: #ffffff !important;
     font-weight: 700;

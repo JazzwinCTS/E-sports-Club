@@ -4,26 +4,28 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tickets — NextGen E-Sports</title>
+    <title>NextGen E-Sports — Home</title>
+    <meta name="description"
+        content="NextGen E-Sports is a community esports team for Valorant, Counter-Strike and PUBG, open to players of every level.">
     <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/bootstrap-icons.css">
     <link rel="stylesheet" href="css/style.css?v=6">
-    <link rel="stylesheet" href="css/tickets.css?v=1">
-    <!-- Added a small custom style block for the ticket grid to match your theme -->
+    <link rel="stylesheet" href="css/tickets.css?v=5">
     <script>
+        /* Read the saved theme before first paint so there is no flash of the wrong one. */
         (function () {
             try {
                 var t = JSON.parse(localStorage.getItem('theme')) || 'dark';
                 document.documentElement.setAttribute('data-theme', t);
-            } catch (e) { }
+            } catch (e) { /* storage unavailable — dark stays */ }
         })();
     </script>
 </head>
 
-<body class="tournament-page">
+<body>
     <a class="nx-skip" href="#main">Skip to content</a>
 
-    <!-- YOUR EXACT HEADER -->
+    <!-- ================= NAVBAR (identical on all  pages) ================= -->
     <header class="nx-nav navbar navbar-expand-lg p-0">
         <nav class="nx-nav__inner container-fluid" aria-label="Primary">
             <a class="nx-wordmark navbar-brand" href="index.html">
@@ -364,6 +366,7 @@
                                 <img src="socials/x.png" alt="" class="nx-social__icon">
                                 <a href="https://x.com/nextGen_eSport" class="twitter-follow-button"
                                     data-show-count="false" data-size="large" data-dnt="true">Follow @nextGen_eSport</a>
+                                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                             </div>
                             <!-- Facebook: official page plugin -->
                             <div class="nx-social__widget d-flex align-items-center">
@@ -375,8 +378,9 @@
                                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
                             </div>
                             <!-- Discord: live member count via a real jQuery REST call -->
-                            <a class="nx-discord" id="discordWidget" href="https://discord.com/invite/vibes-tribe-719490731047125014"
-                                target="_blank" rel="noopener">
+                            <a class="nx-discord" id="discordWidget"
+                                href="https://discord.com/invite/vibes-tribe-719490731047125014" target="_blank"
+                                rel="noopener">
                                 <img src="socials/discord.png" alt="" class="nx-social__icon">
                                 <span>Discord</span>
                                 <span class="nx-discord__count">…</span>
@@ -407,12 +411,16 @@
 
     <!-- ===================== COOKIE CONSENT BANNER ===================== -->
     <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-        <h3 style="font-size:1rem;margin-bottom:8px">Cookies on this site</h3>
-        <p class="nx-muted nx-mb-0" style="font-size:.86rem">
-            We store one cookie (<code>returningVisitor</code>, 30 days) to remember that you have been
-            here before, plus local and session storage for your theme, filters and saved entries.
-            Nothing is sent anywhere — this site has no server.
+        <h3 class="nx-cookie__title">Cookies on this site</h3>
+        <p class="nx-cookie__text">
+            We use cookies and other tracking technologies to improve your browsing experience on our
+            website for the following purposes:
         </p>
+        <ul class="nx-cookie__list">
+            <li>Remember your settings &mdash; your theme, your filters and your member account</li>
+            <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
+            <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
+        </ul>
         <div class="nx-cookie__actions">
             <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
             <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp;
