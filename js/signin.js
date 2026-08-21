@@ -72,7 +72,12 @@ $(function () {
     if (!message) {
       if ($.trim($input.val())) { $field.addClass('is-valid'); }
     } else if (showError) {
-      $field.addClass('has-error').find('.nx-error').text(message).css('display', 'block');
+      // Visibility is the stylesheet's job: .nx-error is display:none until
+      // .nx-field gains .has-error. Setting display inline here as well made
+      // the message permanent - removing the class could not override an
+      // inline style, so "The two passwords do not match." stayed on screen
+      // after the two passwords already matched.
+      $field.addClass('has-error').find('.nx-error').text(message);
       $input.attr('aria-invalid', 'true');
     }
   }
@@ -225,13 +230,13 @@ $(function () {
 
     if (!match) {
       $emailField.addClass('has-error');
-      $emailField.find('.nx-error').text('No account found with this email.').css('display', 'block');
+      $emailField.find('.nx-error').text('No account found with this email.');
       return;
     }
 
     if (match.passwordHash !== hashedPass) {
       $passField.addClass('has-error');
-      $passField.find('.nx-error').text('Incorrect password.').css('display', 'block');
+      $passField.find('.nx-error').text('Incorrect password.');
       return;
     }
 
