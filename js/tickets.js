@@ -16,12 +16,16 @@ $(function () {
     };
 
     function parseTournamentDate(dateStr, timeStr) {
-        var timeParts = timeStr.match(/(\d+):(\d+)\s(AM|PM)/i);
-        var hours = parseInt(timeParts[1], 10);
-        var minutes = parseInt(timeParts[2], 10);
+        var timeParts = timeStr ? timeStr.match(/(\d+):(\d+)\s(AM|PM)/i) : null;
+        var hours = 0;
+        var minutes = 0;
 
-        if (timeParts[3].toUpperCase() === 'PM' && hours !== 12) hours += 12;
-        if (timeParts[3].toUpperCase() === 'AM' && hours === 12) hours = 0;
+        if (timeParts) {
+            hours = parseInt(timeParts[1], 10);
+            minutes = parseInt(timeParts[2], 10);
+            if (timeParts[3].toUpperCase() === 'PM' && hours !== 12) hours += 12;
+            if (timeParts[3].toUpperCase() === 'AM' && hours === 12) hours = 0;
+        }
 
         var d = new Date(dateStr + " 2026");
         d.setHours(hours, minutes, 0, 0);
@@ -51,12 +55,11 @@ $(function () {
 
             // Valorant & CS2 (RM 35)
             ['valorant', 'cs2'].forEach(function (gameKey) {
-                var gameData = data.championship.games[gameKey];
+                var gameData = data.championship && data.championship.games ? data.championship.games[gameKey] : null;
                 if (gameData && gameData.matches) {
                     gameData.matches.forEach(function (match) {
                         if (match.status === 'upcoming') {
                             var eventDate = parseTournamentDate(match.date, match.time);
-                            var isGrandFinal = match.round.toLowerCase().includes('grand final');
                             var eventObj = {
                                 id: match.id,
                                 category: gameKey,
@@ -79,7 +82,7 @@ $(function () {
             });
 
             // PUBG (Grouped 5-Round Championship Pass)
-            var pubgData = data.championship.games.pubg;
+            var pubgData = data.championship && data.championship.games ? data.championship.games.pubg : null;
             if (pubgData && pubgData.rounds && pubgData.rounds.length > 0) {
                 var upcomingRounds = pubgData.rounds.filter(function (round) {
                     return round.status === 'upcoming';
@@ -178,7 +181,6 @@ $(function () {
         $('#ticketSuccessView').hide();
         $('#modalStep2').removeClass('is-active').removeAttr('style');
         $('#modalStep1').addClass('is-active').removeAttr('style');
-        $('.modal-footer, #modalHeaderTitle').show();
 
         $('#modalGameArt').attr('src', currentEvent.image);
         $('#modalCompetitionName').text(currentEvent.gameName + ' — ' + currentEvent.stage);
@@ -204,10 +206,9 @@ $(function () {
     // 4. Stepper & Price Calculation
     function updateTotalPrice(qty) {
         var total = qty * currentUnitPrice;
-        var formattedPrice = '<span class="price-unit">RM</span> <span class="price-val">' + total + '</span>';
-        $('#modalTotalPrice').html(formattedPrice);
-        $('#summaryTotalPrice').html(formattedPrice);
-        $('#btnPayAmount').text(total);
+        $('.ticket-modal__total-price').html('RM ' + total);
+        $('.ticket-summary__grand-total').html('<small style="font-size: 0.45em; font-weight: 700; margin-right: 4px; vertical-align: middle;">RM</small> ' + total);
+        $('#confirmPayBtn').html('Pay <small style="font-size: 0.7em;">RM ' + total + '</small>');
     }
 
     $('#qtyPlus').on('click', function () {
@@ -234,7 +235,7 @@ $(function () {
     $('#goToPaymentBtn').on('click', function () {
         if (!currentEvent) return;
 
-        var isLoggedIn = NXStore.session.get('isLoggedIn') === true;
+        var isLoggedIn = typeof NXStore !== 'undefined' && NXStore.session && NXStore.session.get('isLoggedIn') === true;
 
         if (!isLoggedIn) {
             alert('Please sign in to your account before proceeding to payment.');
@@ -285,6 +286,8 @@ $(function () {
 
     // Save newly purchased tickets to localStorage
     function storeTicketPurchase(eventData) {
+        if (typeof NXStore === 'undefined') return false;
+
         var regs = NXStore.local.get('registrations', []) || [];
         var currentUser = regs.length ? regs[regs.length - 1] : null;
 
@@ -330,7 +333,7 @@ $(function () {
         $('#passDate').text(currentEvent.dateOnly || 'TBD');
         $('#passTime').text(currentEvent.timeOnly || 'TBD');
         $('#passVenue').text(currentEvent.venue || 'Main Stage');
-        $('#passQty').text(qty + ' Pax');
+        $('#passQty').text(qty + ' Ticket(s)');
         $('#passCode').text(randomCode);
 
         var passImage = currentEvent.image || imageMap[currentEvent.category];
@@ -360,13 +363,10 @@ $(function () {
         $qrImg.attr('src', primaryQr);
 
         $('#modalStep1, #modalStep2').removeClass('is-active').hide();
-        $('.modal-footer, #modalHeaderTitle').hide();
         $('#ticketSuccessView').fadeIn(200);
     }
 
-    // 6. Stripe REST API Payment Submission Handler (Card Only)
-    var STRIPE_SECRET_KEY = 'sk_test_51U5OoBR8qqDAw5NhlfrhyMbqmcFoSgGESGrtQ7nGNiH7iIui9OOAI3tQfUZx2SetogYKrcgHQDFVC2qKirhJMc4L00H172MoQM';
-
+    // 6. Backend REST API Payment Submission Handler
     $('#confirmPayBtn').on('click', function () {
         var $btn = $(this);
         var originalText = $btn.html();
@@ -376,7 +376,8 @@ $(function () {
         var expMonth = expiry[0] ? expiry[0].trim() : '';
         var expYear = expiry[1] ? expiry[1].trim() : '';
         var cvc = $('#stripeCardCvc').val().trim();
-        var totalAmountRM = parseInt($('#summaryTotalPrice .price-val').text(), 10) || currentUnitPrice;
+        var qty = parseInt($('#ticketQty').val(), 10) || 1;
+        var totalAmountRM = qty * currentUnitPrice;
         var totalAmountCents = totalAmountRM * 100;
 
         if (!cardNumber || !expMonth || !expYear || !cvc) {
@@ -384,55 +385,36 @@ $(function () {
             return;
         }
 
-        var now = new Date();
-        var currentYear = now.getFullYear();
-        var currentMonth = now.getMonth() + 1;
-
-        var parsedYear = parseInt(expYear, 10);
-        var fullExpYear = parsedYear < 100 ? 2000 + parsedYear : parsedYear;
-        var parsedMonth = parseInt(expMonth, 10);
-
-        var sourceToken = 'tok_visa';
-
-        if (fullExpYear < currentYear || (fullExpYear === currentYear && parsedMonth < currentMonth)) {
-            sourceToken = 'tok_chargeDeclinedExpiredCard';
-        } else if (!/^\d{3,4}$/.test(cvc) || (cardNumber.startsWith('4') && cvc.length !== 3)) {
-            sourceToken = 'tok_chargeDeclinedIncorrectCvc';
-        } else if (cardNumber.endsWith('0022')) {
-            sourceToken = 'tok_chargeDeclined';
-        }
-
-        $btn.prop('disabled', true).html('<i class="bi bi-arrow-repeat spin"></i> Contacting Stripe API...');
+        $btn.prop('disabled', true).html('<i class="bi bi-arrow-repeat spin"></i> Processing Payment...');
 
         $.ajax({
-            url: 'https://api.stripe.com/v1/charges',
+            url: 'https://nextgen-e-sports-club.onrender.com/api/pay',
             type: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + STRIPE_SECRET_KEY,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: $.param({
-                'amount': totalAmountCents,
-                'currency': 'myr',
-                'source': sourceToken,
-                'description': 'Ticket Purchase: ' + currentEvent.gameName + ' - ' + currentEvent.stage
+            contentType: 'application/json',
+            data: JSON.stringify({
+                cardNumber: cardNumber,
+                expMonth: expMonth,
+                expYear: expYear,
+                cvc: cvc,
+                amountCents: totalAmountCents,
+                description: 'Ticket Purchase: ' + currentEvent.gameName + ' - ' + currentEvent.stage
             }),
             success: function (response) {
                 $btn.prop('disabled', false).html(originalText);
 
-                if (response.status === 'succeeded' && response.paid) {
+                if (response.success && response.status === 'succeeded' && response.paid) {
                     showSuccessTicketView();
                 } else {
-                    alert('Payment Status: ' + response.status);
+                    alert('Payment Status: ' + (response.status || 'Failed'));
                 }
             },
             error: function (jqXHR) {
                 $btn.prop('disabled', false).html(originalText);
-                var err = jqXHR.responseJSON && jqXHR.responseJSON.error
+                var err = (jqXHR.responseJSON && jqXHR.responseJSON.error)
                     ? jqXHR.responseJSON.error.message
-                    : 'Stripe REST API request failed.';
+                    : 'Payment request failed.';
 
-                alert('Stripe REST API Error: ' + err);
+                alert('Payment Error: ' + err);
             }
         });
     });
@@ -452,7 +434,6 @@ $(function () {
             $('#ticketSuccessView').hide();
             $('#modalStep2').removeClass('is-active').removeAttr('style');
             $('#modalStep1').addClass('is-active').removeAttr('style');
-            $('.modal-footer, #modalHeaderTitle').show();
         }, 300);
     }
 
