@@ -1018,6 +1018,17 @@ img { max-width: 100%; height: auto; }
 
 .nx-cookie__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
 
+/* Sits under the buttons and spells out what Decline actually removes — it
+   wipes the member account and any claimed tickets, which the button label
+   alone did not make clear. */
+.nx-cookie__fineprint {
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  margin: 10px 0 0;
+}
+
 /* --- Animation ----------------------------------------------------------- */
 @keyframes nx-spin { to { transform: rotate(360deg); } }
 @keyframes nx-pulse {

@@ -134,7 +134,7 @@ Implement exactly these keys. camelCase. Agreed group-wide.
 | Type | Key | Page | Example value | Lifetime | Purpose |
 |---|---|---|---|---|---|
 | Local | `theme` | site-wide | `"dark"` \| `"light"` | until cleared | Colour scheme. Read before first paint to avoid a flash of wrong theme. |
-| Local | `favouriteTeam` | rankings | `"VYNE"` | until cleared | Highlights the team's row in the standings (does not reorder the table). The homepage preview reads and writes the same key. |
+| Local | `favouriteTeam` | rankings | `"VYNE"` | until cleared | Highlights the team's row in the standings (does not reorder the table). The homepage preview reads and writes the same key. **Stored permanently, but only *drawn* while `isLoggedIn` is set** — see the note under this table. |
 | Local | `playersGame` | players | `"valorant"` | until cleared | Last-viewed game division, restored next visit. (The spec originally named this `playerFilter` and described a `{game, role}` object; `js/players.js` shipped `playersGame` holding just the division, so the table follows the code. Nothing writes `playerFilter`.) |
 | Local | `registrations` | signin | `[{"id":"REG…","fullName":"…","passwordHash":"…"}]` | until cleared | The member account created on the join view. Client-side store in place of a backend; an array, with the last entry treated as the account on this browser. Signing out removes the key. The password is stored only as a short non-reversible digest — never in readable form, and never written to `registerDraft`. |
 | Local | `userTickets` | tickets, signin | `[{"division":"valorant","qty":2,…}]` | until cleared | Tickets the visitor has claimed. `tickets.html` writes them; `signin.html`'s Tickets panel reads them back. |
@@ -143,6 +143,18 @@ Implement exactly these keys. camelCase. Agreed group-wide.
 | Session | `tournamentFilter` | tournaments | `"valorant"` | tab close | Active filter + sort, survives in-tab navigation. |
 | Session | `eventView` | events | `"calendar"` \| `"list"` | tab close | Selected view and month. |
 | Cookie | `returningVisitor` | index | `"true"` | 30 days | Suppresses intro animation, shows welcome-back. `path=/; SameSite=Lax` |
+
+**Saved and shown are two different things — `favouriteTeam` is stored in local storage but only
+rendered while signed in.** Both `js/rankings.js` and `js/index.js` read it as
+`NXStore.isSignedIn() ? NXStore.local.get('favouriteTeam') : null`. The bug this fixes: signing in is
+per-tab (`isLoggedIn`, session), so a new tab starts signed out — and a starred, highlighted row was
+still sitting there for a signed-out visitor, on a star the same code refuses to let them click.
+**Do not "fix" that by moving the key into session storage.** The favourite is the visitor's own
+data and should outlive the browser closing, exactly like the account in `registrations`; session
+storage would delete it on every tab close, and it would also leave `rankings.html` with no local
+storage of its own (§1). Hiding the highlight is the display fix; the key itself is untouched, so
+signing back in brings the team straight back. Both pages must apply the same rule or the star shows
+on one and not the other.
 
 **The storage *display* no longer exists.** The old `dashboard.html` had a Storage panel that
 printed all three technologies and their live contents in three tables — the visible proof for the
