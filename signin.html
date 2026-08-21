@@ -7,7 +7,7 @@
     <title>Sign In & Dashboard — NextGen E-Sports</title>
     <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/style.css?v=5">
+    <link rel="stylesheet" href="css/style.css?v=7">
     <link rel="stylesheet" href="css/signin.css?v=1">
     <script>
         (function () {
@@ -394,10 +394,13 @@
                                 <span>Discord</span>
                                 <span class="nx-discord__count">…</span>
                             </a>
-                            <!-- Instagram: anchors to the real post embed on the About page -->
-                            <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
-                                <img src="socials/instagram.png" alt="" class="nx-social__icon">
-                            </a>
+                            <!-- Instagram: Meta retired the small no-auth follow badge, so the official
+                                 post embed is the only keyless plugin available. It opens in a modal so
+                                 the footer keeps its height. -->
+                            <button class="nx-icon-btn" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#igModal" aria-label="NextGen E-Sports on Instagram">
+                              <img src="socials/instagram.png" alt="" class="nx-social__icon">
+                            </button>
                         </div>
                     </div>
 

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="vendor/bootstrap-icons.css">
 
     <!-- Global styles -->
-    <link rel="stylesheet" href="css/style.css?v=6">
+    <link rel="stylesheet" href="css/style.css?v=7">
 
     <!-- About page styles -->
     <link rel="stylesheet" href="css/about.css?v=2">
@@ -690,9 +690,13 @@
                                 <span class="nx-discord__count">…</span>
                             </a>
 
-                            <a class="nx-icon-btn" href="#social" aria-label="NextGen E-Sports on Instagram">
-                                <img src="socials/instagram.png" alt="" class="nx-social__icon">
-                            </a>
+                            <!-- Instagram: Meta retired the small no-auth follow badge, so the official
+                                 post embed is the only keyless plugin available. It opens in a modal so
+                                 the footer keeps its height. -->
+                            <button class="nx-icon-btn" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#igModal" aria-label="NextGen E-Sports on Instagram">
+                              <img src="socials/instagram.png" alt="" class="nx-social__icon">
+                            </button>
                         </div>
                     </div>
                     <p class="nx-footer__tag">

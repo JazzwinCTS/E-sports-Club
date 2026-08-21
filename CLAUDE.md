@@ -103,12 +103,12 @@ duplicating content. This rule exists to prevent overlap — please preserve it.
 | 7 | `tickets.html` | Tickets | Ticket selection and the QR pass per division | Local `userTickets` | — |
 | 8 | `about.html` | About / Join Us | Club identity, committee, concept gallery | Local `theme` (site-wide) | **Social feed embed** |
 
-*Social feed embed: the footer's X / Facebook / Discord plugins are shared markup present on every page
-including this one, so the graded requirement is met site-wide. **`about.html` used to add a real Instagram
-post embed on top of that, and no longer does** — the events/about rework replaced it with a "Stay Connected"
-card of plain links, and the footer's Instagram icon now anchors to that section. Instagram has no small
-no-auth footer widget (§10), so if a genuine Instagram *embed* is wanted back, it has to be a post embed on
-this page again.*
+*Social feed embed: the footer's X / Facebook / Discord / Instagram plugins are shared markup present on every
+page including this one, so the graded requirement is met site-wide. **`about.html` no longer carries an
+Instagram post embed of its own** — the events/about rework replaced it with a "Stay Connected" card of plain
+links, and that card stays. The real Instagram embed now lives in **the footer's own `#igModal`** on all eight
+pages (§10): the icon is a Bootstrap modal trigger rather than a link, so a ~480px post embed does not have to
+sit inside a 70px footer row. `about.html` was deliberately not modified when that landed.*
 
 ### Content boundaries — do not blur these
 
@@ -472,11 +472,16 @@ staying opaque when sticky over scrolled content. 1px bottom border at low-opaci
     card/button. (This doubles as a legitimate second real-API demo for §6.) If a numeric guild ID with
     **Server Widget** enabled becomes available instead, the fuller `https://discord.com/widget?id=<id>&theme=dark`
     iframe can replace this.
-  - **Instagram** — Meta retired the small no-auth "follow badge," so a *tiny* footer-icon plugin for
-    `apu_esc` isn't available without OAuth. Use the official post-embed instead
-    (`https://www.instagram.com/p/<shortcode>/embed`, no key) placed as a real content block on
-    `about.html`'s fandom/gallery section; the footer's Instagram icon anchor-links down to it in-page. Pick
-    which real public post to embed when you're at that page.
+  - **Instagram** — Meta retired the small no-auth "follow badge," and every profile/oEmbed endpoint since
+    needs an App ID + OAuth token, which needs a backend (§2 forbids one). **There is therefore no plugin
+    that can point at a profile** — the official post embed
+    (`https://www.instagram.com/p/<shortcode>/embed`, no key, no SDK script) is the only keyless option, and
+    it can only show *a post*. It is wired up as the footer's `#igModal`: the Instagram icon is a
+    `data-bs-toggle="modal"` button, the modal body holds the embed, and a "Follow @nges.gg" button inside
+    links to `https://www.instagram.com/nges.gg/?hl=en`. The iframe is `loading="lazy"` so it only fetches
+    when the modal opens. The post wired in is `DbDUVZsDcgx` (from `instagram.com/nges.gg`), the same string
+    in all 8 pages. If that post is ever deleted or made private the frame goes blank — swap in another
+    public post code from the same account rather than removing the plugin.
   - Twitch/YouTube/TikTok — not in the supplied account list; drop them from the footer unless you're given
     real handles for those too.
 - One-line prototype disclaimer: this is a coursework prototype and imagery is illustrative.

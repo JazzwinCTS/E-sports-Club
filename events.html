@@ -9,7 +9,7 @@
         content="Practices, workshops, tryouts and socials at NextGen E-Sports, with a live venue forecast.">
     <link rel="stylesheet" href="vendor/bootstrap.min.css">
     <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/style.css?v=6">
+    <link rel="stylesheet" href="css/style.css?v=7">
     <link rel="stylesheet" href="css/events.css?v=4">
     <script>
         (function () {
@@ -154,10 +154,13 @@
                                 <span class="nx-discord__count">…</span>
                             </a>
 
-                            <a class="nx-icon-btn" href="https://www.instagram.com/nges.gg/?hl=en" target="_blank"
-                                rel="noopener noreferrer" aria-label="NextGen E-Sports on Instagram">
-                                <img src="socials/instagram.png" alt="" class="nx-social__icon">
-                            </a>
+                            <!-- Instagram: Meta retired the small no-auth follow badge, so the official
+                                 post embed is the only keyless plugin available. It opens in a modal so
+                                 the footer keeps its height. -->
+                            <button class="nx-icon-btn" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#igModal" aria-label="NextGen E-Sports on Instagram">
+                              <img src="socials/instagram.png" alt="" class="nx-social__icon">
+                            </button>
                         </div>
                     </div>
 

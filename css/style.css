@@ -913,6 +913,39 @@ img { max-width: 100%; height: auto; }
   margin-right: 5px;
 }
 
+/* Instagram post embed. Meta retired the small no-auth follow badge, so the
+   official post embed is the only keyless plugin left — and the smallest one
+   is around 480px tall, which would swallow a 70px footer row. It lives in a
+   modal the footer icon opens instead. Shell markup, so the rules belong here
+   rather than in a page file.
+
+   The close button follows the same light/dark trick players.css uses for its
+   roster modal, rather than Bootstrap's dark-only .btn-close-white. */
+.nx-ig-modal .modal-content {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+}
+.nx-ig-modal .modal-header,
+.nx-ig-modal .modal-footer { border-color: var(--border); }
+.nx-ig-modal__title { font-size: 1rem; margin: 0; }
+.nx-ig-modal .btn-close {
+  filter: var(--modal-close-filter, invert(1));
+  opacity: 0.8;
+}
+[data-theme="light"] .nx-ig-modal { --modal-close-filter: none; }
+
+/* Instagram's own frame sets the post's height; 480px is its minimum useful
+   size and stops the modal collapsing while the embed is still loading. */
+.nx-ig-embed {
+  display: block;
+  width: 100%;
+  min-height: 480px;
+  border: 0;
+  border-radius: var(--radius-sm);
+}
+
 /* Layout from Bootstrap (d-flex flex-wrap align-items-center); the asymmetric
    row/column gap has no Bootstrap equivalent, so it stays here. */
 .nx-footer__bottom {
