@@ -25,13 +25,46 @@ app.get('/', (req, res) => {
 
 app.post('/api/pay', async (req, res) => {
     try {
-        const { cardNumber, amountCents, description } = req.body;
+        const { cardNumber, expMonth, expYear, cvc, amountCents, description } = req.body;
+        
         const cleanCard = (cardNumber || '').replace(/\s+/g, '');
+        const cleanCvc = (cvc || '').toString().trim();
 
-        // Map entered card to Stripe test token; default to decline for unknown test numbers
+        // 1. Validate CVC Length (3 or 4 digits)
+        if (!/^\d{3,4}$/.test(cleanCvc)) {
+            return res.status(400).json({
+                success: false,
+                error: { message: "Your card's security code is invalid." }
+            });
+        }
+
+        // 2. Validate Expiry Month & Year
+        const month = parseInt(expMonth, 10);
+        let year = parseInt(expYear, 10);
+        if (year < 100) year += 2000; // Converts '26' to 2026
+
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth() + 1;
+
+        if (isNaN(month) || month < 1 || month > 12) {
+            return res.status(400).json({
+                success: false,
+                error: { message: "Your card's expiration month is invalid." }
+            });
+        }
+
+        if (year < currentYear || (year === currentYear && month < currentMonth)) {
+            return res.status(400).json({
+                success: false,
+                error: { message: "Your card's expiration year is in the past." }
+            });
+        }
+
+        // 3. Map card number to Stripe test token
         const sourceToken = TEST_CARD_MAP[cleanCard] || 'tok_chargeDeclined';
 
-        // Submit charge to Stripe API
+        // 4. Create charge with Stripe
         const charge = await stripe.charges.create({
             amount: amountCents,
             currency: 'myr',
@@ -45,7 +78,6 @@ app.post('/api/pay', async (req, res) => {
             paid: charge.paid
         });
     } catch (error) {
-        // Returns official error message generated directly by Stripe's server
         return res.status(400).json({
             success: false,
             error: { message: error.message }
