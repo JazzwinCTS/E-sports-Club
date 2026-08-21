@@ -1,0 +1,31 @@
+{
+  "name": "nextgen-e-sports-club",
+  "version": "1.0.0",
+  "description": "NextGen E-Sports is a **community esports team** — open to players of every level, not an elite\r competitive program. The team plays three titles: **Valorant, Counter-Strike 2 and PUBG**.",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JazzwinCTS/Nextgen-E-sports-Club.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JazzwinCTS/Nextgen-E-sports-Club/issues"
+  },
+  "homepage": "https://github.com/JazzwinCTS/Nextgen-E-sports-Club#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "stripe": "^22.5.0"
+  }
+}
