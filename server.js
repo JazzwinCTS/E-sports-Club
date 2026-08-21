@@ -19,6 +19,10 @@ const TEST_CARD_MAP = {
     '4000000000000004': 'tok_chargeDeclinedProcessingError'     // Processing Error
 };
 
+app.get('/', (req, res) => {
+    res.send('Backend payment server is live!');
+});
+
 app.post('/api/pay', async (req, res) => {
     try {
         const { cardNumber, amountCents, description } = req.body;
