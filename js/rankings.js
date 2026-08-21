@@ -48,7 +48,12 @@ $(function () {
   }
 
   function apply(state) {
-    var favourite = NXStore.local.get('favouriteTeam');
+    // Saved for good in local storage, but only shown while this tab is signed
+    // in. Being signed in lives in session storage, so a new tab starts signed
+    // out - and a starred row sitting there for someone who is signed out, on a
+    // star they are not allowed to click, read as a bug. Signing back in brings
+    // the team back, because the key itself was never removed.
+    var favourite = NXStore.isSignedIn() ? NXStore.local.get('favouriteTeam') : null;
     var rows = allTeams.slice();
 
     if (state.game !== 'all') {

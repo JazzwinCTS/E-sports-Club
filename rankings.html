@@ -7,7 +7,7 @@
 <meta name="description" content="Standings: points, medals and win-loss records for all eight member teams, by division.">
 <link rel="stylesheet" href="vendor/bootstrap.min.css">
 <link rel="stylesheet" href="vendor/bootstrap-icons.css">
-<link rel="stylesheet" href="css/style.css?v=6">
+<link rel="stylesheet" href="css/style.css?v=7">
 <!-- Page-exclusive: this page's own leaderboard design. -->
 <link rel="stylesheet" href="css/rankings.css?v=5">
 <script>
@@ -108,9 +108,13 @@
               <span>Discord</span>
               <span class="nx-discord__count">…</span>
             </a>
-            <a class="nx-icon-btn" href="about.html#social" aria-label="NextGen E-Sports on Instagram">
+            <!-- Instagram: Meta retired the small no-auth follow badge, so the official
+                 post embed is the only keyless plugin available. It opens in a modal so
+                 the footer keeps its height. -->
+            <button class="nx-icon-btn" type="button" data-bs-toggle="modal"
+                    data-bs-target="#igModal" aria-label="NextGen E-Sports on Instagram">
               <img src="socials/instagram.png" alt="" class="nx-social__icon">
-            </a>
+            </button>
           </div>
         </div>
 
@@ -131,19 +135,55 @@
 </footer>
 
 <div class="nx-cookie" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-  <h3 class="nx-cookie__title">Cookies on this site</h3>
+  <h3 class="nx-cookie__title">Cookies and storage on this site</h3>
   <p class="nx-cookie__text">
-    We use cookies and other tracking technologies to improve your browsing experience on our
-    website for the following purposes:
+    We use cookies and other tracking technologies to improve your browsing experience on
+    our website. Here is everything we store, and where:
   </p>
   <ul class="nx-cookie__list">
-    <li>Remember your settings &mdash; your theme, your filters and your member account</li>
-    <li>Recognise you when you come back, so we can welcome you rather than start from scratch</li>
-    <li>Allow the embedded X, Facebook, Discord and Instagram plugins in our footer to load</li>
+    <li><strong>One cookie</strong>, named &ldquo;returningVisitor&rdquo;, so we can welcome you back
+        instead of showing you this again. It lasts 30 days</li>
+    <li><strong>Your settings</strong> &mdash; theme, filters, favourite team, member account and
+        tickets. These are not cookies; they are kept in your browser's local and session
+        storage, and the session ones disappear when you close the tab</li>
+    <li><strong>Our social buttons</strong> &mdash; the X, Facebook, Discord and Instagram widgets in
+        the footer load from those companies, which may set cookies of their own</li>
   </ul>
   <div class="nx-cookie__actions">
     <button class="nx-btn nx-btn--primary nx-btn--sm" id="cookieAccept" type="button">Accept</button>
-    <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; clear</button>
+    <button class="nx-btn nx-btn--ghost nx-btn--sm" id="cookieDecline" type="button">Decline &amp; erase</button>
+  </div>
+  <p class="nx-cookie__fineprint">
+    Decline &amp; erase removes everything listed above, including your member account and any
+    tickets you have claimed. You can reopen this box any time from Cookie Preferences in the footer.
+  </p>
+</div>
+
+<!-- ============ INSTAGRAM POST EMBED (official, keyless) ============
+     The post code is the part after /p/ in the post's URL. If the post is
+     ever deleted or made private this frame goes blank, so swap in another
+     public one from instagram.com/nges.gg (same string in all 8 pages).
+     Loads only when the modal opens (loading="lazy"), so eight pages do
+     not each fetch it on load. -->
+<div class="modal fade nx-ig-modal" id="igModal" tabindex="-1"
+     aria-labelledby="igModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title nx-ig-modal__title" id="igModalLabel">@nges.gg on Instagram</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <iframe class="nx-ig-embed" title="Latest post from NextGen E-Sports on Instagram"
+                src="https://www.instagram.com/p/DbDUVZsDcgx/embed"
+                scrolling="no" frameborder="0" allowtransparency="true" loading="lazy"></iframe>
+      </div>
+      <div class="modal-footer">
+        <a class="nx-btn nx-btn--primary nx-btn--sm" target="_blank" rel="noopener"
+           href="https://www.instagram.com/nges.gg/?hl=en">Follow @nges.gg</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -153,7 +193,7 @@
 <script src="js/render.js?v=5"></script>
 <script src="js/filter.js?v=2"></script>
 <script src="js/main.js?v=7"></script>
-<script src="js/rankings.js?v=5"></script>
+<script src="js/rankings.js?v=6"></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

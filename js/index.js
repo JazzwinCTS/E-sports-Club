@@ -341,7 +341,10 @@ $(function () {
   var topFive = [];
 
   function paintStandings() {
-    var favourite = NXStore.local.get('favouriteTeam');
+    // Same rule as the rankings table: the team stays saved in local storage,
+    // but it is only drawn while this tab is signed in. Both pages have to
+    // agree here, or the star would show on one and not the other.
+    var favourite = NXStore.isSignedIn() ? NXStore.local.get('favouriteTeam') : null;
     /* Same column headings rankings.html uses — the preview is the same
        component, so it gets the same header rather than bare rows. */
     $standings.html(NXRender.boardHead() + topFive.map(function (t, i) {

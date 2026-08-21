@@ -103,12 +103,12 @@ duplicating content. This rule exists to prevent overlap — please preserve it.
 | 7 | `tickets.html` | Tickets | Ticket selection and the QR pass per division | Local `userTickets` | — |
 | 8 | `about.html` | About / Join Us | Club identity, committee, concept gallery | Local `theme` (site-wide) | **Social feed embed** |
 
-*Social feed embed: the footer's X / Facebook / Discord plugins are shared markup present on every page
-including this one, so the graded requirement is met site-wide. **`about.html` used to add a real Instagram
-post embed on top of that, and no longer does** — the events/about rework replaced it with a "Stay Connected"
-card of plain links, and the footer's Instagram icon now anchors to that section. Instagram has no small
-no-auth footer widget (§10), so if a genuine Instagram *embed* is wanted back, it has to be a post embed on
-this page again.*
+*Social feed embed: the footer's X / Facebook / Discord / Instagram plugins are shared markup present on every
+page including this one, so the graded requirement is met site-wide. **`about.html` no longer carries an
+Instagram post embed of its own** — the events/about rework replaced it with a "Stay Connected" card of plain
+links, and that card stays. The real Instagram embed now lives in **the footer's own `#igModal`** on all eight
+pages (§10): the icon is a Bootstrap modal trigger rather than a link, so a ~480px post embed does not have to
+sit inside a 70px footer row. `about.html` was deliberately not modified when that landed.*
 
 ### Content boundaries — do not blur these
 
@@ -134,7 +134,7 @@ Implement exactly these keys. camelCase. Agreed group-wide.
 | Type | Key | Page | Example value | Lifetime | Purpose |
 |---|---|---|---|---|---|
 | Local | `theme` | site-wide | `"dark"` \| `"light"` | until cleared | Colour scheme. Read before first paint to avoid a flash of wrong theme. |
-| Local | `favouriteTeam` | rankings | `"VYNE"` | until cleared | Highlights the team's row in the standings (does not reorder the table). The homepage preview reads and writes the same key. |
+| Local | `favouriteTeam` | rankings | `"VYNE"` | until cleared | Highlights the team's row in the standings (does not reorder the table). The homepage preview reads and writes the same key. **Stored permanently, but only *drawn* while `isLoggedIn` is set** — see the note under this table. |
 | Local | `playersGame` | players | `"valorant"` | until cleared | Last-viewed game division, restored next visit. (The spec originally named this `playerFilter` and described a `{game, role}` object; `js/players.js` shipped `playersGame` holding just the division, so the table follows the code. Nothing writes `playerFilter`.) |
 | Local | `registrations` | signin | `[{"id":"REG…","fullName":"…","passwordHash":"…"}]` | until cleared | The member account created on the join view. Client-side store in place of a backend; an array, with the last entry treated as the account on this browser. Signing out removes the key. The password is stored only as a short non-reversible digest — never in readable form, and never written to `registerDraft`. |
 | Local | `userTickets` | tickets, signin | `[{"division":"valorant","qty":2,…}]` | until cleared | Tickets the visitor has claimed. `tickets.html` writes them; `signin.html`'s Tickets panel reads them back. |
@@ -143,6 +143,18 @@ Implement exactly these keys. camelCase. Agreed group-wide.
 | Session | `tournamentFilter` | tournaments | `"valorant"` | tab close | Active filter + sort, survives in-tab navigation. |
 | Session | `eventView` | events | `"calendar"` \| `"list"` | tab close | Selected view and month. |
 | Cookie | `returningVisitor` | index | `"true"` | 30 days | Suppresses intro animation, shows welcome-back. `path=/; SameSite=Lax` |
+
+**Saved and shown are two different things — `favouriteTeam` is stored in local storage but only
+rendered while signed in.** Both `js/rankings.js` and `js/index.js` read it as
+`NXStore.isSignedIn() ? NXStore.local.get('favouriteTeam') : null`. The bug this fixes: signing in is
+per-tab (`isLoggedIn`, session), so a new tab starts signed out — and a starred, highlighted row was
+still sitting there for a signed-out visitor, on a star the same code refuses to let them click.
+**Do not "fix" that by moving the key into session storage.** The favourite is the visitor's own
+data and should outlive the browser closing, exactly like the account in `registrations`; session
+storage would delete it on every tab close, and it would also leave `rankings.html` with no local
+storage of its own (§1). Hiding the highlight is the display fix; the key itself is untouched, so
+signing back in brings the team straight back. Both pages must apply the same rule or the star shows
+on one and not the other.
 
 **The storage *display* no longer exists.** The old `dashboard.html` had a Storage panel that
 printed all three technologies and their live contents in three tables — the visible proof for the
@@ -472,11 +484,16 @@ staying opaque when sticky over scrolled content. 1px bottom border at low-opaci
     card/button. (This doubles as a legitimate second real-API demo for §6.) If a numeric guild ID with
     **Server Widget** enabled becomes available instead, the fuller `https://discord.com/widget?id=<id>&theme=dark`
     iframe can replace this.
-  - **Instagram** — Meta retired the small no-auth "follow badge," so a *tiny* footer-icon plugin for
-    `apu_esc` isn't available without OAuth. Use the official post-embed instead
-    (`https://www.instagram.com/p/<shortcode>/embed`, no key) placed as a real content block on
-    `about.html`'s fandom/gallery section; the footer's Instagram icon anchor-links down to it in-page. Pick
-    which real public post to embed when you're at that page.
+  - **Instagram** — Meta retired the small no-auth "follow badge," and every profile/oEmbed endpoint since
+    needs an App ID + OAuth token, which needs a backend (§2 forbids one). **There is therefore no plugin
+    that can point at a profile** — the official post embed
+    (`https://www.instagram.com/p/<shortcode>/embed`, no key, no SDK script) is the only keyless option, and
+    it can only show *a post*. It is wired up as the footer's `#igModal`: the Instagram icon is a
+    `data-bs-toggle="modal"` button, the modal body holds the embed, and a "Follow @nges.gg" button inside
+    links to `https://www.instagram.com/nges.gg/?hl=en`. The iframe is `loading="lazy"` so it only fetches
+    when the modal opens. The post wired in is `DbDUVZsDcgx` (from `instagram.com/nges.gg`), the same string
+    in all 8 pages. If that post is ever deleted or made private the frame goes blank — swap in another
+    public post code from the same account rather than removing the plugin.
   - Twitch/YouTube/TikTok — not in the supplied account list; drop them from the footer unless you're given
     real handles for those too.
 - One-line prototype disclaimer: this is a coursework prototype and imagery is illustrative.
