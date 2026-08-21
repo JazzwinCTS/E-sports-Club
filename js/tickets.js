@@ -388,7 +388,7 @@ $(function () {
         $btn.prop('disabled', true).html('<i class="bi bi-arrow-repeat spin"></i> Processing Payment...');
 
         $.ajax({
-            url: 'http://localhost:3000/api/pay',
+            url: 'https://nextgen-e-sports-club.onrender.com/api/pay',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
